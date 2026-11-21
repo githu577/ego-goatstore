@@ -3,17 +3,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EGO GOATSTORE — Robotic Night Anime Digital Store</title>
+  <title>EGO GOATSTORE — Goat Bot Command Store</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <!-- Live Ambient Canvas (Flying Petals, Wind Streaks, Night Stars) -->
+  <!-- 1. LOADING ANIMATION OVERLAY -->
+  <div id="loading-screen" class="loading-screen">
+    <div class="loader-core">
+      <div class="loader-ring"></div>
+      <div class="loader-logo robotic-font">EGO <span class="cyan-txt">GOATSTORE</span></div>
+      <div class="loader-sub">BOOTING GOAT BOT COMMAND VAULT...</div>
+      <div class="loader-bar-wrap">
+        <div class="loader-bar" id="loader-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. LIVE AMBIENT PETALS & WIND CANVAS -->
   <canvas id="anime-canvas"></canvas>
 
-  <!-- Night Sky & Cyber-Pagoda Backdrop -->
+  <!-- 3. NIGHT SKY & PURPLE MOON BACKDROP -->
   <div class="night-backdrop">
     <div class="purple-moon"></div>
     <div class="moon-halo"></div>
@@ -22,12 +34,7 @@
     <div class="mist-layer"></div>
   </div>
 
-  <!-- Top Announcement & Quick Status Bar -->
-  <div class="top-status-bar">
-    <span>⚡ EGO GOATSTORE LIVE • INSTANT DELIVERY • 4.98★ AVERAGE CUSTOMER RATING</span>
-  </div>
-
-  <!-- Main Navigation Bar -->
+  <!-- TOP HEADER WITH BIG ROBOTIC EGO GOATSTORE -->
   <header class="navbar">
     <div class="brand">
       <div class="crown-badge" aria-hidden="true">
@@ -36,37 +43,34 @@
           <path d="M3 20H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
         </svg>
       </div>
-      <div class="brand-text-wrap">
+      <div>
         <span class="brand-name robotic-font">EGO <span class="accent">GOATSTORE</span></span>
-        <span class="brand-sub">CYBER ANIME &amp; DIGITAL HUB</span>
+        <span class="brand-sub">GOAT BOT COMMAND STORE</span>
       </div>
     </div>
 
     <div class="nav-actions">
       <button id="toggle-wind" class="ghost-btn">Wind Boost: OFF</button>
-      <button id="cart-btn" class="primary-btn">
-        Cart <span id="cart-count" class="cart-pill">0</span>
-      </button>
+      <a href="#upload-command" class="primary-btn">+ Upload Command</a>
     </div>
   </header>
 
-  <!-- Clear & Visible Quick-Access Command Bar (So Visitors Find Everything Immediately) -->
-  <nav class="quick-nav-bar" aria-label="Primary Store Navigation">
+  <!-- EASY & CLEAR QUICK NAVIGATION BAR -->
+  <nav class="quick-nav-bar" aria-label="Store Navigation">
     <div class="quick-nav-inner">
-      <a href="#featured" class="q-link active">🏠 Home &amp; Live Scene</a>
-      <a href="#collections" class="q-link">🛒 All Store Items</a>
-      <a href="#bundles" class="q-link">👑 VIP Crown Bundles</a>
-      <a href="#reviews-section" class="q-link">⭐ Ratings &amp; Commands</a>
-      <a href="#support" class="q-link">🎧 24/7 Support</a>
+      <a href="#hero-stage-sec" class="q-link active">⚡ Live Anime &amp; Bot Stage</a>
+      <a href="#commands-vault" class="q-link">📜 Command Categories</a>
+      <a href="#upload-command" class="q-link">⬆️ Upload New Command</a>
+      <a href="#saved-cmds" class="q-link">💾 Saved Commands (<span id="saved-count">0</span>)</a>
     </div>
   </nav>
 
-  <!-- Hero Section with Big Robotic EGO GOATSTORE Title & Live Anime Stage -->
   <main>
-    <section class="hero" id="featured">
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero-stage-sec">
       <div class="hero-content">
         <div class="tag-pill">
-          <span class="pulse-dot"></span> OFFICIAL NIGHT EDITION • VERIFIED STORE
+          <span class="pulse-dot"></span> GOAT BOT COMMAND HUB • QUALITY RATED
         </div>
 
         <h1 class="robotic-title robotic-font">
@@ -75,241 +79,221 @@
         </h1>
 
         <p class="hero-desc">
-          Premium cyber-anime gear, VIP game passes, companion bots, and exclusive digital drops forged under the glowing purple moon. Every item is community-rated and delivered instantly.
+          Browse, copy, and upload Goat Bot commands across <strong>Love, Sad, Baby, Gore, Owner, System</strong> and more. Every command comes with a verified quality score like <span class="q-highlight">10/9</span> or <span class="q-highlight">10/7</span>.
         </p>
 
-        <!-- Direct Quick Action Buttons -->
         <div class="hero-cta">
-          <a href="#collections" class="primary-btn large">Browse All Items</a>
-          <a href="#reviews-section" class="secondary-btn large">View Ratings &amp; Reviews</a>
-          <button id="robot-interact-btn" class="ghost-btn large">Ping Robot</button>
-        </div>
-
-        <!-- Store Trust & Rating Metrics -->
-        <div class="hero-stats">
-          <div class="stat">
-            <strong class="robotic-font">4.98 ★</strong>
-            <span>12,400+ Ratings</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <strong class="robotic-font">24K+</strong>
-            <span>Active Members</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <strong class="robotic-font">0.2s</strong>
-            <span>Instant Delivery</span>
-          </div>
+          <a href="#commands-vault" class="primary-btn large">Explore Commands</a>
+          <a href="#upload-command" class="secondary-btn large">Upload Command</a>
+          <button id="robot-ping-btn" class="ghost-btn large">Ping Cute Bot</button>
         </div>
       </div>
 
-      <!-- Live Animated Hero Visual Stage (Youth + Cute Blinking Cyan-Eye Robot) -->
+      <!-- LIVE ANIMATED STAGE: CUTE ROBOT PET + ANIME GIRL -->
       <div class="hero-stage">
         <div class="stage-frame">
           <div class="aura-ring"></div>
 
-          <div class="anime-character-container">
-            <!-- Youth Silhouette & Glowing Purple Eyes + Crown Sleeve -->
-            <svg class="anime-youth-svg" viewBox="0 0 360 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Animated Anime Girl -->
+          <div class="anime-girl-wrap">
+            <svg class="anime-girl-svg" viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
               <defs>
-                <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#F0ABFC"/>
-                  <stop offset="60%" stop-color="#A855F7"/>
-                  <stop offset="100%" stop-color="#581C87" stop-opacity="0"/>
+                <linearGradient id="girlHairGrad" x1="60" y1="40" x2="240" y2="330" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#C084FC"/>
+                  <stop offset="55%" stop-color="#6B21A8"/>
+                  <stop offset="100%" stop-color="#1E0938"/>
+                </linearGradient>
+                <linearGradient id="girlOutfitGrad" x1="90" y1="190" x2="210" y2="410" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#3B0764"/>
+                  <stop offset="60%" stop-color="#140626"/>
+                  <stop offset="100%" stop-color="#07020E"/>
+                </linearGradient>
+                <radialGradient id="girlEyeGrad" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#F5D0FE"/>
+                  <stop offset="65%" stop-color="#D946EF"/>
+                  <stop offset="100%" stop-color="#701A75" stop-opacity="0"/>
                 </radialGradient>
-                <linearGradient id="jacketGrad" x1="80" y1="180" x2="260" y2="430" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#1E1035"/>
-                  <stop offset="50%" stop-color="#0D0718"/>
-                  <stop offset="100%" stop-color="#05020A"/>
-                </linearGradient>
-                <linearGradient id="scarfGrad" x1="20" y1="220" x2="230" y2="270" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#7E22CE"/>
-                  <stop offset="55%" stop-color="#2E1065"/>
-                  <stop offset="100%" stop-color="#14072B"/>
-                </linearGradient>
               </defs>
 
-              <!-- Flowing Scarf Tails -->
-              <g class="flowing-scarf">
-                <path d="M145 215 C95 205, 45 225, 12 205 C38 238, 88 242, 145 232 Z" fill="url(#scarfGrad)" stroke="#A855F7" stroke-width="1.2"/>
-                <path d="M140 228 C85 235, 38 262, 6 250 C42 276, 95 266, 148 245 Z" fill="#1E0B3B" stroke="#9333EA" stroke-width="1"/>
+              <!-- Long Flowing Anime Hair Back -->
+              <g class="girl-hair-back">
+                <path d="M88 92 C64 145, 58 245, 76 340 C98 320, 110 275, 114 220 L186 220 C190 275, 202 320, 224 340 C242 245, 236 145, 212 92 Z" fill="url(#girlHairGrad)" stroke="#D8B4FE" stroke-width="1.2"/>
               </g>
 
-              <!-- Black Jacket Body -->
-              <path d="M105 430 L122 255 C125 232, 145 220, 175 220 L215 220 C245 220, 268 235, 275 262 L295 430 Z" fill="url(#jacketGrad)" stroke="#6B21A8" stroke-width="1.5"/>
+              <!-- Neck & Shoulders -->
+              <path d="M136 156 L134 192 L166 192 L164 156 Z" fill="#FDE4CF"/>
+              <!-- Stylish Anime Crop / Cyber Top -->
+              <path d="M98 228 C102 195, 122 188, 136 188 L164 188 C178 188, 198 195, 202 228 L214 415 L86 415 Z" fill="url(#girlOutfitGrad)" stroke="#C084FC" stroke-width="1.5"/>
+              <!-- V-Neck & Collar Accent -->
+              <path d="M126 188 L150 232 L174 188" stroke="#F0ABFC" stroke-width="2" fill="none"/>
+              <path d="M108 258 Q150 272 192 258" stroke="#A855F7" stroke-width="1.5" fill="none"/>
 
-              <!-- Glowing Purple Crown Emblem on Sleeve -->
-              <g class="sleeve-crown" transform="translate(232, 295) rotate(-8)">
-                <path d="M4 22L7 7L14 14L18 4L22 14L29 7L32 22H4Z" fill="#C084FC" stroke="#F5D0FE" stroke-width="1.2"/>
-                <rect x="4" y="25" width="28" height="3" rx="1.5" fill="#C084FC"/>
+              <!-- Anime Girl Face -->
+              <path d="M112 96 C112 62, 188 62, 188 96 C188 134, 170 162, 150 162 C130 162, 112 134, 112 96 Z" fill="#FDE4CF" stroke="#F5D0FE" stroke-width="1"/>
+
+              <!-- Glowing Anime Eyes + Wink/Blink -->
+              <g class="girl-eyes">
+                <ellipse cx="132" cy="112" rx="11" ry="7" fill="url(#girlEyeGrad)"/>
+                <ellipse cx="132" cy="112" rx="4.5" ry="4.5" fill="#701A75"/>
+                <circle cx="133.5" cy="110" r="1.8" fill="#FFFFFF"/>
+
+                <ellipse cx="168" cy="112" rx="11" ry="7" fill="url(#girlEyeGrad)"/>
+                <ellipse cx="168" cy="112" rx="4.5" ry="4.5" fill="#701A75"/>
+                <circle cx="169.5" cy="110" r="1.8" fill="#FFFFFF"/>
               </g>
 
-              <!-- Neck & Head Tilted Slightly Upward -->
-              <path d="M168 182 L166 222 L202 222 L198 182 Z" fill="#E9D5FF" fill-opacity="0.88"/>
-              <path d="M150 132 C150 98, 214 96, 216 135 C218 164, 200 188, 178 188 C158 188, 150 165, 150 132 Z" fill="#F3E8FF"/>
+              <!-- Blush & Cute Expression -->
+              <ellipse cx="122" cy="124" rx="6" ry="3" fill="#F472B6" fill-opacity="0.5"/>
+              <ellipse cx="178" cy="124" rx="6" ry="3" fill="#F472B6" fill-opacity="0.5"/>
+              <path d="M144 136 Q150 142 156 136" stroke="#BE185D" stroke-width="2" stroke-linecap="round" fill="none"/>
 
-              <!-- Glowing Purple Eyes -->
-              <ellipse cx="171" cy="142" rx="14" ry="8" fill="url(#eyeGlow)"/>
-              <ellipse cx="171" cy="142" rx="5.5" ry="3.5" fill="#D946EF"/>
-              <circle cx="172.5" cy="141" r="1.4" fill="#FFFFFF"/>
-
-              <ellipse cx="198" cy="140" rx="13" ry="7.5" fill="url(#eyeGlow)"/>
-              <ellipse cx="198" cy="140" rx="5" ry="3.2" fill="#D946EF"/>
-              <circle cx="199.5" cy="139" r="1.3" fill="#FFFFFF"/>
-
-              <!-- Spiky Dark Hair Swaying in Wind -->
-              <g class="swaying-hair">
-                <path d="M142 142 C128 118, 136 82, 168 72 C195 62, 232 76, 234 114 C236 136, 224 156, 214 162 C216 138, 206 118, 188 114 C174 126, 160 134, 142 142 Z" fill="#090412" stroke="#9333EA" stroke-width="1.2"/>
-                <path d="M154 84 C132 74, 114 82, 102 74 C118 92, 136 94, 154 92 Z" fill="#120724" stroke="#A855F7" stroke-width="0.9"/>
-                <path d="M178 72 C164 52, 142 48, 126 42 C144 62, 162 68, 178 76 Z" fill="#0D051A" stroke="#C084FC" stroke-width="0.9"/>
-                <path d="M214 88 C234 74, 252 78, 264 68 C250 88, 234 94, 216 96 Z" fill="#120724" stroke="#A855F7" stroke-width="0.9"/>
+              <!-- Swaying Front Bangs -->
+              <g class="girl-bangs">
+                <path d="M108 92 C112 56, 188 56, 192 92 C180 76, 166 84, 156 106 C150 86, 138 86, 132 108 C124 88, 115 84, 108 92 Z" fill="url(#girlHairGrad)" stroke="#E9D5FF" stroke-width="1"/>
               </g>
-
-              <!-- Collar Scarf Wrap -->
-              <path d="M142 212 C162 204, 206 204, 224 214 L218 242 C195 234, 164 234, 144 242 Z" fill="#1E0B3B" stroke="#A855F7" stroke-width="1.4"/>
             </svg>
+            <div class="stage-tag robotic-font">ANIME MUSE LIVE</div>
+          </div>
 
-            <!-- Cute Small White Robot with Blinking On/Off Cyan Eyes -->
-            <div class="robot-companion" id="companion-bot" title="Click to talk with Bot">
-              <div class="robot-head">
-                <div class="ear-cup left"></div>
-                <div class="ear-cup right"></div>
-                <div class="headband"></div>
-
-                <div class="robot-visor">
-                  <div class="cyan-eye left-eye"></div>
-                  <div class="robot-smile"></div>
-                  <div class="cyan-eye right-eye"></div>
-                </div>
+          <!-- Cute Small White Robot Pet with Blinking On/Off Cyan Eyes -->
+          <div class="robot-companion" id="companion-bot" title="Click cute robot pet!">
+            <div class="robot-head">
+              <div class="ear-cup left"></div>
+              <div class="ear-cup right"></div>
+              <div class="headband"></div>
+              <div class="robot-visor">
+                <div class="cyan-eye left-eye"></div>
+                <div class="robot-smile"></div>
+                <div class="cyan-eye right-eye"></div>
               </div>
-
-              <div class="robot-scarf"></div>
-              <div class="robot-body">
-                <div class="robot-crown-emblem">
-                  <svg viewBox="0 0 24 24" fill="none">
-                    <path d="M3 18L5 7L10 12L12 5L14 12L19 7L21 18H3Z" fill="#C084FC" stroke="#F3E8FF" stroke-width="1.5"/>
-                  </svg>
-                </div>
-              </div>
-              <div class="robot-status-badge robotic-font" id="bot-speech">EGO BOT ONLINE</div>
             </div>
+            <div class="robot-scarf"></div>
+            <div class="robot-body">
+              <div class="robot-crown-emblem">
+                <svg viewBox="0 0 24 24" fill="none">
+                  <path d="M3 18L5 7L10 12L12 5L14 12L19 7L21 18H3Z" fill="#C084FC" stroke="#F3E8FF" stroke-width="1.5"/>
+                </svg>
+              </div>
+            </div>
+            <div class="robot-status-badge robotic-font" id="bot-speech">CUTE PET: READY</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Store Catalog & Live Search / Filter Section -->
-    <section class="store-section" id="collections">
+    <!-- COMMAND CATEGORIES & VAULT SECTION -->
+    <section class="commands-section" id="commands-vault">
       <div class="section-header">
         <div>
-          <span class="sub-label robotic-font">VERIFIED CATALOG &amp; RATINGS</span>
-          <h2 class="robotic-font">EGO GOATSTORE DROPS</h2>
+          <span class="sub-label robotic-font">GOAT BOT COMMAND CATEGORIES</span>
+          <h2 class="robotic-font">COMMAND VAULT &amp; QUALITY RATES</h2>
         </div>
 
-        <!-- Instant Search Box + Category Tabs -->
         <div class="catalog-controls">
           <input
             type="search"
-            id="search-input"
+            id="cmd-search"
             class="search-box"
-            placeholder="Search items, passes, bots..."
-            aria-label="Search store items"
+            placeholder="Search command (e.g. love, sad, baby, gore, owner)..."
+            aria-label="Search commands"
           />
-
-          <div class="filter-tabs" role="tablist">
-            <button class="filter-btn active" data-filter="all">All Drops</button>
-            <button class="filter-btn" data-filter="cyber">Cyber Gear</button>
-            <button class="filter-btn" data-filter="passes">VIP Passes</button>
-            <button class="filter-btn" data-filter="companions">Companions</button>
-          </div>
         </div>
       </div>
 
-      <!-- Product Grid (Each Card Has Live Star Rating & Command/Review Button) -->
-      <div class="product-grid" id="product-grid"></div>
+      <!-- Category Filter Tabs -->
+      <div class="category-bar" id="category-bar" role="tablist">
+        <button class="cat-btn active" data-cat="all">🔥 All Commands</button>
+        <button class="cat-btn" data-cat="love">💖 Love</button>
+        <button class="cat-btn" data-cat="sad">🌧️ Sad</button>
+        <button class="cat-btn" data-cat="baby">🍼 Baby</button>
+        <button class="cat-btn" data-cat="gore">🩸 Gore</button>
+        <button class="cat-btn" data-cat="owner">👑 Owner</button>
+        <button class="cat-btn" data-cat="system">⚙️ System</button>
+        <button class="cat-btn" data-cat="fun">🎮 Fun</button>
+      </div>
+
+      <!-- Commands Grid -->
+      <div class="commands-grid" id="commands-grid"></div>
     </section>
 
-    <!-- Premium VIP Bundle Banner -->
-    <section class="vip-banner" id="bundles">
-      <div class="vip-info">
-        <span class="tag-pill">★ 5.0 RATED • LIMITED SEASON PASS</span>
-        <h3 class="robotic-font">EGO SHADOW CROWN BUNDLE</h3>
-        <p>Unlock all dark-violet avatar skins, animated profile frames, and priority store commands with 35% instant savings.</p>
-      </div>
-      <div class="vip-action">
-        <div class="price-box">
-          <span class="old-price">$79.00</span>
-          <span class="new-price robotic-font">$49.00</span>
-        </div>
-        <button class="primary-btn large" onclick="addBundleToCart()">Claim VIP Bundle</button>
-      </div>
-    </section>
-
-    <!-- Community Commands & Live Rating Section -->
-    <section class="reviews-section" id="reviews-section">
+    <!-- UPLOAD COMMAND INTO CATEGORY WITH QUALITY RATE (10/9, 10/7, ETC.) -->
+    <section class="upload-section" id="upload-command">
       <div class="section-header">
         <div>
-          <span class="sub-label robotic-font">COMMUNITY FEEDBACK &amp; COMMANDS</span>
-          <h2 class="robotic-font">VERIFIED USER RATINGS</h2>
+          <span class="sub-label robotic-font">ADD NEW GOAT BOT COMMAND</span>
+          <h2 class="robotic-font">UPLOAD COMMAND TO CATEGORY</h2>
         </div>
       </div>
 
-      <div class="reviews-layout">
-        <!-- Submit Rating Form -->
-        <form id="review-form" class="review-form-card">
-          <h3 class="robotic-font">Rate &amp; Post Command</h3>
-          <p class="form-hint">Share your experience or rate any EGO GOATSTORE drop.</p>
+      <form id="upload-cmd-form" class="upload-card">
+        <div class="form-grid">
+          <div class="field">
+            <label for="cmd-name">Command Name (e.g., /love-hug, /sad-rain)</label>
+            <input type="text" id="cmd-name" placeholder="/love-hug" required />
+          </div>
 
-          <label for="reviewer-name">Your Name / Tag</label>
-          <input type="text" id="reviewer-name" placeholder="e.g., ShadowKing_99" required />
+          <div class="field">
+            <label for="cmd-category">Select Category</label>
+            <select id="cmd-category">
+              <option value="love">Love</option>
+              <option value="sad">Sad</option>
+              <option value="baby">Baby</option>
+              <option value="gore">Gore</option>
+              <option value="owner">Owner</option>
+              <option value="system">System</option>
+              <option value="fun">Fun</option>
+            </select>
+          </div>
 
-          <label for="review-item">Select Item / Command</label>
-          <select id="review-item"></select>
+          <div class="field">
+            <label for="cmd-quality">Quality Rate (e.g., 10/9, 10/7)</label>
+            <select id="cmd-quality">
+              <option value="10/10">10/10 — Ultra Supreme</option>
+              <option value="10/9" selected>10/9 — Top Quality</option>
+              <option value="10/8">10/8 — High Quality</option>
+              <option value="10/7">10/7 — Solid Quality</option>
+              <option value="10/6">10/6 — Standard</option>
+            </select>
+          </div>
 
-          <label for="review-rating">Select Star Rating</label>
-          <select id="review-rating">
-            <option value="5">★★★★★ (5.0 - Masterpiece)</option>
-            <option value="4">★★★★☆ (4.0 - Great Quality)</option>
-            <option value="3">★★★☆☆ (3.0 - Good)</option>
-          </select>
+          <div class="field">
+            <label for="cmd-usage">Usage Syntax</label>
+            <input type="text" id="cmd-usage" placeholder="/love-hug @user" required />
+          </div>
+        </div>
 
-          <label for="review-text">Your Review / Command Note</label>
-          <textarea id="review-text" rows="3" placeholder="Write your feedback..." required></textarea>
+        <div class="field">
+          <label for="cmd-desc">Command Description / Effect</label>
+          <textarea id="cmd-desc" rows="2" placeholder="Describe what this Goat Bot command does..." required></textarea>
+        </div>
 
-          <button type="submit" class="primary-btn full-width">Submit Verified Rating</button>
-        </form>
+        <div class="field">
+          <label for="cmd-code">Command Script / Payload</label>
+          <textarea id="cmd-code" rows="3" placeholder="goat.command('love-hug', async (ctx) => { ... });" required></textarea>
+        </div>
 
-        <!-- Live Rated Feed -->
-        <div class="reviews-list" id="reviews-list"></div>
+        <button type="submit" class="primary-btn large">Publish Command to Vault</button>
+      </form>
+    </section>
+
+    <!-- SAVED COMMANDS SECTION -->
+    <section class="saved-section" id="saved-cmds">
+      <div class="section-header">
+        <div>
+          <span class="sub-label robotic-font">YOUR BOOKMARKED COMMANDS</span>
+          <h2 class="robotic-font">SAVED COMMAND LIST</h2>
+        </div>
+      </div>
+      <div class="saved-list" id="saved-list">
+        <p class="empty-msg">No commands saved yet. Click "Save" on any command card above.</p>
       </div>
     </section>
   </main>
 
-  <!-- Slide-Over Cart Drawer -->
-  <aside class="cart-drawer" id="cart-drawer" aria-hidden="true">
-    <div class="cart-header">
-      <h3 class="robotic-font">GOATSTORE CART</h3>
-      <button id="close-cart" class="icon-btn" aria-label="Close Cart">&times;</button>
-    </div>
-    <div class="cart-items" id="cart-items">
-      <p class="empty-msg">Your cart is empty. Select an item from the night drop!</p>
-    </div>
-    <div class="cart-footer">
-      <div class="total-row">
-        <span>Total</span>
-        <strong id="cart-total" class="robotic-font">$0.00</strong>
-      </div>
-      <button id="checkout-btn" class="primary-btn full-width">Complete Instant Checkout</button>
-    </div>
-  </aside>
-  <div class="backdrop-overlay" id="drawer-backdrop"></div>
-
-  <!-- Toast Notification -->
   <div id="toast" class="toast"></div>
 
-  <footer id="support">
-    <p>&copy; 2026 <strong class="robotic-font">EGO GOATSTORE</strong> — Robotic Night Edition. All rights reserved.</p>
+  <footer>
+    <p>&copy; 2026 <strong class="robotic-font">EGO GOATSTORE</strong> — Goat Bot Command Store. All rights reserved.</p>
   </footer>
 
   <script src="app.js"></script>
