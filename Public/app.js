@@ -6,7 +6,6 @@ const crypto = require("crypto");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const ADMIN_KEY = process.env.ADMIN_KEY || "CHANGE_THIS_ADMIN_KEY";
 
 const ALLOWED_CATEGORIES = new Set([
   "utility", "fun", "media", "ai", "games", "moderation",
@@ -54,17 +53,23 @@ function normalizeCategory(rawCat) {
   return ALLOWED_CATEGORIES.has(cleaned) ? cleaned : "misc";
 }
 
-function admin(req, res, next) {
-  const key = req.headers["x-admin-key"] || (req.body && req.body.adminKey);
+function generateUnique4DigitUid(existingCommands, requestedUid) {
+  const usedUids = new Set(existingCommands.map(item => String(item.uid || "")));
 
-  if (!key || key !== ADMIN_KEY) {
-    return res.status(401).json({
-      success: false,
-      message: "Invalid admin key"
-    });
+  if (requestedUid && /^\d{4}$/.test(requestedUid)) {
+    if (!usedUids.has(requestedUid)) {
+      return requestedUid;
+    }
   }
 
-  next();
+  let uid = "";
+  let guard = 0;
+  do {
+    uid = String(Math.floor(1000 + Math.random() * 9000));
+    guard += 1;
+  } while (usedUids.has(uid) && guard < 9000);
+
+  return uid;
 }
 
 const storage = multer.diskStorage({
@@ -94,7 +99,8 @@ app.get("/api/status", (req, res) => {
     success: true,
     name: "EGO GOATSTORE",
     status: "ONLINE",
-    version: "3.0",
+    mode: "FREE_OPEN_HUB",
+    version: "4.0",
     categoriesCount: ALLOWED_CATEGORIES.size,
     categories: Array.from(ALLOWED_CATEGORIES)
   });
@@ -108,6 +114,7 @@ app.get("/api/commands", (req, res) => {
   const commands = rawCommands
     .map(({ file, ...item }) => ({
       ...item,
+      uid: String(item.uid || "").padStart(4, "0").slice(0, 4),
       category: normalizeCategory(item.category)
     }))
     .filter(item => {
@@ -115,6 +122,7 @@ app.get("/api/commands", (req, res) => {
       if (!catMatch) return false;
       if (!q) return true;
       return (
+        String(item.uid || "").toLowerCase().includes(q) ||
         String(item.name || "").toLowerCase().includes(q) ||
         String(item.description || "").toLowerCase().includes(q) ||
         String(item.category || "").toLowerCase().includes(q) ||
@@ -130,8 +138,40 @@ app.get("/api/commands", (req, res) => {
   });
 });
 
+// Direct GoatBot JSON endpoint (returns code + metadata by UID or ID)
+app.get("/api/bot/commands/:uidOrId", (req, res) => {
+  const key = String(req.params.uidOrId || "").trim();
+  const all = readDB();
+  const command = all.find(x => String(x.uid) === key || x.id === key);
+
+  if (!command) {
+    return res.status(404).json({
+      success: false,
+      message: "Command not found for GoatBot"
+    });
+  }
+
+  const filePath = path.join(COMMANDS, path.basename(command.file));
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({
+      success: false,
+      message: "Command script file missing"
+    });
+  }
+
+  const code = fs.readFileSync(filePath, "utf8");
+  const { file, ...safeCommand } = command;
+
+  res.json({
+    success: true,
+    command: safeCommand,
+    fileName: path.basename(command.file).replace(/^[^-]+-/, ""),
+    code
+  });
+});
+
 app.get("/api/commands/:id", (req, res) => {
-  const command = readDB().find(x => x.id === req.params.id);
+  const command = readDB().find(x => x.id === req.params.id || String(x.uid) === req.params.id);
 
   if (!command) {
     return res.status(404).json({
@@ -144,13 +184,18 @@ app.get("/api/commands/:id", (req, res) => {
   res.json({ success: true, command: safeCommand });
 });
 
-app.post("/api/upload", admin, upload.single("file"), (req, res) => {
+// Free Open Command Upload with 4-digit UID
+app.post("/api/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({
       success: false,
-      message: "Select a JS file"
+      message: "Select a .js file"
     });
   }
+
+  const commands = readDB();
+  const requestedUid = String(req.body.uid || "").trim();
+  const uid = generateUnique4DigitUid(commands, requestedUid);
 
   const name = String(req.body.name || path.basename(req.file.originalname, ".js"))
     .trim()
@@ -162,8 +207,9 @@ app.post("/api/upload", admin, upload.single("file"), (req, res) => {
 
   const command = {
     id: crypto.randomUUID(),
+    uid,
     name,
-    description: String(req.body.description || "EGO GOATSTORE command").slice(0, 300),
+    description: String(req.body.description || "EGO GOATSTORE GoatBot command").slice(0, 300),
     category: normalizeCategory(req.body.category),
     author,
     file: req.file.filename,
@@ -171,7 +217,6 @@ app.post("/api/upload", admin, upload.single("file"), (req, res) => {
     createdAt: new Date().toISOString()
   };
 
-  const commands = readDB();
   commands.unshift(command);
   saveDB(commands);
 
@@ -179,14 +224,14 @@ app.post("/api/upload", admin, upload.single("file"), (req, res) => {
 
   res.json({
     success: true,
-    message: `Command uploaded to [${command.category.toUpperCase()}] successfully`,
+    message: `Uploaded to [${command.category.toUpperCase()}] successfully`,
     command: safeCommand
   });
 });
 
-app.get("/api/install/:id", (req, res) => {
+function serveCommandDownload(req, res, matcherFn) {
   const commands = readDB();
-  const index = commands.findIndex(x => x.id === req.params.id);
+  const index = commands.findIndex(matcherFn);
 
   if (index === -1) {
     return res.status(404).json({
@@ -209,33 +254,16 @@ app.get("/api/install/:id", (req, res) => {
   saveDB(commands);
 
   res.download(filePath, path.basename(command.file).replace(/^[^-]+-/, ""));
+}
+
+app.get("/api/install/uid/:uid", (req, res) => {
+  const targetUid = String(req.params.uid || "").trim();
+  serveCommandDownload(req, res, x => String(x.uid) === targetUid);
 });
 
-app.delete("/api/commands/:id", admin, (req, res) => {
-  const commands = readDB();
-  const index = commands.findIndex(x => x.id === req.params.id);
-
-  if (index === -1) {
-    return res.status(404).json({
-      success: false,
-      message: "Command not found"
-    });
-  }
-
-  const command = commands[index];
-  const filePath = path.join(COMMANDS, path.basename(command.file));
-
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
-  }
-
-  commands.splice(index, 1);
-  saveDB(commands);
-
-  res.json({
-    success: true,
-    message: "Command deleted"
-  });
+app.get("/api/install/:id", (req, res) => {
+  const targetId = String(req.params.id || "").trim();
+  serveCommandDownload(req, res, x => x.id === targetId || String(x.uid) === targetId);
 });
 
 app.use((err, req, res, next) => {
@@ -250,8 +278,8 @@ app.get("*", (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log("========================================");
-  console.log(" EGO GOATSTORE ONLINE (32 CATEGORIES)");
+  console.log("=============================================");
+  console.log(" EGO GOATSTORE ONLINE (FREE + 4-DIGIT UID)");
   console.log(" PORT: " + PORT);
-  console.log("========================================");
+  console.log("=============================================");
 });
