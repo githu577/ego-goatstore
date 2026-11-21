@@ -1,301 +1,555 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EGO GOATSTORE — Goat Bot Command Store</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050914">
+  <title>EGO GOATSTORE — Robotic GoatBot Command Hub</title>
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
-  <!-- 1. LOADING ANIMATION OVERLAY -->
-  <div id="loading-screen" class="loading-screen">
-    <div class="loader-core">
-      <div class="loader-ring"></div>
-      <div class="loader-logo robotic-font">EGO <span class="cyan-txt">GOATSTORE</span></div>
-      <div class="loader-sub">BOOTING GOAT BOT COMMAND VAULT...</div>
-      <div class="loader-bar-wrap">
-        <div class="loader-bar" id="loader-bar"></div>
-      </div>
+
+<div class="ambient-lights" aria-hidden="true">
+  <span class="light-orb orb-1"></span>
+  <span class="light-orb orb-2"></span>
+  <span class="light-orb orb-3"></span>
+</div>
+
+<header class="hero">
+  <div class="grid"></div>
+  <div class="scanline"></div>
+
+  <nav class="nav">
+    <div class="logo">
+      <span class="anim-icon nav-icon">⚡</span>
+      EGO <span>GOATSTORE</span>
     </div>
-  </div>
-
-  <!-- 2. LIVE AMBIENT PETALS & WIND CANVAS -->
-  <canvas id="anime-canvas"></canvas>
-
-  <!-- 3. NIGHT SKY & PURPLE MOON BACKDROP -->
-  <div class="night-backdrop">
-    <div class="purple-moon"></div>
-    <div class="moon-halo"></div>
-    <div class="skyline-silhouette"></div>
-    <div class="waterfall-glow"></div>
-    <div class="mist-layer"></div>
-  </div>
-
-  <!-- TOP HEADER WITH BIG ROBOTIC EGO GOATSTORE -->
-  <header class="navbar">
-    <div class="brand">
-      <div class="crown-badge" aria-hidden="true">
-        <svg viewBox="0 0 24 24" fill="none">
-          <path d="M3 18L5 7L10 12L12 5L14 12L19 7L21 18H3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-          <path d="M3 20H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div>
-        <span class="brand-name robotic-font">EGO <span class="accent">GOATSTORE</span></span>
-        <span class="brand-sub">GOAT BOT COMMAND STORE</span>
-      </div>
-    </div>
-
     <div class="nav-actions">
-      <button id="toggle-wind" class="ghost-btn">Wind Boost: OFF</button>
-      <a href="#upload-command" class="primary-btn">+ Upload Command</a>
-    </div>
-  </header>
-
-  <!-- EASY & CLEAR QUICK NAVIGATION BAR -->
-  <nav class="quick-nav-bar" aria-label="Store Navigation">
-    <div class="quick-nav-inner">
-      <a href="#hero-stage-sec" class="q-link active">⚡ Live Anime &amp; Bot Stage</a>
-      <a href="#commands-vault" class="q-link">📜 Command Categories</a>
-      <a href="#upload-command" class="q-link">⬆️ Upload New Command</a>
-      <a href="#saved-cmds" class="q-link">💾 Saved Commands (<span id="saved-count">0</span>)</a>
+      <a href="#store" class="nav-link">
+        <span class="anim-icon mini-icon">📦</span> STORE
+      </a>
+      <a href="#categories" class="nav-link">
+        <span class="anim-icon mini-icon">🎛️</span> 32+ CATS
+      </a>
+      <div class="online">
+        <span class="anim-icon status-icon">🟢</span> SYSTEM ONLINE
+      </div>
     </div>
   </nav>
 
-  <main>
-    <!-- HERO SECTION -->
-    <section class="hero" id="hero-stage-sec">
-      <div class="hero-content">
-        <div class="tag-pill">
-          <span class="pulse-dot"></span> GOAT BOT COMMAND HUB • QUALITY RATED
-        </div>
+  <div class="hero-content">
+    <div class="hero-copy">
+      <p class="eyebrow">
+        <span class="anim-icon badge-icon">🤖</span>
+        ◆ NEXT GENERATION GOATBOT STORE
+      </p>
 
-        <h1 class="robotic-title robotic-font">
-          <span class="ego-word">EGO</span>
-          <span class="goat-word">GOATSTORE</span>
-        </h1>
+      <h1 class="mega-brand">
+        <span class="title-one">EGO</span>
+        <span class="title-two">GOATSTORE</span>
+      </h1>
 
-        <p class="hero-desc">
-          Browse, copy, and upload Goat Bot commands across <strong>Love, Sad, Baby, Gore, Owner, System</strong> and more. Every command comes with a verified quality score like <span class="q-highlight">10/9</span> or <span class="q-highlight">10/7</span>.
-        </p>
+      <p class="description">
+        Welcome to the future of GoatBot commands. Discover 32+ specialized command categories,
+        instant public downloads, robotic automation, and premium anime-cyber aesthetics.
+      </p>
 
-        <div class="hero-cta">
-          <a href="#commands-vault" class="primary-btn large">Explore Commands</a>
-          <a href="#upload-command" class="secondary-btn large">Upload Command</a>
-          <button id="robot-ping-btn" class="ghost-btn large">Ping Cute Bot</button>
-        </div>
+      <div class="hero-cta-row">
+        <a href="#store" class="btn primary-btn">
+          <span class="anim-icon btn-icon">🚀</span> EXPLORE STORE ↗
+        </a>
+        <a href="#admin-panel" class="btn ghost-btn">
+          <span class="anim-icon btn-icon">🛡️</span> ADMIN UPLOAD
+        </a>
       </div>
 
-      <!-- LIVE ANIMATED STAGE: CUTE ROBOT PET + ANIME GIRL -->
-      <div class="hero-stage">
-        <div class="stage-frame">
-          <div class="aura-ring"></div>
-
-          <!-- Animated Anime Girl -->
-          <div class="anime-girl-wrap">
-            <svg class="anime-girl-svg" viewBox="0 0 300 420" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <defs>
-                <linearGradient id="girlHairGrad" x1="60" y1="40" x2="240" y2="330" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#C084FC"/>
-                  <stop offset="55%" stop-color="#6B21A8"/>
-                  <stop offset="100%" stop-color="#1E0938"/>
-                </linearGradient>
-                <linearGradient id="girlOutfitGrad" x1="90" y1="190" x2="210" y2="410" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#3B0764"/>
-                  <stop offset="60%" stop-color="#140626"/>
-                  <stop offset="100%" stop-color="#07020E"/>
-                </linearGradient>
-                <radialGradient id="girlEyeGrad" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" stop-color="#F5D0FE"/>
-                  <stop offset="65%" stop-color="#D946EF"/>
-                  <stop offset="100%" stop-color="#701A75" stop-opacity="0"/>
-                </radialGradient>
-              </defs>
-
-              <!-- Long Flowing Anime Hair Back -->
-              <g class="girl-hair-back">
-                <path d="M88 92 C64 145, 58 245, 76 340 C98 320, 110 275, 114 220 L186 220 C190 275, 202 320, 224 340 C242 245, 236 145, 212 92 Z" fill="url(#girlHairGrad)" stroke="#D8B4FE" stroke-width="1.2"/>
-              </g>
-
-              <!-- Neck & Shoulders -->
-              <path d="M136 156 L134 192 L166 192 L164 156 Z" fill="#FDE4CF"/>
-              <!-- Stylish Anime Crop / Cyber Top -->
-              <path d="M98 228 C102 195, 122 188, 136 188 L164 188 C178 188, 198 195, 202 228 L214 415 L86 415 Z" fill="url(#girlOutfitGrad)" stroke="#C084FC" stroke-width="1.5"/>
-              <!-- V-Neck & Collar Accent -->
-              <path d="M126 188 L150 232 L174 188" stroke="#F0ABFC" stroke-width="2" fill="none"/>
-              <path d="M108 258 Q150 272 192 258" stroke="#A855F7" stroke-width="1.5" fill="none"/>
-
-              <!-- Anime Girl Face -->
-              <path d="M112 96 C112 62, 188 62, 188 96 C188 134, 170 162, 150 162 C130 162, 112 134, 112 96 Z" fill="#FDE4CF" stroke="#F5D0FE" stroke-width="1"/>
-
-              <!-- Glowing Anime Eyes + Wink/Blink -->
-              <g class="girl-eyes">
-                <ellipse cx="132" cy="112" rx="11" ry="7" fill="url(#girlEyeGrad)"/>
-                <ellipse cx="132" cy="112" rx="4.5" ry="4.5" fill="#701A75"/>
-                <circle cx="133.5" cy="110" r="1.8" fill="#FFFFFF"/>
-
-                <ellipse cx="168" cy="112" rx="11" ry="7" fill="url(#girlEyeGrad)"/>
-                <ellipse cx="168" cy="112" rx="4.5" ry="4.5" fill="#701A75"/>
-                <circle cx="169.5" cy="110" r="1.8" fill="#FFFFFF"/>
-              </g>
-
-              <!-- Blush & Cute Expression -->
-              <ellipse cx="122" cy="124" rx="6" ry="3" fill="#F472B6" fill-opacity="0.5"/>
-              <ellipse cx="178" cy="124" rx="6" ry="3" fill="#F472B6" fill-opacity="0.5"/>
-              <path d="M144 136 Q150 142 156 136" stroke="#BE185D" stroke-width="2" stroke-linecap="round" fill="none"/>
-
-              <!-- Swaying Front Bangs -->
-              <g class="girl-bangs">
-                <path d="M108 92 C112 56, 188 56, 192 92 C180 76, 166 84, 156 106 C150 86, 138 86, 132 108 C124 88, 115 84, 108 92 Z" fill="url(#girlHairGrad)" stroke="#E9D5FF" stroke-width="1"/>
-              </g>
-            </svg>
-            <div class="stage-tag robotic-font">ANIME MUSE LIVE</div>
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <span class="anim-icon stat-icon">🗂️</span>
+          <div>
+            <strong id="catCountDisplay">32</strong>
+            <span>CATEGORIES</span>
           </div>
-
-          <!-- Cute Small White Robot Pet with Blinking On/Off Cyan Eyes -->
-          <div class="robot-companion" id="companion-bot" title="Click cute robot pet!">
-            <div class="robot-head">
-              <div class="ear-cup left"></div>
-              <div class="ear-cup right"></div>
-              <div class="headband"></div>
-              <div class="robot-visor">
-                <div class="cyan-eye left-eye"></div>
-                <div class="robot-smile"></div>
-                <div class="cyan-eye right-eye"></div>
-              </div>
-            </div>
-            <div class="robot-scarf"></div>
-            <div class="robot-body">
-              <div class="robot-crown-emblem">
-                <svg viewBox="0 0 24 24" fill="none">
-                  <path d="M3 18L5 7L10 12L12 5L14 12L19 7L21 18H3Z" fill="#C084FC" stroke="#F3E8FF" stroke-width="1.5"/>
-                </svg>
-              </div>
-            </div>
-            <div class="robot-status-badge robotic-font" id="bot-speech">CUTE PET: READY</div>
+        </div>
+        <div class="stat-pill">
+          <span class="anim-icon stat-icon">📥</span>
+          <div>
+            <strong id="totalCmdDisplay">0</strong>
+            <span>COMMANDS</span>
+          </div>
+        </div>
+        <div class="stat-pill">
+          <span class="anim-icon stat-icon">⚡</span>
+          <div>
+            <strong id="totalDlDisplay">0</strong>
+            <span>DOWNLOADS</span>
           </div>
         </div>
       </div>
-    </section>
+    </div>
 
-    <!-- COMMAND CATEGORIES & VAULT SECTION -->
-    <section class="commands-section" id="commands-vault">
-      <div class="section-header">
-        <div>
-          <span class="sub-label robotic-font">GOAT BOT COMMAND CATEGORIES</span>
-          <h2 class="robotic-font">COMMAND VAULT &amp; QUALITY RATES</h2>
+    <div class="squad-stage">
+      <div class="ring"></div>
+      <div class="ring ring-two"></div>
+      <div class="floor-glow"></div>
+
+      <!-- Robotic Unit -->
+      <div class="robot" title="EGO Robotic Core">
+        <div class="robot-antenna">
+          <span class="antenna-tip"></span>
         </div>
-
-        <div class="catalog-controls">
-          <input
-            type="search"
-            id="cmd-search"
-            class="search-box"
-            placeholder="Search command (e.g. love, sad, baby, gore, owner)..."
-            aria-label="Search commands"
-          />
-        </div>
-      </div>
-
-      <!-- Category Filter Tabs -->
-      <div class="category-bar" id="category-bar" role="tablist">
-        <button class="cat-btn active" data-cat="all">🔥 All Commands</button>
-        <button class="cat-btn" data-cat="love">💖 Love</button>
-        <button class="cat-btn" data-cat="sad">🌧️ Sad</button>
-        <button class="cat-btn" data-cat="baby">🍼 Baby</button>
-        <button class="cat-btn" data-cat="gore">🩸 Gore</button>
-        <button class="cat-btn" data-cat="owner">👑 Owner</button>
-        <button class="cat-btn" data-cat="system">⚙️ System</button>
-        <button class="cat-btn" data-cat="fun">🎮 Fun</button>
-      </div>
-
-      <!-- Commands Grid -->
-      <div class="commands-grid" id="commands-grid"></div>
-    </section>
-
-    <!-- UPLOAD COMMAND INTO CATEGORY WITH QUALITY RATE (10/9, 10/7, ETC.) -->
-    <section class="upload-section" id="upload-command">
-      <div class="section-header">
-        <div>
-          <span class="sub-label robotic-font">ADD NEW GOAT BOT COMMAND</span>
-          <h2 class="robotic-font">UPLOAD COMMAND TO CATEGORY</h2>
-        </div>
-      </div>
-
-      <form id="upload-cmd-form" class="upload-card">
-        <div class="form-grid">
-          <div class="field">
-            <label for="cmd-name">Command Name (e.g., /love-hug, /sad-rain)</label>
-            <input type="text" id="cmd-name" placeholder="/love-hug" required />
+        <div class="robot-head">
+          <div class="robot-face">
+            <span class="eye"></span>
+            <span class="eye"></span>
           </div>
-
-          <div class="field">
-            <label for="cmd-category">Select Category</label>
-            <select id="cmd-category">
-              <option value="love">Love</option>
-              <option value="sad">Sad</option>
-              <option value="baby">Baby</option>
-              <option value="gore">Gore</option>
-              <option value="owner">Owner</option>
-              <option value="system">System</option>
-              <option value="fun">Fun</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="cmd-quality">Quality Rate (e.g., 10/9, 10/7)</label>
-            <select id="cmd-quality">
-              <option value="10/10">10/10 — Ultra Supreme</option>
-              <option value="10/9" selected>10/9 — Top Quality</option>
-              <option value="10/8">10/8 — High Quality</option>
-              <option value="10/7">10/7 — Solid Quality</option>
-              <option value="10/6">10/6 — Standard</option>
-            </select>
-          </div>
-
-          <div class="field">
-            <label for="cmd-usage">Usage Syntax</label>
-            <input type="text" id="cmd-usage" placeholder="/love-hug @user" required />
-          </div>
+          <div class="robot-mouth"></div>
         </div>
-
-        <div class="field">
-          <label for="cmd-desc">Command Description / Effect</label>
-          <textarea id="cmd-desc" rows="2" placeholder="Describe what this Goat Bot command does..." required></textarea>
+        <div class="robot-neck"></div>
+        <div class="robot-body">
+          <div class="robot-core"></div>
         </div>
-
-        <div class="field">
-          <label for="cmd-code">Command Script / Payload</label>
-          <textarea id="cmd-code" rows="3" placeholder="goat.command('love-hug', async (ctx) => { ... });" required></textarea>
-        </div>
-
-        <button type="submit" class="primary-btn large">Publish Command to Vault</button>
-      </form>
-    </section>
-
-    <!-- SAVED COMMANDS SECTION -->
-    <section class="saved-section" id="saved-cmds">
-      <div class="section-header">
-        <div>
-          <span class="sub-label robotic-font">YOUR BOOKMARKED COMMANDS</span>
-          <h2 class="robotic-font">SAVED COMMAND LIST</h2>
-        </div>
+        <div class="robot-arm arm-left"></div>
+        <div class="robot-arm arm-right"></div>
       </div>
-      <div class="saved-list" id="saved-list">
-        <p class="empty-msg">No commands saved yet. Click "Save" on any command card above.</p>
+
+      <!-- Cute 20+ Anime Girl Companion -->
+      <div class="anime-girl" title="EGO Anime Companion (20+)">
+        <div class="anime-halo"></div>
+        <div class="anime-hair-back"></div>
+        <div class="anime-head">
+          <div class="anime-bangs"></div>
+          <div class="anime-blush blush-left"></div>
+          <div class="anime-blush blush-right"></div>
+          <div class="anime-eyes">
+            <span class="anime-eye"><i class="sparkle"></i></span>
+            <span class="anime-eye"><i class="sparkle"></i></span>
+          </div>
+          <div class="anime-smile"></div>
+        </div>
+        <div class="anime-collar"></div>
+        <div class="anime-torso">
+          <div class="anime-gem"></div>
+        </div>
+        <div class="anime-wave-hand">✨</div>
       </div>
-    </section>
-  </main>
 
-  <div id="toast" class="toast"></div>
+      <div class="robot-label label-top">
+        <span class="anim-icon label-icon">🧠</span> AI CORE // ONLINE
+      </div>
+      <div class="robot-label label-mid">
+        <span class="anim-icon label-icon">🌸</span> ANIME AI // 20+ UNIT
+      </div>
+      <div class="robot-label label-bottom">
+        <span class="anim-icon label-icon">⚙️</span> EGO ROBOTIC SYSTEM
+      </div>
+    </div>
+  </div>
+</header>
 
-  <footer>
-    <p>&copy; 2026 <strong class="robotic-font">EGO GOATSTORE</strong> — Goat Bot Command Store. All rights reserved.</p>
-  </footer>
+<main class="section" id="store">
+  <h2 class="section-heading">
+    <span class="anim-icon heading-icon">🤖</span>
+    EGO GOATSTORE <span>COMMAND HUB</span>
+  </h2>
+  <p class="section-sub">
+    Publicly browse, filter across 32+ GoatBot categories, sort, and download `.js` commands instantly.
+  </p>
 
-  <script src="app.js"></script>
+  <!-- Public Discovery & Category Filter Bar -->
+  <div class="pub-toolbar" id="categories">
+    <div class="search-sort-row">
+      <div class="search-box">
+        <span class="anim-icon search-icon">⌕</span>
+        <input
+          class="search"
+          id="search"
+          type="search"
+          placeholder="Search commands by name, category, author, or description..."
+          autocomplete="off"
+        >
+      </div>
+
+      <div class="sort-box">
+        <span class="anim-icon sort-icon">🔀</span>
+        <select id="sortSelect" aria-label="Sort commands">
+          <option value="newest">Newest First</option>
+          <option value="downloads">Most Downloaded</option>
+          <option value="name">Name (A–Z)</option>
+          <option value="category">Category (A–Z)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="category-chips" id="categoryChips" role="tablist" aria-label="GoatBot Categories">
+      <!-- Populated dynamically with All + 32 categories -->
+    </div>
+  </div>
+
+  <div class="results-bar">
+    <span id="resultsInfo">
+      <span class="anim-icon info-icon">📡</span> Showing all commands
+    </span>
+    <button type="button" class="reset-btn" id="resetFiltersBtn">
+      <span class="anim-icon reset-icon">↺</span> Reset Filters
+    </button>
+  </div>
+
+  <div class="cards" id="commands">
+    <p class="section-sub">
+      <span class="anim-icon loading-icon">⚙️</span> Connecting to EGO server...
+    </p>
+  </div>
+
+  <section class="admin" id="admin-panel">
+    <h3>
+      <span class="anim-icon admin-icon">🛡️</span>
+      ◆ ADMIN UPLOAD &amp; COMMAND MANAGER
+    </h3>
+    <p class="admin-hint">
+      Upload `.js` GoatBot commands into any of the 32+ categories or remove existing commands.
+    </p>
+
+    <div class="admin-grid">
+      <input id="adminKey" type="password" placeholder="Admin key">
+      <input id="authorName" type="text" placeholder="Author name (default: EGO)">
+      <input id="commandName" type="text" placeholder="Command name (e.g. rank, ai, music)">
+      <input id="description" type="text" placeholder="Command description & usage">
+
+      <select id="category" aria-label="Select command category">
+        <!-- Populated dynamically with all 32 categories -->
+      </select>
+
+      <input id="commandFile" type="file" accept=".js">
+    </div>
+
+    <button class="btn" id="uploadBtn" type="button">
+      <span class="anim-icon btn-icon">⬆️</span> UPLOAD COMMAND +
+    </button>
+
+    <div class="message" id="message" role="status"></div>
+  </section>
+</main>
+
+<footer>
+  <span class="anim-icon footer-icon">⚡</span>
+  © 2026 EGO GOATSTORE • POWERED BY EGO ROBOTIC &amp; ANIME AI SYSTEM
+</footer>
+
+<script>
+const CATEGORIES = [
+  { id: "utility", label: "Utility", icon: "🛠️", anim: "anim-spin-slow" },
+  { id: "fun", label: "Fun", icon: "🎉", anim: "anim-bounce" },
+  { id: "media", label: "Media", icon: "🎬", anim: "anim-pulse" },
+  { id: "ai", label: "AI & ChatGPT", icon: "🧠", anim: "anim-glow" },
+  { id: "games", label: "Games", icon: "🎮", anim: "anim-wiggle" },
+  { id: "moderation", label: "Moderation", icon: "🛡️", anim: "anim-shield" },
+  { id: "economy", label: "Economy", icon: "💰", anim: "anim-coin" },
+  { id: "leveling", label: "Leveling & XP", icon: "📈", anim: "anim-rise" },
+  { id: "anime", label: "Anime", icon: "🌸", anim: "anim-float-soft" },
+  { id: "music", label: "Music & Audio", icon: "🎵", anim: "anim-beat" },
+  { id: "downloader", label: "Downloader", icon: "⬇️", anim: "anim-drop" },
+  { id: "image-gen", label: "Image Gen", icon: "🎨", anim: "anim-swing" },
+  { id: "image-edit", label: "Image Edit", icon: "🖌️", anim: "anim-tilt" },
+  { id: "canvas", label: "Canvas & Card", icon: "🪪", anim: "anim-pop" },
+  { id: "social", label: "Social & Info", icon: "🌐", anim: "anim-orbit" },
+  { id: "group", label: "Group Admin", icon: "👥", anim: "anim-pulse" },
+  { id: "anti-spam", label: "Anti-Spam", icon: "🚫", anim: "anim-shake" },
+  { id: "nsfw-safe", label: "Family Safe", icon: "✅", anim: "anim-bounce" },
+  { id: "search", label: "Search & Web", icon: "🔎", anim: "anim-scan" },
+  { id: "weather", label: "Weather & Time", icon: "⛅", anim: "anim-float-soft" },
+  { id: "crypto", label: "Crypto & Finance", icon: "📊", anim: "anim-rise" },
+  { id: "education", label: "Education & Math", icon: "📐", anim: "anim-tilt" },
+  { id: "translate", label: "Translate", icon: "🌍", anim: "anim-spin-slow" },
+  { id: "quotes", label: "Quotes & Jokes", icon: "💬", anim: "anim-wiggle" },
+  { id: "romantic", label: "Love & Couple", icon: "💖", anim: "anim-heartbeat" },
+  { id: "stickers", label: "Sticker & Emoji", icon: "✨", anim: "anim-sparkle" },
+  { id: "voice", label: "Voice & TTS", icon: "🎙️", anim: "anim-beat" },
+  { id: "system", label: "Bot System", icon: "⚙️", anim: "anim-spin-slow" },
+  { id: "owner", label: "Owner Only", icon: "👑", anim: "anim-crown" },
+  { id: "vip", label: "VIP & Premium", icon: "💎", anim: "anim-glow" },
+  { id: "tools", label: "Dev & Encoding", icon: "💻", anim: "anim-pop" },
+  { id: "misc", label: "Misc & Special", icon: "🔮", anim: "anim-float-soft" }
+];
+
+const categoryMap = new Map(CATEGORIES.map(cat => [cat.id, cat]));
+
+const commandContainer = document.getElementById("commands");
+const searchInput = document.getElementById("search");
+const sortSelect = document.getElementById("sortSelect");
+const categoryChips = document.getElementById("categoryChips");
+const categorySelect = document.getElementById("category");
+const resultsInfo = document.getElementById("resultsInfo");
+const resetFiltersBtn = document.getElementById("resetFiltersBtn");
+const message = document.getElementById("message");
+
+let allCommands = [];
+let activeCategory = "all";
+
+function initCategories() {
+  document.getElementById("catCountDisplay").textContent = String(CATEGORIES.length);
+
+  categorySelect.innerHTML = CATEGORIES.map(
+    cat => `<option value="${cat.id}">${cat.icon} ${cat.label}</option>`
+  ).join("");
+
+  const allBtn = document.createElement("button");
+  allBtn.type = "button";
+  allBtn.className = "cat-chip active";
+  allBtn.dataset.cat = "all";
+  allBtn.innerHTML = `<span class="anim-icon chip-icon anim-pulse">🌌</span> All (${CATEGORIES.length} Cats)`;
+  allBtn.addEventListener("click", () => selectCategory("all"));
+  categoryChips.appendChild(allBtn);
+
+  CATEGORIES.forEach(cat => {
+    const chip = document.createElement("button");
+    chip.type = "button";
+    chip.className = "cat-chip";
+    chip.dataset.cat = cat.id;
+    chip.style.setProperty("--cat-anim", cat.anim);
+    chip.innerHTML = `<span class="anim-icon chip-icon ${cat.anim}">${cat.icon}</span> ${cat.label}`;
+    chip.addEventListener("click", () => selectCategory(cat.id));
+    categoryChips.appendChild(chip);
+  });
+}
+
+function selectCategory(catId) {
+  activeCategory = catId;
+  document.querySelectorAll(".cat-chip").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.cat === catId);
+  });
+  applyFiltersAndRender();
+}
+
+function getCategoryMeta(catId) {
+  const normalized = String(catId || "utility").toLowerCase().trim();
+  return categoryMap.get(normalized) || {
+    id: normalized,
+    label: normalized.toUpperCase(),
+    icon: "⚡",
+    anim: "anim-pulse"
+  };
+}
+
+function updateStats(commands) {
+  const totalDownloads = commands.reduce((sum, item) => sum + (Number(item.downloads) || 0), 0);
+  document.getElementById("totalCmdDisplay").textContent = String(commands.length);
+  document.getElementById("totalDlDisplay").textContent = String(totalDownloads);
+}
+
+function getFilteredCommands() {
+  const query = searchInput.value.toLowerCase().trim();
+  const sortBy = sortSelect.value;
+
+  let list = allCommands.filter(command => {
+    const cmdCat = String(command.category || "utility").toLowerCase().trim();
+    const matchesCat = activeCategory === "all" || cmdCat === activeCategory;
+    if (!matchesCat) return false;
+
+    if (!query) return true;
+    const catMeta = getCategoryMeta(cmdCat);
+    return (
+      (command.name || "").toLowerCase().includes(query) ||
+      cmdCat.includes(query) ||
+      catMeta.label.toLowerCase().includes(query) ||
+      (command.description || "").toLowerCase().includes(query) ||
+      (command.author || "").toLowerCase().includes(query)
+    );
+  });
+
+  if (sortBy === "downloads") {
+    list = [...list].sort((a, b) => (Number(b.downloads) || 0) - (Number(a.downloads) || 0));
+  } else if (sortBy === "name") {
+    list = [...list].sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
+  } else if (sortBy === "category") {
+    list = [...list].sort((a, b) => String(a.category || "").localeCompare(String(b.category || "")));
+  }
+
+  return list;
+}
+
+function applyFiltersAndRender() {
+  const filtered = getFilteredCommands();
+  const catLabel = activeCategory === "all"
+    ? "All Categories"
+    : getCategoryMeta(activeCategory).label;
+
+  resultsInfo.innerHTML = `
+    <span class="anim-icon info-icon">📡</span>
+    Showing <strong>${filtered.length}</strong> command(s) in <strong>${catLabel}</strong>
+  `;
+
+  renderCommands(filtered);
+}
+
+async function loadCommands() {
+  try {
+    const response = await fetch("/api/commands");
+    const data = await response.json();
+
+    if (!data.success) throw new Error("Failed to load");
+
+    allCommands = data.commands || [];
+    updateStats(allCommands);
+    applyFiltersAndRender();
+  } catch (error) {
+    commandContainer.innerHTML =
+      '<p class="section-sub"><span class="anim-icon warn-icon">⚠️</span> Unable to connect to EGO server.</p>';
+  }
+}
+
+function renderCommands(commands) {
+  commandContainer.innerHTML = "";
+
+  if (!commands.length) {
+    commandContainer.innerHTML =
+      '<p class="section-sub"><span class="anim-icon empty-icon">🤖</span> No commands found in this filter.</p>';
+    return;
+  }
+
+  commands.forEach((command, idx) => {
+    const catMeta = getCategoryMeta(command.category);
+    const card = document.createElement("article");
+    card.className = `card cat-card-${catMeta.id}`;
+    card.style.setProperty("--stagger", `${Math.min(idx * 45, 450)}ms`);
+
+    const topRow = document.createElement("div");
+    topRow.className = "card-top";
+
+    const catBadge = document.createElement("div");
+    catBadge.className = "category";
+    catBadge.innerHTML = `<span class="anim-icon card-cat-icon ${catMeta.anim}">${catMeta.icon}</span> ${catMeta.label.toUpperCase()}`;
+
+    const cmdIcon = document.createElement("span");
+    cmdIcon.className = `anim-icon card-badge-icon ${catMeta.anim}`;
+    cmdIcon.textContent = catMeta.icon;
+
+    topRow.append(catBadge, cmdIcon);
+
+    const title = document.createElement("h3");
+    title.textContent = command.name;
+
+    const description = document.createElement("p");
+    description.className = "card-desc";
+    description.textContent = command.description || "EGO GOATSTORE command";
+
+    const metaRow = document.createElement("div");
+    metaRow.className = "card-meta";
+
+    const author = document.createElement("span");
+    author.innerHTML = `<span class="anim-icon meta-icon">🧑‍💻</span> ${command.author || "EGO"}`;
+
+    const downloads = document.createElement("span");
+    downloads.innerHTML = `<span class="anim-icon meta-icon">⬇️</span> ${command.downloads || 0}`;
+
+    metaRow.append(author, downloads);
+
+    const actionsRow = document.createElement("div");
+    actionsRow.className = "card-actions";
+
+    const install = document.createElement("button");
+    install.className = "install";
+    install.type = "button";
+    install.innerHTML = `<span class="anim-icon dl-icon">📥</span> DOWNLOAD COMMAND ↓`;
+
+    install.addEventListener("click", () => {
+      window.location.href =
+        "/api/install/" + encodeURIComponent(command.id);
+      setTimeout(loadCommands, 900);
+    });
+
+    const delBtn = document.createElement("button");
+    delBtn.className = "delete-mini";
+    delBtn.type = "button";
+    delBtn.title = "Delete command (requires Admin Key)";
+    delBtn.innerHTML = `<span class="anim-icon trash-icon">🗑️</span>`;
+    delBtn.addEventListener("click", async () => {
+      const key = document.getElementById("adminKey").value.trim();
+      if (!key) {
+        message.textContent = "Enter Admin Key above to delete a command.";
+        return;
+      }
+      try {
+        const res = await fetch("/api/commands/" + encodeURIComponent(command.id), {
+          method: "DELETE",
+          headers: { "x-admin-key": key }
+        });
+        const out = await res.json();
+        if (!res.ok) throw new Error(out.message || "Delete failed");
+        message.textContent = "✓ " + out.message;
+        await loadCommands();
+      } catch (err) {
+        message.textContent = "Error: " + err.message;
+      }
+    });
+
+    actionsRow.append(install, delBtn);
+    card.append(topRow, title, description, metaRow, actionsRow);
+    commandContainer.appendChild(card);
+  });
+}
+
+searchInput.addEventListener("input", applyFiltersAndRender);
+sortSelect.addEventListener("change", applyFiltersAndRender);
+
+resetFiltersBtn.addEventListener("click", () => {
+  searchInput.value = "";
+  sortSelect.value = "newest";
+  selectCategory("all");
+});
+
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  const key = document.getElementById("adminKey").value;
+  const author = document.getElementById("authorName").value;
+  const name = document.getElementById("commandName").value;
+  const description = document.getElementById("description").value;
+  const category = document.getElementById("category").value;
+  const file = document.getElementById("commandFile").files[0];
+
+  if (!key || !file) {
+    message.textContent = "Admin key and JS file are required.";
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("author", author);
+  formData.append("description", description);
+  formData.append("category", category);
+  formData.append("file", file);
+
+  const button = document.getElementById("uploadBtn");
+  button.disabled = true;
+  button.innerHTML = `<span class="anim-icon btn-icon anim-spin-slow">⚙️</span> UPLOADING...`;
+
+  try {
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "x-admin-key": key },
+      body: formData
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.message);
+
+    message.textContent = "✓ " + result.message;
+    document.getElementById("commandFile").value = "";
+    document.getElementById("commandName").value = "";
+    document.getElementById("description").value = "";
+
+    await loadCommands();
+  } catch (error) {
+    message.textContent = "Error: " + error.message;
+  } finally {
+    button.disabled = false;
+    button.innerHTML = `<span class="anim-icon btn-icon">⬆️</span> UPLOAD COMMAND +`;
+  }
+});
+
+initCategories();
+loadCommands();
+</script>
+
 </body>
 </html>
