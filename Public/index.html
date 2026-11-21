@@ -1,12 +1,106 @@
-<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#080611"><title>EGO GOATSTORE — Command Intelligence</title><link rel="stylesheet" href="style.css"></head>
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>EGO GOATSTORE</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-<div id="loader"><div class="loader-robot">E</div><div class="loader-title">EGO GOATSTORE</div><div class="loader-sub">INITIALIZING COMMAND SYSTEM</div><div class="loader-bar"><i></i></div><div class="loader-percent">SYSTEM READY</div></div>
-<div class="petals" aria-hidden="true"><i>✦</i><i>✿</i><i>✦</i><i>❀</i><i>✿</i><i>✦</i><i>❀</i><i>✿</i></div>
-<header class="topbar"><a class="brand" href="#top"><span class="logo">E</span><span><b>EGO <em>GOATSTORE</em></b><small>COMMAND INTELLIGENCE</small></span></a><nav><a href="#top">HOME</a><a href="#library">COMMANDS</a><a href="#upload" id="navUpload">UPLOAD</a></nav><div class="actions"><span class="online"><i></i> API <b id="apiState">CHECKING</b></span><button id="adminBtn">⌘ ADMIN</button></div></header>
-<main id="top"><section class="hero"><div class="hero-art"><img src="anime-live.gif" alt="Anime hero and EGO robot in a purple cyberpunk world"><div class="art-shade"></div><div class="art-petals"><span>✿</span><span>✦</span><span>❀</span><span>✿</span><span>✦</span></div></div><div class="hero-content"><div class="eyebrow">✦ NEXT-GEN COMMAND HUB <span>v2.0</span></div><h1>UPGRADE YOUR<br><span>GOATBOT.</span></h1><p>Discover powerful commands. Explore the community.<br>Build your bot with next-generation tools.</p><div class="hero-buttons"><a class="primary" href="#library">EXPLORE COMMANDS ↘</a><button class="secondary" id="openUpload">＋ UPLOAD COMMAND</button></div><div class="trust">● API CONNECTED <b>•</b> COMMUNITY POWERED <b>•</b> SECURE HUB</div></div></section>
-<section class="stats"><div><small>AVAILABLE MODULES</small><b id="statCommands">—</b></div><div><small>TOTAL DOWNLOADS</small><b id="statDownloads">—</b></div><div><small>COMMUNITY AUTHORS</small><b id="statAuthors">—</b></div><div><small>SYSTEM STATUS</small><b class="green">● ONLINE</b></div></section>
-<section id="library" class="library"><div class="section-head"><div><small> / MODULE DATABASE</small><h2>COMMAND <span>LIBRARY</span></h2><p>Explore, rate, save and download community modules.</p></div><label class="sort">SORT <select id="sort"><option value="new">Latest</option><option value="popular">Most downloaded</option><option value="rating">Highest rated</option><option value="az">A–Z</option></select></label></div><div class="search"><span>⌕</span><input id="search" placeholder="Search commands, author, category…"><button id="clearSearch">×</button></div><div class="filters" id="filters"><button class="active" data-cat="all">ALL</button><button data-cat="AI">AI</button><button data-cat="Games">GAMES</button><button data-cat="Fun">FUN</button><button data-cat="Utility">UTILITY</button><button data-cat="Media">MEDIA</button><button data-cat="Moderation">MODERATION</button><button data-cat="favorites">♡ SAVED</button></div><div class="result-line"><span id="count">Loading modules…</span><span>● LIVE DATABASE</span></div><div id="grid" class="grid"></div><button id="loadMore" class="load-more" hidden>LOAD MORE ↓</button></section>
-<section class="upload-promo" id="upload"><div class="promo-icon">⬆</div><div><small>CONTRIBUTE TO THE NETWORK</small><h2>Have a command? <span>Share it.</span></h2><p>Upload your JavaScript module to the community store.</p></div><button class="primary" id="promoUpload">UPLOAD MODULE ＋</button></section></main><footer><b>♛ EGO <em>GOATSTORE</em></b><span>© <span id="year"></span> EGO NETWORK · BUILT FOR GOATBOT</span><span class="green">● ALL SYSTEMS NOMINAL</span></footer>
-<dialog id="uploadDialog" class="modal"><form id="uploadForm"><button class="close" type="button" data-close="uploadDialog">×</button><small>/ PUBLISH MODULE</small><h2>Upload <span>Command</span></h2><label>ADMIN ACCESS KEY<input id="adminKey" type="password" required placeholder="Store admin key"></label><label>COMMAND NAME<input name="name" maxlength="32" required placeholder="command name"></label><label>CATEGORY<select name="category"><option>Utility</option><option>AI</option><option>Games</option><option>Fun</option><option>Media</option><option>Moderation</option><option>Economy</option><option>Other</option></select></label><label>DESCRIPTION<input name="description" maxlength="180" placeholder="What does it do?"></label><label>AUTHOR<input name="author" maxlength="48" value="EGO"></label><label class="file">JAVASCRIPT FILE<input name="file" type="file" accept=".js" required><span id="fileName">Choose .js file</span></label><button class="primary full" id="publishBtn" type="submit">PUBLISH TO NETWORK ↗</button><div class="upload-progress" id="uploadProgress"><i></i></div><p id="uploadStatus"></p></form></dialog>
-<dialog id="adminDialog" class="modal"><form id="adminForm"><button class="close" type="button" data-close="adminDialog">×</button><small>/ CONTROL PANEL</small><h2>Admin <span>Access</span></h2><label>ADMIN KEY<input id="adminAccessKey" type="password" required></label><button class="primary full">UNLOCK PANEL</button><p id="adminStatus"></p><div id="adminTools" hidden><p class="green">✓ ADMIN SESSION ACTIVE</p><button type="button" class="secondary full" id="lockAdmin">LOCK SESSION</button></div></form></dialog><dialog id="detailDialog" class="modal"><div id="detailContent"></div><button class="close" data-close="detailDialog">×</button></dialog><div id="toast" class="toast"></div><script src="app.js"></script></body></html>
+
+<main class="hero">
+  <div class="grid-bg"></div>
+  <div class="orb orb-one"></div>
+  <div class="orb orb-two"></div>
+  <div class="scanline"></div>
+
+  <header class="topbar">
+    <a class="brand" href="#">
+      <span class="brand-mark">E</span>
+      <span>EGO <span class="muted">/</span> GOATSTORE</span>
+    </a>
+    <span class="status"><i></i> SYSTEM ONLINE</span>
+  </header>
+
+  <section class="hero-content">
+    <div class="copy">
+      <p class="eyebrow">◆ NEXT-GEN COMMAND LIBRARY</p>
+
+      <h1>
+        <span class="outline">EGO</span><br>
+        <span class="gradient">GOATSTORE</span>
+      </h1>
+
+      <p class="subtitle">
+        A smarter universe of commands.<br>
+        Built for speed. Designed beyond limits.
+      </p>
+
+      <div class="actions">
+        <a class="primary" href="#store">
+          EXPLORE STORE <span>↗</span>
+        </a>
+        <span class="version">V 2.0 • FUTURE READY</span>
+      </div>
+
+      <div class="stats">
+        <div><strong>∞</strong><small>COMMANDS</small></div>
+        <div><strong>AI</strong><small>POWERED STYLE</small></div>
+        <div><strong>24/7</strong><small>ONLINE</small></div>
+      </div>
+    </div>
+
+    <div class="visual">
+      <div class="ring ring-a"></div>
+      <div class="ring ring-b"></div>
+      <div class="ring ring-c"></div>
+
+      <div class="robot">
+        <div class="antenna"><span></span></div>
+
+        <div class="head">
+          <div class="ear left"></div>
+          <div class="ear right"></div>
+          <div class="visor">
+            <i class="eye eye-left"></i>
+            <i class="eye eye-right"></i>
+            <span class="visor-glint"></span>
+          </div>
+          <div class="mouth"></div>
+          <div class="chin"></div>
+        </div>
+
+        <div class="neck"></div>
+
+        <div class="body">
+          <div class="chest-logo">EGO</div>
+          <div class="core"></div>
+          <div class="panel p-left"></div>
+          <div class="panel p-right"></div>
+        </div>
+
+        <div class="arm arm-left"><span></span></div>
+        <div class="arm arm-right"><span></span></div>
+      </div>
+
+      <div class="float-tag tag-top">AI CORE ● 98.7%</div>
+      <div class="float-tag tag-bottom">EGO // BOT SYSTEM</div>
+    </div>
+  </section>
+
+  <footer>
+    <span>© EGO GOATSTORE</span>
+    <span class="footer-center">DIGITAL FUTURE</span>
+    <span>SCROLL TO EXPLORE ↓</span>
+  </footer>
+</main>
+
+<section class="store-placeholder" id="store">
+  <h2>YOUR COMMANDS. <span>YOUR UNIVERSE.</span></h2>
+  <p>Your existing GoatStore content goes here.</p>
+</section>
+
+<script src="animation.js"></script>
+</body>
+</html>
