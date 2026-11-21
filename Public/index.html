@@ -1,267 +1,310 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#080a12">
-  <title>EGO GOATSTORE | AI Command Hub</title>
-  <link rel="stylesheet" href="style.css">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080a17">
+<meta name="description" content="EGO GoatStore — futuristic community command hub for GoatBot.">
+<title>EGO GOATSTORE — Command Intelligence</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="ambient ambient-one"></div>
-<div class="ambient ambient-two"></div>
-<div class="grid-bg"></div>
+<div class="ambient">
+<div class="orb orb-a"></div>
+<div class="orb orb-b"></div>
+<div class="gridlines"></div>
+</div>
 
 <header class="topbar">
-  <a class="brand" href="/">
-    <div class="brand-icon">
-      <span>E</span>
-      <div class="brand-dot"></div>
-    </div>
-    <div class="brand-text">
-      <strong>EGO<span>GOATSTORE</span></strong>
-      <small>COMMAND INTELLIGENCE</small>
-    </div>
-  </a>
+<a class="brand" href="#top">
+<span class="logo"><span>E</span><i></i></span>
+<span class="brandtext">
+<b>EGO<span>GOATSTORE</span></b>
+<small>COMMAND INTELLIGENCE</small>
+</span>
+</a>
 
-  <div class="header-status">
-    <span class="status-light"></span>
-    SYSTEM ONLINE
-  </div>
-
-  <button class="admin-btn" id="adminOpen">
-    <span>⌘</span> ADMIN
-  </button>
+<div class="top-actions">
+<span class="live"><i></i> API <b id="apiState">CHECKING</b></span>
+<button class="admin-btn" id="adminBtn">⌘ ADMIN</button>
+<button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+</div>
 </header>
 
-<main>
+<main id="top">
 
 <section class="hero">
-  <div class="hero-left">
-    <div class="eyebrow">
-      <span class="pulse"></span>
-      NEXT GENERATION COMMAND HUB
-    </div>
+<div class="eyebrow">
+<i></i> NEXT-GENERATION COMMAND HUB <span>v2.0</span>
+</div>
 
-    <h1>
-      UPGRADE YOUR<br>
-      <span class="gradient-text">GOATBOT.</span>
-    </h1>
+<div class="hero-layout">
 
-    <p class="hero-description">
-      Discover powerful commands. Explore the community.
-      Build your bot with next-generation tools.
-    </p>
+<div class="hero-copy">
+<h1>UPGRADE<br>YOUR<br><span class="gradient">GOATBOT.</span></h1>
 
-    <div class="hero-actions">
-      <button class="primary-btn" id="exploreBtn">
-        EXPLORE COMMANDS <span>↘</span>
-      </button>
-      <button class="secondary-btn" id="uploadOpen">
-        ＋ UPLOAD COMMAND
-      </button>
-    </div>
+<p>
+Discover powerful commands. Explore the community.
+Build your bot with next-generation tools.
+</p>
 
-    <div class="hero-mini">
-      <span><i class="status-light"></i> API CONNECTED</span>
-      <span>•</span>
-      <span>VERSION 2.0</span>
-    </div>
-  </div>
+<div class="hero-buttons">
+<a class="primary" href="#library">
+EXPLORE COMMANDS <span>↘</span>
+</a>
 
-  <div class="robot-area">
-    <div class="robot-orbit orbit-1"></div>
-    <div class="robot-orbit orbit-2"></div>
-    <div class="robot-orbit orbit-3"></div>
+<button class="secondary" id="heroUpload">
+＋ UPLOAD COMMAND
+</button>
+</div>
 
-    <div class="robot-core">
-      <div class="robot-head">
-        <div class="antenna"><span></span></div>
-        <div class="robot-ear ear-left"></div>
-        <div class="robot-ear ear-right"></div>
-        <div class="robot-face">
-          <div class="robot-eyes">
-            <span class="eye"></span>
-            <span class="eye"></span>
-          </div>
-          <div class="robot-mouth"></div>
-        </div>
-      </div>
-      <div class="robot-neck"></div>
-      <div class="robot-body">
-        <div class="body-light"></div>
-        <span>EGO</span>
-        <small>AI CORE</small>
-      </div>
-    </div>
+<div class="trustline">
+<i></i> API CONNECTED
+<span>•</span> COMMUNITY POWERED
+<span>•</span> SECURE HUB
+</div>
+</div>
 
-    <div class="floating-chip chip-top">
-      <span>◈</span> AI SYSTEM
-    </div>
-    <div class="floating-chip chip-bottom">
-      <span>⚡</span> BOT READY
-    </div>
-  </div>
+<div class="bot-scene">
+<div class="scene-ring ring1"></div>
+<div class="scene-ring ring2"></div>
+<div class="scan"></div>
+
+<div class="robot">
+<div class="antenna"><i></i></div>
+
+<div class="head">
+<div class="ear left"></div>
+<div class="ear right"></div>
+
+<div class="face">
+<span class="eye"></span>
+<span class="eye"></span>
+<div class="mouth"></div>
+</div>
+
+<div class="chin"></div>
+</div>
+
+<div class="body">
+<div class="core">EGO</div>
+<div class="shoulder s1"></div>
+<div class="shoulder s2"></div>
+</div>
+</div>
+
+<div class="floating-chip chip-a">
+AI COMMANDS <b>↗</b>
+</div>
+
+<div class="floating-chip chip-b">
+<i></i> SYSTEM ONLINE
+</div>
+
+<div class="floating-chip chip-c">
+BOT MODULE <b>02.0</b>
+</div>
+</div>
+</div>
 </section>
 
-<section class="stats-section">
-  <div class="stat-card">
-    <div class="stat-icon purple">⌘</div>
-    <div><small>TOTAL COMMANDS</small><strong id="totalCommands">0</strong></div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon blue">⇩</div>
-    <div><small>TOTAL DOWNLOADS</small><strong id="totalDownloads">0</strong></div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon cyan">◉</div>
-    <div><small>COMMUNITY</small><strong>OPEN</strong></div>
-  </div>
-  <div class="stat-card">
-    <div class="stat-icon green">⌁</div>
-    <div><small>SERVER STATUS</small><strong class="online-text">ONLINE</strong></div>
-  </div>
+<section class="stats">
+<div class="stat">
+<span>AVAILABLE MODULES</span>
+<b id="statCommands">—</b>
+</div>
+
+<div class="stat">
+<span>DOWNLOADS</span>
+<b id="statDownloads">—</b>
+</div>
+
+<div class="stat">
+<span>COMMUNITY AUTHORS</span>
+<b id="statAuthors">—</b>
+</div>
+
+<div class="stat">
+<span>UPTIME STATUS</span>
+<b class="stat-live">● ONLINE</b>
+</div>
 </section>
 
-<section class="library-section" id="library">
-  <div class="section-heading">
-    <div>
-      <div class="section-label">DATABASE / 01</div>
-      <h2>COMMAND <span class="gradient-text">LIBRARY</span></h2>
-      <p>Browse and discover community-built bot commands.</p>
-    </div>
-    <div class="library-live"><span class="status-light"></span> LIVE DATABASE</div>
-  </div>
+<section class="library" id="library">
 
-  <div class="search-panel">
-    <div class="search-box">
-      <span class="search-icon">⌕</span>
-      <input id="searchInput" type="search" placeholder="Search commands, authors, categories...">
-      <button id="clearSearch">CLEAR</button>
-    </div>
-  </div>
+<div class="section-head">
+<div>
+<div class="section-tag">/ MODULE DATABASE</div>
+<h2>Command <span>Library</span></h2>
+<p>Browse modules built by the community.</p>
+</div>
 
-  <div class="filter-row">
-    <div class="category-wrap">
-      <span>FILTER:</span>
-      <select id="categorySelect">
-        <option value="all">ALL CATEGORIES</option>
-        <option value="ai">AI</option>
-        <option value="fun">FUN</option>
-        <option value="games">GAMES</option>
-        <option value="economy">ECONOMY</option>
-        <option value="moderation">MODERATION</option>
-        <option value="utility">UTILITY</option>
-        <option value="media">MEDIA</option>
-        <option value="other">OTHER</option>
-      </select>
-    </div>
-    <div class="result-count"><span id="resultCount">0</span> RESULTS FOUND</div>
-  </div>
+<div class="sort-wrap">
+<label for="sort">SORT</label>
+<select id="sort">
+<option value="new">Latest</option>
+<option value="popular">Most downloaded</option>
+<option value="az">A — Z</option>
+</select>
+</div>
+</div>
 
-  <div id="commandsGrid" class="commands-grid"></div>
+<div class="controls">
 
-  <div id="emptyState" class="empty-state hidden">
-    <div class="empty-icon">⌘</div>
-    <h3>NO COMMANDS DETECTED</h3>
-    <p>Try another search or upload the first command.</p>
-    <button class="secondary-btn" id="emptyUpload">＋ UPLOAD COMMAND</button>
-  </div>
+<div class="searchbox">
+<span>⌕</span>
+<input id="search" placeholder="Search name, description, author…" autocomplete="off">
+<button id="clearSearch" aria-label="Clear">×</button>
+</div>
+
+<div class="filters" id="filters">
+<button class="filter active" data-cat="all">ALL MODULES</button>
+<button class="filter" data-cat="AI">AI</button>
+<button class="filter" data-cat="Games">GAMES</button>
+<button class="filter" data-cat="Fun">FUN</button>
+<button class="filter" data-cat="Utility">UTILITY</button>
+<button class="filter" data-cat="Media">MEDIA</button>
+<button class="filter" data-cat="Moderation">MODERATION</button>
+<button class="filter" data-cat="favorites">♡ SAVED</button>
+</div>
+</div>
+
+<div class="result-line">
+<span id="count">Loading modules…</span>
+<span class="db-status"><i></i> DATABASE LIVE</span>
+</div>
+
+<div id="grid" class="grid"></div>
+
+<button class="load-more" id="loadMore" hidden>
+LOAD MORE MODULES ↓
+</button>
 </section>
 
-<section class="upload-banner">
-  <div class="banner-orb">⚡</div>
-  <div>
-    <div class="section-label">CONTRIBUTE TO THE NETWORK</div>
-    <h2>HAVE A COMMAND?</h2>
-    <p>Share your JavaScript command with the community.</p>
-  </div>
-  <button class="primary-btn" id="bannerUpload">UPLOAD NOW ↗</button>
+<section class="publish">
+<div class="publish-icon">⬆</div>
+
+<div>
+<div class="section-tag">CONTRIBUTE TO THE NETWORK</div>
+<h2>Have a command? <span>Share it.</span></h2>
+<p>Publish your JavaScript module and help the community build better bots.</p>
+</div>
+
+<button class="primary" id="openUpload">
+UPLOAD MODULE <span>＋</span>
+</button>
 </section>
+
+<footer>
+<div class="footbrand">
+<span class="logo mini">E</span>
+<b>EGO GOATSTORE</b>
+</div>
+
+<span>© <span id="year"></span> EGO NETWORK · BUILT FOR GOATBOT</span>
+<span class="footlive"><i></i> ALL SYSTEMS NOMINAL</span>
+</footer>
 
 </main>
 
-<footer>
-  <div class="footer-brand">EGO <span>GOATSTORE</span></div>
-  <p>POWERED BY THE COMMUNITY · BUILT FOR GOATBOT</p>
-  <span class="footer-version">EGO SYSTEM / 2.0</span>
-</footer>
+<div class="toast" id="toast"></div>
 
-<!-- ADMIN MODAL -->
-<div class="modal-overlay hidden" id="adminModal">
-  <div class="modal">
-    <button class="modal-close" data-close="adminModal">×</button>
-    <div class="modal-symbol">⌘</div>
-    <div class="section-label">SECURE ACCESS</div>
-    <h2>ADMIN <span class="gradient-text">ACCESS</span></h2>
-    <p>Enter your admin key to manage the store.</p>
-    <form id="adminForm">
-      <label>ADMIN KEY</label>
-      <input id="adminKeyInput" type="password" placeholder="Enter admin key" required>
-      <button class="primary-btn full-btn" type="submit">CONNECT TO ADMIN ↗</button>
-    </form>
-    <button class="text-btn" id="adminDisconnect">DISCONNECT ADMIN</button>
-  </div>
+<dialog id="uploadDialog" class="modal">
+<form id="uploadForm">
+
+<button class="close" type="button" data-close="uploadDialog">×</button>
+
+<div class="section-tag">/ PUBLISH MODULE</div>
+<h2>Upload <span>Command</span></h2>
+
+<p class="modal-desc">
+Submit a JavaScript file to the community library.
+</p>
+
+<label>ADMIN ACCESS KEY
+<input id="adminKey" type="password" placeholder="Enter store admin key" required>
+</label>
+
+<label>COMMAND NAME
+<input name="name" placeholder="e.g. weather" required maxlength="32">
+</label>
+
+<label>CATEGORY
+<select name="category">
+<option>Utility</option>
+<option>AI</option>
+<option>Games</option>
+<option>Fun</option>
+<option>Media</option>
+<option>Moderation</option>
+<option>Economy</option>
+<option>Other</option>
+</select>
+</label>
+
+<label>DESCRIPTION
+<input name="description" maxlength="180" placeholder="Describe what this command does">
+</label>
+
+<label>AUTHOR
+<input name="author" maxlength="48" placeholder="EGO" value="EGO">
+</label>
+
+<label class="filepick">JAVASCRIPT FILE
+<input name="file" type="file" accept=".js,text/javascript" required>
+<span id="fileName">Choose .js file ⤴</span>
+</label>
+
+<button class="primary full" type="submit" id="publishBtn">
+PUBLISH TO NETWORK <span>↗</span>
+</button>
+
+<div class="progress-wrap" id="uploadProgress">
+<div class="progress"><i></i></div>
+<span>TRANSMITTING MODULE…</span>
 </div>
 
-<!-- UPLOAD MODAL -->
-<div class="modal-overlay hidden" id="uploadModal">
-  <div class="modal modal-wide">
-    <button class="modal-close" data-close="uploadModal">×</button>
-    <div class="modal-symbol">⇧</div>
-    <div class="section-label">COMMUNITY CONTRIBUTION</div>
-    <h2>UPLOAD <span class="gradient-text">COMMAND</span></h2>
-    <p>Publish a JavaScript command to the EGO network.</p>
+<p id="uploadStatus" class="status"></p>
+</form>
+</dialog>
 
-    <div id="uploadNotice" class="notice hidden"></div>
+<dialog id="adminDialog" class="modal">
+<form id="adminForm">
 
-    <form id="uploadForm">
-      <div class="form-grid">
-        <div class="form-field">
-          <label>COMMAND NAME</label>
-          <input name="name" placeholder="example: weather" required maxlength="32">
-        </div>
-        <div class="form-field">
-          <label>CATEGORY</label>
-          <select name="category">
-            <option value="utility">Utility</option>
-            <option value="ai">AI</option>
-            <option value="fun">Fun</option>
-            <option value="games">Games</option>
-            <option value="economy">Economy</option>
-            <option value="moderation">Moderation</option>
-            <option value="media">Media</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
-        <div class="form-field">
-          <label>AUTHOR</label>
-          <input name="author" placeholder="Your name" maxlength="48" required>
-        </div>
-        <div class="form-field">
-          <label>DESCRIPTION</label>
-          <input name="description" placeholder="What does this command do?" maxlength="180">
-        </div>
-      </div>
+<button class="close" type="button" data-close="adminDialog">×</button>
 
-      <label class="file-drop" for="commandFile">
-        <div class="file-icon">JS</div>
-        <strong id="fileLabel">SELECT YOUR .JS FILE</strong>
-        <small>JavaScript only · Maximum 200 KB</small>
-        <input type="file" id="commandFile" name="file" accept=".js" required>
-      </label>
+<div class="section-tag">/ CONTROL PANEL</div>
+<h2>Admin <span>Access</span></h2>
 
-      <button class="primary-btn full-btn" type="submit" id="publishBtn">
-        PUBLISH COMMAND <span>↗</span>
-      </button>
-    </form>
-  </div>
+<p class="modal-desc">
+Unlock store moderation tools on this device session.
+</p>
+
+<label>ADMIN KEY
+<input id="adminAccessKey" type="password" placeholder="Store admin key" required>
+</label>
+
+<button class="primary full" type="submit">
+UNLOCK CONTROL PANEL ↗
+</button>
+
+<p id="adminStatus" class="status"></p>
+
+<div class="admin-tools" id="adminTools" hidden>
+<div class="admin-ok">✓ ADMIN SESSION ACTIVE</div>
+<button class="secondary full" type="button" id="lockAdmin">
+LOCK SESSION
+</button>
+<p>Delete buttons will appear on command cards.</p>
 </div>
+</form>
+</dialog>
 
-<div id="toast" class="toast"></div>
+<dialog id="detailDialog" class="modal detail-modal">
+<div id="detailContent"></div>
+<button class="close" type="button" data-close="detailDialog">×</button>
+</dialog>
 
 <script src="app.js"></script>
 </body>
