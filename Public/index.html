@@ -1,234 +1,317 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#050914">
-  <title>EGO GOATSTORE</title>
-  <link rel="stylesheet" href="/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EGO GOATSTORE — Robotic Night Anime Digital Store</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <!-- Live Ambient Canvas (Flying Petals, Wind Streaks, Night Stars) -->
+  <canvas id="anime-canvas"></canvas>
 
-<header class="hero">
-  <div class="grid"></div>
+  <!-- Night Sky & Cyber-Pagoda Backdrop -->
+  <div class="night-backdrop">
+    <div class="purple-moon"></div>
+    <div class="moon-halo"></div>
+    <div class="skyline-silhouette"></div>
+    <div class="waterfall-glow"></div>
+    <div class="mist-layer"></div>
+  </div>
 
-  <nav class="nav">
-    <div class="logo">EGO <span>GOATSTORE</span></div>
-    <div class="online">SYSTEM ONLINE</div>
-  </nav>
+  <!-- Top Announcement & Quick Status Bar -->
+  <div class="top-status-bar">
+    <span>⚡ EGO GOATSTORE LIVE • INSTANT DELIVERY • 4.98★ AVERAGE CUSTOMER RATING</span>
+  </div>
 
-  <div class="hero-content">
-    <div>
-      <p class="eyebrow">◆ NEXT GENERATION BOT STORE</p>
-
-      <h1>
-        <span class="title-one">EGO</span><br>
-        <span class="title-two">GOATSTORE</span>
-      </h1>
-
-      <p class="description">
-        Welcome to the future of GoatBot commands.
-        Discover powerful tools and premium digital experiences.
-      </p>
-
-      <a href="#store" class="btn">EXPLORE STORE ↗</a>
+  <!-- Main Navigation Bar -->
+  <header class="navbar">
+    <div class="brand">
+      <div class="crown-badge" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none">
+          <path d="M3 18L5 7L10 12L12 5L14 12L19 7L21 18H3Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+          <path d="M3 20H21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div class="brand-text-wrap">
+        <span class="brand-name robotic-font">EGO <span class="accent">GOATSTORE</span></span>
+        <span class="brand-sub">CYBER ANIME &amp; DIGITAL HUB</span>
+      </div>
     </div>
 
-    <div class="robot-area">
-      <div class="ring"></div>
-      <div class="ring ring-two"></div>
+    <div class="nav-actions">
+      <button id="toggle-wind" class="ghost-btn">Wind Boost: OFF</button>
+      <button id="cart-btn" class="primary-btn">
+        Cart <span id="cart-count" class="cart-pill">0</span>
+      </button>
+    </div>
+  </header>
 
-      <div class="robot">
-        <div class="robot-head">
-          <div class="robot-face">
-            <span class="eye"></span>
-            <span class="eye"></span>
-          </div>
-          <div class="robot-mouth"></div>
+  <!-- Clear & Visible Quick-Access Command Bar (So Visitors Find Everything Immediately) -->
+  <nav class="quick-nav-bar" aria-label="Primary Store Navigation">
+    <div class="quick-nav-inner">
+      <a href="#featured" class="q-link active">🏠 Home &amp; Live Scene</a>
+      <a href="#collections" class="q-link">🛒 All Store Items</a>
+      <a href="#bundles" class="q-link">👑 VIP Crown Bundles</a>
+      <a href="#reviews-section" class="q-link">⭐ Ratings &amp; Commands</a>
+      <a href="#support" class="q-link">🎧 24/7 Support</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section with Big Robotic EGO GOATSTORE Title & Live Anime Stage -->
+  <main>
+    <section class="hero" id="featured">
+      <div class="hero-content">
+        <div class="tag-pill">
+          <span class="pulse-dot"></span> OFFICIAL NIGHT EDITION • VERIFIED STORE
         </div>
-        <div class="robot-neck"></div>
-        <div class="robot-body">
-          <div class="robot-core"></div>
+
+        <h1 class="robotic-title robotic-font">
+          <span class="ego-word">EGO</span>
+          <span class="goat-word">GOATSTORE</span>
+        </h1>
+
+        <p class="hero-desc">
+          Premium cyber-anime gear, VIP game passes, companion bots, and exclusive digital drops forged under the glowing purple moon. Every item is community-rated and delivered instantly.
+        </p>
+
+        <!-- Direct Quick Action Buttons -->
+        <div class="hero-cta">
+          <a href="#collections" class="primary-btn large">Browse All Items</a>
+          <a href="#reviews-section" class="secondary-btn large">View Ratings &amp; Reviews</a>
+          <button id="robot-interact-btn" class="ghost-btn large">Ping Robot</button>
+        </div>
+
+        <!-- Store Trust & Rating Metrics -->
+        <div class="hero-stats">
+          <div class="stat">
+            <strong class="robotic-font">4.98 ★</strong>
+            <span>12,400+ Ratings</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <strong class="robotic-font">24K+</strong>
+            <span>Active Members</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat">
+            <strong class="robotic-font">0.2s</strong>
+            <span>Instant Delivery</span>
+          </div>
         </div>
       </div>
 
-      <div class="robot-label label-top">AI CORE // ONLINE</div>
-      <div class="robot-label label-bottom">EGO ROBOT SYSTEM</div>
+      <!-- Live Animated Hero Visual Stage (Youth + Cute Blinking Cyan-Eye Robot) -->
+      <div class="hero-stage">
+        <div class="stage-frame">
+          <div class="aura-ring"></div>
+
+          <div class="anime-character-container">
+            <!-- Youth Silhouette & Glowing Purple Eyes + Crown Sleeve -->
+            <svg class="anime-youth-svg" viewBox="0 0 360 440" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" stop-color="#F0ABFC"/>
+                  <stop offset="60%" stop-color="#A855F7"/>
+                  <stop offset="100%" stop-color="#581C87" stop-opacity="0"/>
+                </radialGradient>
+                <linearGradient id="jacketGrad" x1="80" y1="180" x2="260" y2="430" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#1E1035"/>
+                  <stop offset="50%" stop-color="#0D0718"/>
+                  <stop offset="100%" stop-color="#05020A"/>
+                </linearGradient>
+                <linearGradient id="scarfGrad" x1="20" y1="220" x2="230" y2="270" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#7E22CE"/>
+                  <stop offset="55%" stop-color="#2E1065"/>
+                  <stop offset="100%" stop-color="#14072B"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Flowing Scarf Tails -->
+              <g class="flowing-scarf">
+                <path d="M145 215 C95 205, 45 225, 12 205 C38 238, 88 242, 145 232 Z" fill="url(#scarfGrad)" stroke="#A855F7" stroke-width="1.2"/>
+                <path d="M140 228 C85 235, 38 262, 6 250 C42 276, 95 266, 148 245 Z" fill="#1E0B3B" stroke="#9333EA" stroke-width="1"/>
+              </g>
+
+              <!-- Black Jacket Body -->
+              <path d="M105 430 L122 255 C125 232, 145 220, 175 220 L215 220 C245 220, 268 235, 275 262 L295 430 Z" fill="url(#jacketGrad)" stroke="#6B21A8" stroke-width="1.5"/>
+
+              <!-- Glowing Purple Crown Emblem on Sleeve -->
+              <g class="sleeve-crown" transform="translate(232, 295) rotate(-8)">
+                <path d="M4 22L7 7L14 14L18 4L22 14L29 7L32 22H4Z" fill="#C084FC" stroke="#F5D0FE" stroke-width="1.2"/>
+                <rect x="4" y="25" width="28" height="3" rx="1.5" fill="#C084FC"/>
+              </g>
+
+              <!-- Neck & Head Tilted Slightly Upward -->
+              <path d="M168 182 L166 222 L202 222 L198 182 Z" fill="#E9D5FF" fill-opacity="0.88"/>
+              <path d="M150 132 C150 98, 214 96, 216 135 C218 164, 200 188, 178 188 C158 188, 150 165, 150 132 Z" fill="#F3E8FF"/>
+
+              <!-- Glowing Purple Eyes -->
+              <ellipse cx="171" cy="142" rx="14" ry="8" fill="url(#eyeGlow)"/>
+              <ellipse cx="171" cy="142" rx="5.5" ry="3.5" fill="#D946EF"/>
+              <circle cx="172.5" cy="141" r="1.4" fill="#FFFFFF"/>
+
+              <ellipse cx="198" cy="140" rx="13" ry="7.5" fill="url(#eyeGlow)"/>
+              <ellipse cx="198" cy="140" rx="5" ry="3.2" fill="#D946EF"/>
+              <circle cx="199.5" cy="139" r="1.3" fill="#FFFFFF"/>
+
+              <!-- Spiky Dark Hair Swaying in Wind -->
+              <g class="swaying-hair">
+                <path d="M142 142 C128 118, 136 82, 168 72 C195 62, 232 76, 234 114 C236 136, 224 156, 214 162 C216 138, 206 118, 188 114 C174 126, 160 134, 142 142 Z" fill="#090412" stroke="#9333EA" stroke-width="1.2"/>
+                <path d="M154 84 C132 74, 114 82, 102 74 C118 92, 136 94, 154 92 Z" fill="#120724" stroke="#A855F7" stroke-width="0.9"/>
+                <path d="M178 72 C164 52, 142 48, 126 42 C144 62, 162 68, 178 76 Z" fill="#0D051A" stroke="#C084FC" stroke-width="0.9"/>
+                <path d="M214 88 C234 74, 252 78, 264 68 C250 88, 234 94, 216 96 Z" fill="#120724" stroke="#A855F7" stroke-width="0.9"/>
+              </g>
+
+              <!-- Collar Scarf Wrap -->
+              <path d="M142 212 C162 204, 206 204, 224 214 L218 242 C195 234, 164 234, 144 242 Z" fill="#1E0B3B" stroke="#A855F7" stroke-width="1.4"/>
+            </svg>
+
+            <!-- Cute Small White Robot with Blinking On/Off Cyan Eyes -->
+            <div class="robot-companion" id="companion-bot" title="Click to talk with Bot">
+              <div class="robot-head">
+                <div class="ear-cup left"></div>
+                <div class="ear-cup right"></div>
+                <div class="headband"></div>
+
+                <div class="robot-visor">
+                  <div class="cyan-eye left-eye"></div>
+                  <div class="robot-smile"></div>
+                  <div class="cyan-eye right-eye"></div>
+                </div>
+              </div>
+
+              <div class="robot-scarf"></div>
+              <div class="robot-body">
+                <div class="robot-crown-emblem">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M3 18L5 7L10 12L12 5L14 12L19 7L21 18H3Z" fill="#C084FC" stroke="#F3E8FF" stroke-width="1.5"/>
+                  </svg>
+                </div>
+              </div>
+              <div class="robot-status-badge robotic-font" id="bot-speech">EGO BOT ONLINE</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Store Catalog & Live Search / Filter Section -->
+    <section class="store-section" id="collections">
+      <div class="section-header">
+        <div>
+          <span class="sub-label robotic-font">VERIFIED CATALOG &amp; RATINGS</span>
+          <h2 class="robotic-font">EGO GOATSTORE DROPS</h2>
+        </div>
+
+        <!-- Instant Search Box + Category Tabs -->
+        <div class="catalog-controls">
+          <input
+            type="search"
+            id="search-input"
+            class="search-box"
+            placeholder="Search items, passes, bots..."
+            aria-label="Search store items"
+          />
+
+          <div class="filter-tabs" role="tablist">
+            <button class="filter-btn active" data-filter="all">All Drops</button>
+            <button class="filter-btn" data-filter="cyber">Cyber Gear</button>
+            <button class="filter-btn" data-filter="passes">VIP Passes</button>
+            <button class="filter-btn" data-filter="companions">Companions</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Grid (Each Card Has Live Star Rating & Command/Review Button) -->
+      <div class="product-grid" id="product-grid"></div>
+    </section>
+
+    <!-- Premium VIP Bundle Banner -->
+    <section class="vip-banner" id="bundles">
+      <div class="vip-info">
+        <span class="tag-pill">★ 5.0 RATED • LIMITED SEASON PASS</span>
+        <h3 class="robotic-font">EGO SHADOW CROWN BUNDLE</h3>
+        <p>Unlock all dark-violet avatar skins, animated profile frames, and priority store commands with 35% instant savings.</p>
+      </div>
+      <div class="vip-action">
+        <div class="price-box">
+          <span class="old-price">$79.00</span>
+          <span class="new-price robotic-font">$49.00</span>
+        </div>
+        <button class="primary-btn large" onclick="addBundleToCart()">Claim VIP Bundle</button>
+      </div>
+    </section>
+
+    <!-- Community Commands & Live Rating Section -->
+    <section class="reviews-section" id="reviews-section">
+      <div class="section-header">
+        <div>
+          <span class="sub-label robotic-font">COMMUNITY FEEDBACK &amp; COMMANDS</span>
+          <h2 class="robotic-font">VERIFIED USER RATINGS</h2>
+        </div>
+      </div>
+
+      <div class="reviews-layout">
+        <!-- Submit Rating Form -->
+        <form id="review-form" class="review-form-card">
+          <h3 class="robotic-font">Rate &amp; Post Command</h3>
+          <p class="form-hint">Share your experience or rate any EGO GOATSTORE drop.</p>
+
+          <label for="reviewer-name">Your Name / Tag</label>
+          <input type="text" id="reviewer-name" placeholder="e.g., ShadowKing_99" required />
+
+          <label for="review-item">Select Item / Command</label>
+          <select id="review-item"></select>
+
+          <label for="review-rating">Select Star Rating</label>
+          <select id="review-rating">
+            <option value="5">★★★★★ (5.0 - Masterpiece)</option>
+            <option value="4">★★★★☆ (4.0 - Great Quality)</option>
+            <option value="3">★★★☆☆ (3.0 - Good)</option>
+          </select>
+
+          <label for="review-text">Your Review / Command Note</label>
+          <textarea id="review-text" rows="3" placeholder="Write your feedback..." required></textarea>
+
+          <button type="submit" class="primary-btn full-width">Submit Verified Rating</button>
+        </form>
+
+        <!-- Live Rated Feed -->
+        <div class="reviews-list" id="reviews-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Slide-Over Cart Drawer -->
+  <aside class="cart-drawer" id="cart-drawer" aria-hidden="true">
+    <div class="cart-header">
+      <h3 class="robotic-font">GOATSTORE CART</h3>
+      <button id="close-cart" class="icon-btn" aria-label="Close Cart">&times;</button>
     </div>
-  </div>
-</header>
+    <div class="cart-items" id="cart-items">
+      <p class="empty-msg">Your cart is empty. Select an item from the night drop!</p>
+    </div>
+    <div class="cart-footer">
+      <div class="total-row">
+        <span>Total</span>
+        <strong id="cart-total" class="robotic-font">$0.00</strong>
+      </div>
+      <button id="checkout-btn" class="primary-btn full-width">Complete Instant Checkout</button>
+    </div>
+  </aside>
+  <div class="backdrop-overlay" id="drawer-backdrop"></div>
 
-<main class="section" id="store">
-  <h2 class="section-heading">COMMAND <span>STORE</span></h2>
-  <p class="section-sub">Discover and install your favourite commands.</p>
+  <!-- Toast Notification -->
+  <div id="toast" class="toast"></div>
 
-  <input
-    class="search"
-    id="search"
-    type="search"
-    placeholder="⌕ Search commands..."
-    autocomplete="off"
-  >
+  <footer id="support">
+    <p>&copy; 2026 <strong class="robotic-font">EGO GOATSTORE</strong> — Robotic Night Edition. All rights reserved.</p>
+  </footer>
 
-  <div class="cards" id="commands">
-    <p class="section-sub">Connecting to EGO server...</p>
-  </div>
-
-  <section class="admin">
-    <h3>◆ ADMIN UPLOAD</h3>
-
-    <input id="adminKey" type="password" placeholder="Admin key">
-    <input id="commandName" type="text" placeholder="Command name">
-    <input id="description" type="text" placeholder="Description">
-
-    <select id="category">
-      <option value="utility">Utility</option>
-      <option value="fun">Fun</option>
-      <option value="media">Media</option>
-      <option value="ai">AI</option>
-      <option value="games">Games</option>
-      <option value="moderation">Moderation</option>
-    </select>
-
-    <input id="commandFile" type="file" accept=".js">
-
-    <button class="btn" id="uploadBtn" type="button">
-      UPLOAD COMMAND +
-    </button>
-
-    <div class="message" id="message"></div>
-  </section>
-</main>
-
-<footer>
-  © 2026 EGO GOATSTORE • POWERED BY EGO
-</footer>
-
-<script>
-const commandContainer = document.getElementById("commands");
-const searchInput = document.getElementById("search");
-const message = document.getElementById("message");
-
-let allCommands = [];
-
-async function loadCommands() {
-  try {
-    const response = await fetch("/api/commands");
-    const data = await response.json();
-
-    if (!data.success) throw new Error("Failed to load");
-
-    allCommands = data.commands || [];
-    renderCommands(allCommands);
-  } catch (error) {
-    commandContainer.innerHTML =
-      '<p class="section-sub">Unable to connect to server.</p>';
-  }
-}
-
-function renderCommands(commands) {
-  commandContainer.innerHTML = "";
-
-  if (!commands.length) {
-    commandContainer.innerHTML =
-      '<p class="section-sub">No commands found.</p>';
-    return;
-  }
-
-  commands.forEach(command => {
-    const card = document.createElement("article");
-    card.className = "card";
-
-    const title = document.createElement("h3");
-    title.textContent = command.name;
-
-    const category = document.createElement("div");
-    category.className = "category";
-    category.textContent = (command.category || "utility").toUpperCase();
-
-    const description = document.createElement("p");
-    description.textContent = command.description || "EGO command";
-
-    const author = document.createElement("p");
-    author.textContent = "AUTHOR: " + (command.author || "EGO");
-
-    const downloads = document.createElement("p");
-    downloads.textContent = "Downloads: " + (command.downloads || 0);
-
-    const install = document.createElement("button");
-    install.className = "install";
-    install.textContent = "DOWNLOAD COMMAND ↓";
-
-    install.addEventListener("click", () => {
-      window.location.href =
-        "/api/install/" + encodeURIComponent(command.id);
-    });
-
-    card.append(title, category, description, author, downloads, install);
-    commandContainer.appendChild(card);
-  });
-}
-
-searchInput.addEventListener("input", () => {
-  const value = searchInput.value.toLowerCase();
-
-  renderCommands(allCommands.filter(command =>
-    (command.name || "").toLowerCase().includes(value) ||
-    (command.category || "").toLowerCase().includes(value) ||
-    (command.description || "").toLowerCase().includes(value)
-  ));
-});
-
-document.getElementById("uploadBtn").addEventListener("click", async () => {
-  const key = document.getElementById("adminKey").value;
-  const name = document.getElementById("commandName").value;
-  const description = document.getElementById("description").value;
-  const category = document.getElementById("category").value;
-  const file = document.getElementById("commandFile").files[0];
-
-  if (!key || !file) {
-    message.textContent = "Admin key and JS file are required.";
-    return;
-  }
-
-  const formData = new FormData();
-  formData.append("name", name);
-  formData.append("description", description);
-  formData.append("category", category);
-  formData.append("file", file);
-
-  const button = document.getElementById("uploadBtn");
-  button.disabled = true;
-  button.textContent = "UPLOADING...";
-
-  try {
-    const response = await fetch("/api/upload", {
-      method: "POST",
-      headers: { "x-admin-key": key },
-      body: formData
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) throw new Error(result.message);
-
-    message.textContent = "✓ " + result.message;
-    document.getElementById("commandFile").value = "";
-    document.getElementById("commandName").value = "";
-    document.getElementById("description").value = "";
-
-    await loadCommands();
-  } catch (error) {
-    message.textContent = "Error: " + error.message;
-  } finally {
-    button.disabled = false;
-    button.textContent = "UPLOAD COMMAND +";
-  }
-});
-
-loadCommands();
-</script>
-
+  <script src="app.js"></script>
 </body>
 </html>
