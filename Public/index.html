@@ -1,106 +1,234 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050914">
   <title>EGO GOATSTORE</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
-<main class="hero">
-  <div class="grid-bg"></div>
-  <div class="orb orb-one"></div>
-  <div class="orb orb-two"></div>
-  <div class="scanline"></div>
+<header class="hero">
+  <div class="grid"></div>
 
-  <header class="topbar">
-    <a class="brand" href="#">
-      <span class="brand-mark">E</span>
-      <span>EGO <span class="muted">/</span> GOATSTORE</span>
-    </a>
-    <span class="status"><i></i> SYSTEM ONLINE</span>
-  </header>
+  <nav class="nav">
+    <div class="logo">EGO <span>GOATSTORE</span></div>
+    <div class="online">SYSTEM ONLINE</div>
+  </nav>
 
-  <section class="hero-content">
-    <div class="copy">
-      <p class="eyebrow">◆ NEXT-GEN COMMAND LIBRARY</p>
+  <div class="hero-content">
+    <div>
+      <p class="eyebrow">◆ NEXT GENERATION BOT STORE</p>
 
       <h1>
-        <span class="outline">EGO</span><br>
-        <span class="gradient">GOATSTORE</span>
+        <span class="title-one">EGO</span><br>
+        <span class="title-two">GOATSTORE</span>
       </h1>
 
-      <p class="subtitle">
-        A smarter universe of commands.<br>
-        Built for speed. Designed beyond limits.
+      <p class="description">
+        Welcome to the future of GoatBot commands.
+        Discover powerful tools and premium digital experiences.
       </p>
 
-      <div class="actions">
-        <a class="primary" href="#store">
-          EXPLORE STORE <span>↗</span>
-        </a>
-        <span class="version">V 2.0 • FUTURE READY</span>
-      </div>
-
-      <div class="stats">
-        <div><strong>∞</strong><small>COMMANDS</small></div>
-        <div><strong>AI</strong><small>POWERED STYLE</small></div>
-        <div><strong>24/7</strong><small>ONLINE</small></div>
-      </div>
+      <a href="#store" class="btn">EXPLORE STORE ↗</a>
     </div>
 
-    <div class="visual">
-      <div class="ring ring-a"></div>
-      <div class="ring ring-b"></div>
-      <div class="ring ring-c"></div>
+    <div class="robot-area">
+      <div class="ring"></div>
+      <div class="ring ring-two"></div>
 
       <div class="robot">
-        <div class="antenna"><span></span></div>
-
-        <div class="head">
-          <div class="ear left"></div>
-          <div class="ear right"></div>
-          <div class="visor">
-            <i class="eye eye-left"></i>
-            <i class="eye eye-right"></i>
-            <span class="visor-glint"></span>
+        <div class="robot-head">
+          <div class="robot-face">
+            <span class="eye"></span>
+            <span class="eye"></span>
           </div>
-          <div class="mouth"></div>
-          <div class="chin"></div>
+          <div class="robot-mouth"></div>
         </div>
-
-        <div class="neck"></div>
-
-        <div class="body">
-          <div class="chest-logo">EGO</div>
-          <div class="core"></div>
-          <div class="panel p-left"></div>
-          <div class="panel p-right"></div>
+        <div class="robot-neck"></div>
+        <div class="robot-body">
+          <div class="robot-core"></div>
         </div>
-
-        <div class="arm arm-left"><span></span></div>
-        <div class="arm arm-right"><span></span></div>
       </div>
 
-      <div class="float-tag tag-top">AI CORE ● 98.7%</div>
-      <div class="float-tag tag-bottom">EGO // BOT SYSTEM</div>
+      <div class="robot-label label-top">AI CORE // ONLINE</div>
+      <div class="robot-label label-bottom">EGO ROBOT SYSTEM</div>
     </div>
-  </section>
+  </div>
+</header>
 
-  <footer>
-    <span>© EGO GOATSTORE</span>
-    <span class="footer-center">DIGITAL FUTURE</span>
-    <span>SCROLL TO EXPLORE ↓</span>
-  </footer>
+<main class="section" id="store">
+  <h2 class="section-heading">COMMAND <span>STORE</span></h2>
+  <p class="section-sub">Discover and install your favourite commands.</p>
+
+  <input
+    class="search"
+    id="search"
+    type="search"
+    placeholder="⌕ Search commands..."
+    autocomplete="off"
+  >
+
+  <div class="cards" id="commands">
+    <p class="section-sub">Connecting to EGO server...</p>
+  </div>
+
+  <section class="admin">
+    <h3>◆ ADMIN UPLOAD</h3>
+
+    <input id="adminKey" type="password" placeholder="Admin key">
+    <input id="commandName" type="text" placeholder="Command name">
+    <input id="description" type="text" placeholder="Description">
+
+    <select id="category">
+      <option value="utility">Utility</option>
+      <option value="fun">Fun</option>
+      <option value="media">Media</option>
+      <option value="ai">AI</option>
+      <option value="games">Games</option>
+      <option value="moderation">Moderation</option>
+    </select>
+
+    <input id="commandFile" type="file" accept=".js">
+
+    <button class="btn" id="uploadBtn" type="button">
+      UPLOAD COMMAND +
+    </button>
+
+    <div class="message" id="message"></div>
+  </section>
 </main>
 
-<section class="store-placeholder" id="store">
-  <h2>YOUR COMMANDS. <span>YOUR UNIVERSE.</span></h2>
-  <p>Your existing GoatStore content goes here.</p>
-</section>
+<footer>
+  © 2026 EGO GOATSTORE • POWERED BY EGO
+</footer>
 
-<script src="animation.js"></script>
+<script>
+const commandContainer = document.getElementById("commands");
+const searchInput = document.getElementById("search");
+const message = document.getElementById("message");
+
+let allCommands = [];
+
+async function loadCommands() {
+  try {
+    const response = await fetch("/api/commands");
+    const data = await response.json();
+
+    if (!data.success) throw new Error("Failed to load");
+
+    allCommands = data.commands || [];
+    renderCommands(allCommands);
+  } catch (error) {
+    commandContainer.innerHTML =
+      '<p class="section-sub">Unable to connect to server.</p>';
+  }
+}
+
+function renderCommands(commands) {
+  commandContainer.innerHTML = "";
+
+  if (!commands.length) {
+    commandContainer.innerHTML =
+      '<p class="section-sub">No commands found.</p>';
+    return;
+  }
+
+  commands.forEach(command => {
+    const card = document.createElement("article");
+    card.className = "card";
+
+    const title = document.createElement("h3");
+    title.textContent = command.name;
+
+    const category = document.createElement("div");
+    category.className = "category";
+    category.textContent = (command.category || "utility").toUpperCase();
+
+    const description = document.createElement("p");
+    description.textContent = command.description || "EGO command";
+
+    const author = document.createElement("p");
+    author.textContent = "AUTHOR: " + (command.author || "EGO");
+
+    const downloads = document.createElement("p");
+    downloads.textContent = "Downloads: " + (command.downloads || 0);
+
+    const install = document.createElement("button");
+    install.className = "install";
+    install.textContent = "DOWNLOAD COMMAND ↓";
+
+    install.addEventListener("click", () => {
+      window.location.href =
+        "/api/install/" + encodeURIComponent(command.id);
+    });
+
+    card.append(title, category, description, author, downloads, install);
+    commandContainer.appendChild(card);
+  });
+}
+
+searchInput.addEventListener("input", () => {
+  const value = searchInput.value.toLowerCase();
+
+  renderCommands(allCommands.filter(command =>
+    (command.name || "").toLowerCase().includes(value) ||
+    (command.category || "").toLowerCase().includes(value) ||
+    (command.description || "").toLowerCase().includes(value)
+  ));
+});
+
+document.getElementById("uploadBtn").addEventListener("click", async () => {
+  const key = document.getElementById("adminKey").value;
+  const name = document.getElementById("commandName").value;
+  const description = document.getElementById("description").value;
+  const category = document.getElementById("category").value;
+  const file = document.getElementById("commandFile").files[0];
+
+  if (!key || !file) {
+    message.textContent = "Admin key and JS file are required.";
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("name", name);
+  formData.append("description", description);
+  formData.append("category", category);
+  formData.append("file", file);
+
+  const button = document.getElementById("uploadBtn");
+  button.disabled = true;
+  button.textContent = "UPLOADING...";
+
+  try {
+    const response = await fetch("/api/upload", {
+      method: "POST",
+      headers: { "x-admin-key": key },
+      body: formData
+    });
+
+    const result = await response.json();
+
+    if (!response.ok) throw new Error(result.message);
+
+    message.textContent = "✓ " + result.message;
+    document.getElementById("commandFile").value = "";
+    document.getElementById("commandName").value = "";
+    document.getElementById("description").value = "";
+
+    await loadCommands();
+  } catch (error) {
+    message.textContent = "Error: " + error.message;
+  } finally {
+    button.disabled = false;
+    button.textContent = "UPLOAD COMMAND +";
+  }
+});
+
+loadCommands();
+</script>
+
 </body>
 </html>
