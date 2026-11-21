@@ -1,5 +1,26 @@
 // ==========================================
-// 1. LIVE ANIME PETALS, WIND & NIGHT CANVAS
+// 1. LOADING ANIMATION SEQUENCE
+// ==========================================
+const loadingScreen = document.getElementById('loading-screen');
+const loaderBar = document.getElementById('loader-bar');
+
+let progress = 0;
+const loadInterval = setInterval(() => {
+  progress += Math.floor(Math.random() * 24) + 14;
+  if (progress >= 100) {
+    progress = 100;
+    loaderBar.style.width = '100%';
+    clearInterval(loadInterval);
+    setTimeout(() => {
+      loadingScreen.classList.add('hidden');
+    }, 300);
+  } else {
+    loaderBar.style.width = `${progress}%`;
+  }
+}, 140);
+
+// ==========================================
+// 2. LIVE ANIME PETALS & WIND CANVAS
 // ==========================================
 const canvas = document.getElementById('anime-canvas');
 const ctx = canvas.getContext('2d');
@@ -65,12 +86,11 @@ class Petal {
   }
 }
 
-const petals = Array.from({ length: 50 }, () => new Petal());
+const petals = Array.from({ length: 48 }, () => new Petal());
 
 function animateScene(time) {
   ctx.clearRect(0, 0, width, height);
 
-  // Wind streaks
   ctx.strokeStyle = 'rgba(192, 132, 252, 0.09)';
   ctx.lineWidth = 1;
   for (let i = 0; i < 4; i++) {
@@ -96,147 +116,132 @@ const toggleWindBtn = document.getElementById('toggle-wind');
 toggleWindBtn.addEventListener('click', () => {
   windMultiplier = windMultiplier === 1 ? 2.4 : 1;
   toggleWindBtn.textContent = `Wind Boost: ${windMultiplier > 1 ? 'ON' : 'OFF'}`;
-  showToast(windMultiplier > 1 ? 'Night wind & petal speed boosted!' : 'Calm night breeze restored.');
+  showToast(windMultiplier > 1 ? 'Wind & petal speed boosted!' : 'Calm breeze restored.');
 });
 
-// Companion Robot Interactive Ping
+// Cute Robot Pet Ping
 const botSpeech = document.getElementById('bot-speech');
-const robotBtn = document.getElementById('robot-interact-btn');
+const robotPingBtn = document.getElementById('robot-ping-btn');
 const companionBot = document.getElementById('companion-bot');
 
-const botLines = [
-  'EGO BOT ONLINE',
-  'CROWN DROP READY!',
-  '4.98★ TOP RATED HUB',
-  'WELCOME TO EGO GOATSTORE!'
+const botPhrases = [
+  'CUTE PET: READY',
+  '10/9 CMDS LOADED!',
+  'LOVE / SAD / GORE OK',
+  'EGO GOATSTORE LIVE'
 ];
-let botIndex = 0;
+let botIdx = 0;
 
-function pingRobot() {
-  botIndex = (botIndex + 1) % botLines.length;
-  botSpeech.textContent = botLines[botIndex];
-  showToast(`Companion Bot: "${botLines[botIndex]}"`);
+function pingBot() {
+  botIdx = (botIdx + 1) % botPhrases.length;
+  botSpeech.textContent = botPhrases[botIdx];
+  showToast(`Cute Robot Pet: "${botPhrases[botIdx]}"`);
 }
 
-robotBtn.addEventListener('click', pingRobot);
-companionBot.addEventListener('click', pingRobot);
+robotPingBtn.addEventListener('click', pingBot);
+companionBot.addEventListener('click', pingBot);
 
 // ==========================================
-// 2. EGO GOATSTORE CATALOG WITH STAR RATINGS
+// 3. GOAT BOT COMMANDS VAULT (WITH QUALITY 10/9, 10/7 ETC.)
 // ==========================================
-const products = [
+let commandsList = [
   {
     id: 1,
-    name: 'Shadow Crown Hoodie Skin',
-    category: 'cyber',
-    price: 19.99,
-    rarity: 'MYTHIC',
-    rating: 4.9,
-    reviewsCount: 342,
-    icon: '👑',
-    desc: 'Animated violet-trimmed cyber jacket with glowing crown emblem on sleeve.'
+    name: '/love-aura',
+    category: 'love',
+    quality: '10/9',
+    usage: '/love-aura @user',
+    desc: 'Sends a romantic anime aura card & love meter reply for Goat Bot.',
+    code: `goat.cmd('love-aura', (ctx) => ctx.reply('💖 Love Aura: 99% synced with ' + ctx.target));`
   },
   {
     id: 2,
-    name: 'Cyan-Eye Mini Companion Bot',
-    category: 'companions',
-    price: 24.99,
-    rarity: 'LEGENDARY',
-    rating: 5.0,
-    reviewsCount: 518,
-    icon: '🤖',
-    desc: 'Floating white mecha-pet with blinking cyan optics and purple crown core.'
+    name: '/sad-rain',
+    category: 'sad',
+    quality: '10/9',
+    usage: '/sad-rain [quote]',
+    desc: 'Triggers moody midnight rain quote & sad anime vibe embed.',
+    code: `goat.cmd('sad-rain', (ctx) => ctx.reply('🌧️ Midnight rain falls quietly... ' + ctx.args));`
   },
   {
     id: 3,
-    name: 'Moonlit Pagoda VIP Pass',
-    category: 'passes',
-    price: 14.99,
-    rarity: 'VIP',
-    rating: 4.9,
-    reviewsCount: 289,
-    icon: '🏯',
-    desc: 'Priority access to midnight drops, custom commands, and VIP badge.'
+    name: '/baby-mode',
+    category: 'baby',
+    quality: '10/8',
+    usage: '/baby-mode @user',
+    desc: 'Cute baby-talk & adorable pet sticker response command.',
+    code: `goat.cmd('baby-mode', (ctx) => ctx.reply('🍼 UwU! Tiny baby mode activated for ' + ctx.target));`
   },
   {
     id: 4,
-    name: 'Violet Sakura Wind FX',
-    category: 'cyber',
-    price: 12.50,
-    rarity: 'RARE',
-    rating: 4.8,
-    reviewsCount: 194,
-    icon: '🌸',
-    desc: 'Glowing purple cherry blossom petals drifting in sync with wind.'
+    name: '/gore-slash',
+    category: 'gore',
+    quality: '10/7',
+    usage: '/gore-slash @target',
+    desc: 'Dark crimson battle slash effect command for RPG / dark rooms.',
+    code: `goat.cmd('gore-slash', (ctx) => ctx.reply('🩸 Dark slash strike executed on ' + ctx.target));`
   },
   {
     id: 5,
-    name: 'Ego Night Creator Suite',
-    category: 'passes',
-    price: 29.00,
-    rarity: 'ULTRA',
-    rating: 5.0,
-    reviewsCount: 410,
-    icon: '⚡',
-    desc: '4K anime overlays, robotic UI panels, and custom sound alerts.'
+    name: '/owner-crown',
+    category: 'owner',
+    quality: '10/10',
+    usage: '/owner-crown',
+    desc: 'Exclusive owner permission command with full crown privileges.',
+    code: `goat.cmd('owner-crown', { ownerOnly: true }, (ctx) => ctx.reply('👑 Owner Crown Verified!'));`
   },
   {
     id: 6,
-    name: 'Phantom Scarf Relic',
-    category: 'companions',
-    price: 16.00,
-    rarity: 'EPIC',
-    rating: 4.9,
-    reviewsCount: 231,
-    icon: '🧣',
-    desc: 'Physics-reactive dark flowing scarf infused with purple moonlight.'
+    name: '/sys-ping',
+    category: 'system',
+    quality: '10/9',
+    usage: '/sys-ping',
+    desc: 'Checks Goat Bot latency, uptime, memory, and shard health.',
+    code: `goat.cmd('sys-ping', (ctx) => ctx.reply('⚙️ Goat Bot Latency: 18ms | Status: ONLINE'));`
   }
 ];
 
-let cart = [];
-let currentFilter = 'all';
-let searchQuery = '';
+let savedCommands = [];
+let activeCategory = 'all';
+let searchTerm = '';
 
-const productGrid = document.getElementById('product-grid');
-const filterBtns = document.querySelectorAll('.filter-btn');
-const searchInput = document.getElementById('search-input');
+const commandsGrid = document.getElementById('commands-grid');
+const catBtns = document.querySelectorAll('.cat-btn');
+const cmdSearch = document.getElementById('cmd-search');
 
-function renderProducts() {
-  const filtered = products.filter((item) => {
-    const matchesCategory = currentFilter === 'all' || item.category === currentFilter;
-    const matchesSearch =
-      item.name.toLowerCase().includes(searchQuery) ||
-      item.desc.toLowerCase().includes(searchQuery);
-    return matchesCategory && matchesSearch;
+function renderCommands() {
+  const filtered = commandsList.filter((cmd) => {
+    const matchCat = activeCategory === 'all' || cmd.category === activeCategory;
+    const matchSearch =
+      cmd.name.toLowerCase().includes(searchTerm) ||
+      cmd.category.toLowerCase().includes(searchTerm) ||
+      cmd.desc.toLowerCase().includes(searchTerm) ||
+      cmd.quality.toLowerCase().includes(searchTerm);
+    return matchCat && matchSearch;
   });
 
   if (filtered.length === 0) {
-    productGrid.innerHTML = `<p style="color:#c4b5fd;">No items matched "${searchQuery}". Try another keyword!</p>`;
+    commandsGrid.innerHTML = `<p style="color:#c4b5fd;">No commands found in this category/search.</p>`;
     return;
   }
 
-  productGrid.innerHTML = filtered
+  commandsGrid.innerHTML = filtered
     .map(
-      (item) => `
-      <article class="product-card">
-        <div>
-          <div class="card-art">
-            <span class="rarity-tag">${item.rarity}</span>
-            <span>${item.icon}</span>
-          </div>
-
-          <div class="rating-row">
-            <span class="stars">★★★★★ ${item.rating.toFixed(1)} (${item.reviewsCount})</span>
-            <button class="rate-link" onclick="jumpToRate('${item.name}')">Rate Item</button>
-          </div>
-
-          <h3>${item.name}</h3>
-          <p>${item.desc}</p>
+      (cmd) => `
+      <article class="cmd-card">
+        <div class="cmd-top">
+          <span class="cmd-cat-badge">${cmd.category}</span>
+          <span class="quality-badge robotic-font">QUALITY: ${cmd.quality}</span>
         </div>
 
-        <div class="card-footer">
-          <span class="price robotic-font">$${item.price.toFixed(2)}</span>
-          <button class="primary-btn" onclick="addToCart(${item.id})">Add to Cart</button>
+        <h3 class="cmd-name robotic-font">${cmd.name}</h3>
+        <div class="cmd-usage">Syntax: ${cmd.usage}</div>
+        <p class="cmd-desc">${cmd.desc}</p>
+        <pre class="cmd-code-box">${escapeHtml(cmd.code)}</pre>
+
+        <div class="cmd-actions">
+          <button class="primary-btn" onclick="copyCommand(${cmd.id})">Copy Code</button>
+          <button class="secondary-btn" onclick="saveCommand(${cmd.id})">Save</button>
         </div>
       </article>
     `
@@ -244,201 +249,130 @@ function renderProducts() {
     .join('');
 }
 
-filterBtns.forEach((btn) => {
+catBtns.forEach((btn) => {
   btn.addEventListener('click', () => {
-    filterBtns.forEach((b) => b.classList.remove('active'));
+    catBtns.forEach((b) => b.classList.remove('active'));
     btn.classList.add('active');
-    currentFilter = btn.dataset.filter;
-    renderProducts();
+    activeCategory = btn.dataset.cat;
+    renderCommands();
   });
 });
 
-searchInput.addEventListener('input', (e) => {
-  searchQuery = e.target.value.trim().toLowerCase();
-  renderProducts();
+cmdSearch.addEventListener('input', (e) => {
+  searchTerm = e.target.value.trim().toLowerCase();
+  renderCommands();
 });
 
-// Jump directly to the rating form with that product pre-selected
-function jumpToRate(productName) {
-  const selectEl = document.getElementById('review-item');
-  selectEl.value = productName;
-  document.getElementById('reviews-section').scrollIntoView({ behavior: 'smooth' });
-  document.getElementById('reviewer-name').focus();
-}
+// ==========================================
+// 4. UPLOAD NEW COMMAND TO CATEGORY
+// ==========================================
+const uploadForm = document.getElementById('upload-cmd-form');
+
+uploadForm.addEventListener('submit', (e) => {
+  e.preventDefault();
+
+  const rawName = document.getElementById('cmd-name').value.trim();
+  const formattedName = rawName.startsWith('/') ? rawName : `/${rawName}`;
+  const category = document.getElementById('cmd-category').value;
+  const quality = document.getElementById('cmd-quality').value;
+  const usage = document.getElementById('cmd-usage').value.trim();
+  const desc = document.getElementById('cmd-desc').value.trim();
+  const code = document.getElementById('cmd-code').value.trim();
+
+  const newCmd = {
+    id: Date.now(),
+    name: formattedName,
+    category,
+    quality,
+    usage,
+    desc,
+    code
+  };
+
+  commandsList.unshift(newCmd);
+  activeCategory = category;
+  catBtns.forEach((b) => b.classList.toggle('active', b.dataset.cat === category));
+  renderCommands();
+  uploadForm.reset();
+
+  document.getElementById('commands-vault').scrollIntoView({ behavior: 'smooth' });
+  showToast(`Uploaded ${formattedName} [${category.toUpperCase()}] • Quality ${quality}`);
+});
 
 // ==========================================
-// 3. COMMUNITY RATINGS & COMMANDS SYSTEM
+// 5. COPY & SAVE COMMANDS
 // ==========================================
-const reviewsData = [
-  {
-    author: 'AetherKuro',
-    item: 'Cyan-Eye Mini Companion Bot',
-    rating: 5,
-    comment: 'Super smooth animation and the robotic UI looks ultra clean! Delivered in less than a second.'
-  },
-  {
-    author: 'Nyx_Valkyrie',
-    item: 'Shadow Crown Hoodie Skin',
-    rating: 5,
-    comment: 'The purple crown glow and dark aesthetic on EGO GOATSTORE are unmatched. 10/10 quality!'
-  },
-  {
-    author: 'RyujinZero',
-    item: 'Moonlit Pagoda VIP Pass',
-    rating: 5,
-    comment: 'Every option on the site is super easy to find and all commands work smoothly.'
+function copyCommand(id) {
+  const cmd = commandsList.find((c) => c.id === id);
+  if (!cmd) return;
+  navigator.clipboard?.writeText(cmd.code).catch(() => {});
+  showToast(`Copied ${cmd.name} (${cmd.quality})!`);
+}
+
+function saveCommand(id) {
+  const cmd = commandsList.find((c) => c.id === id);
+  if (!cmd) return;
+  if (!savedCommands.some((s) => s.id === id)) {
+    savedCommands.push(cmd);
+    renderSaved();
+    showToast(`Saved ${cmd.name} to your list!`);
+  } else {
+    showToast(`${cmd.name} is already saved.`);
   }
-];
-
-const reviewItemSelect = document.getElementById('review-item');
-const reviewsListEl = document.getElementById('reviews-list');
-const reviewForm = document.getElementById('review-form');
-
-function populateReviewDropdown() {
-  reviewItemSelect.innerHTML = products
-    .map((p) => `<option value="${p.name}">${p.name}</option>`)
-    .join('');
 }
 
-function renderReviews() {
-  reviewsListEl.innerHTML = reviewsData
+function removeSaved(id) {
+  savedCommands = savedCommands.filter((s) => s.id !== id);
+  renderSaved();
+}
+
+function renderSaved() {
+  const savedListEl = document.getElementById('saved-list');
+  const savedCountEl = document.getElementById('saved-count');
+  savedCountEl.textContent = savedCommands.length;
+
+  if (savedCommands.length === 0) {
+    savedListEl.innerHTML = '<p class="empty-msg">No commands saved yet. Click "Save" on any command card above.</p>';
+    return;
+  }
+
+  savedListEl.innerHTML = savedCommands
     .map(
-      (rev) => `
-      <div class="review-card">
-        <div class="review-top">
-          <div>
-            <span class="review-author">${rev.author}</span>
-            <span class="review-badge">VERIFIED BUYER</span>
-          </div>
-          <span class="review-stars">${'★'.repeat(rev.rating)}${'☆'.repeat(5 - rev.rating)} (${rev.rating}.0)</span>
+      (cmd) => `
+      <div class="saved-row">
+        <div>
+          <strong class="robotic-font" style="color:#22d3ee;">${cmd.name}</strong>
+          <span style="margin-left:10px;color:#fbbf24;font-weight:700;">[${cmd.quality}]</span>
+          <span style="margin-left:8px;color:#c084fc;font-size:0.82rem;">(${cmd.category})</span>
+          <div style="font-size:0.86rem;color:#cbd5e1;margin-top:4px;">${cmd.desc}</div>
         </div>
-        <div class="review-item-tag">Command / Item: ${rev.item}</div>
-        <p>${rev.comment}</p>
+        <div style="display:flex;gap:8px;">
+          <button class="primary-btn" onclick="copyCommand(${cmd.id})">Copy</button>
+          <button class="ghost-btn" onclick="removeSaved(${cmd.id})">Remove</button>
+        </div>
       </div>
     `
     )
     .join('');
 }
 
-reviewForm.addEventListener('submit', (e) => {
-  e.preventDefault();
-  const author = document.getElementById('reviewer-name').value.trim();
-  const item = reviewItemSelect.value;
-  const rating = parseInt(document.getElementById('review-rating').value, 10);
-  const comment = document.getElementById('review-text').value.trim();
-
-  if (!author || !comment) return;
-
-  reviewsData.unshift({ author, item, rating, comment });
-
-  // Update product review count dynamically
-  const targetProd = products.find((p) => p.name === item);
-  if (targetProd) {
-    targetProd.reviewsCount += 1;
-    renderProducts();
-  }
-
-  renderReviews();
-  reviewForm.reset();
-  showToast(`Thank you ${author}! Your ${rating}★ rating is now live.`);
-});
-
-// ==========================================
-// 4. CART DRAWER & CHECKOUT
-// ==========================================
-function addToCart(id) {
-  const product = products.find((p) => p.id === id);
-  if (!product) return;
-  cart.push(product);
-  updateCartUI();
-  showToast(`Added "${product.name}" to cart!`);
+function escapeHtml(str) {
+  return str
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
 }
 
-function addBundleToCart() {
-  cart.push({
-    id: 99,
-    name: 'Ego Shadow Crown VIP Bundle',
-    price: 49.00
-  });
-  updateCartUI();
-  openCart();
-  showToast('VIP Bundle added to your cart!');
-}
-
-function removeFromCart(index) {
-  cart.splice(index, 1);
-  updateCartUI();
-}
-
-function updateCartUI() {
-  document.getElementById('cart-count').textContent = cart.length;
-  const cartItemsEl = document.getElementById('cart-items');
-  const cartTotalEl = document.getElementById('cart-total');
-
-  if (cart.length === 0) {
-    cartItemsEl.innerHTML = '<p class="empty-msg">Your cart is empty. Select an item from the night drop!</p>';
-    cartTotalEl.textContent = '$0.00';
-    return;
-  }
-
-  let total = 0;
-  cartItemsEl.innerHTML = cart
-    .map((item, idx) => {
-      total += item.price;
-      return `
-        <div class="cart-item">
-          <div>
-            <strong>${item.name}</strong>
-            <div style="color:#c4b5fd;font-size:0.85rem;">$${item.price.toFixed(2)}</div>
-          </div>
-          <button class="remove-item" onclick="removeFromCart(${idx})">Remove</button>
-        </div>
-      `;
-    })
-    .join('');
-
-  cartTotalEl.textContent = `$${total.toFixed(2)}`;
-}
-
-const cartDrawer = document.getElementById('cart-drawer');
-const drawerBackdrop = document.getElementById('drawer-backdrop');
-
-function openCart() {
-  cartDrawer.classList.add('open');
-  drawerBackdrop.classList.add('show');
-}
-
-function closeCart() {
-  cartDrawer.classList.remove('open');
-  drawerBackdrop.classList.remove('show');
-}
-
-document.getElementById('cart-btn').addEventListener('click', openCart);
-document.getElementById('close-cart').addEventListener('click', closeCart);
-drawerBackdrop.addEventListener('click', closeCart);
-
-document.getElementById('checkout-btn').addEventListener('click', () => {
-  if (cart.length === 0) {
-    showToast('Your cart is empty!');
-    return;
-  }
-  cart = [];
-  updateCartUI();
-  closeCart();
-  showToast('Order confirmed! Thank you for shopping at EGO GOATSTORE.');
-});
-
-// Toast Helper
+// Toast
 let toastTimer;
-function showToast(message) {
+function showToast(msg) {
   const toast = document.getElementById('toast');
-  toast.textContent = message;
+  toast.textContent = msg;
   toast.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2800);
 }
 
-// Initial Setup
-populateReviewDropdown();
-renderProducts();
-renderReviews();
+// Initial Render
+renderCommands();
+renderSaved();
