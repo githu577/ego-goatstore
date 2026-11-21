@@ -1,16 +1,214 @@
-const $=id=>document.getElementById(id),grid=$('grid');let commands=[],cat='all',page=9,adminKey=sessionStorage.getItem('egoAdminKey')||'',favorites=new Set(JSON.parse(localStorage.getItem('egoFavorites')||'[]')),votes=JSON.parse(localStorage.getItem('egoRatings')||'{}'),toastTimer;
-const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));const fmt=n=>Number(n||0).toLocaleString();function toast(s){$('toast').textContent=s;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2500)}
-function rating(c){let r=votes[c.name];return r&&r.count?{avg:r.avg,count:r.count}:null}function ratingLabel(c){let r=rating(c);return r?`${r.avg.toFixed(1)}/10`:'Not rated'}
-function updateStats(){$('statCommands').textContent=fmt(commands.length);$('statDownloads').textContent=fmt(commands.reduce((a,c)=>a+Number(c.downloads||0),0));$('statAuthors').textContent=fmt(new Set(commands.map(c=>(c.author||'unknown').toLowerCase())).size)}
-function filtered(){let q=$('search').value.toLowerCase().trim(),a=commands.filter(c=>(!q||[c.name,c.description,c.author,c.category].join(' ').toLowerCase().includes(q))&&(cat==='all'||(cat==='favorites'?favorites.has(c.name):String(c.category||'Utility').toLowerCase()===cat.toLowerCase())));let mode=$('sort').value;if(mode==='popular')a.sort((x,y)=>Number(y.downloads||0)-Number(x.downloads||0));else if(mode==='az')a.sort((x,y)=>x.name.localeCompare(y.name));else if(mode==='rating')a.sort((x,y)=>(rating(y)?.avg||0)-(rating(x)?.avg||0));else a.sort((x,y)=>String(y.createdAt||'').localeCompare(String(x.createdAt||'')));return a}
-function card(c){let r=rating(c);return `<article class="card"><div class="cardtop"><span class="tag">${esc(c.category||'Utility')}</span><span class="downloads">↓ ${fmt(c.downloads)}</span></div><h3>${esc(c.name)}</h3><p>${esc(c.description||'Community command module')}</p><div class="rating"><span class="stars">${r?'★'.repeat(Math.round(r.avg/2))+'☆'.repeat(5-Math.round(r.avg/2)):'☆☆☆☆☆'}</span><b>${ratingLabel(c)}</b><small>${r?`${r.count} local rating(s)`:'Rate this command'}</small></div><div class="meta">BY ${esc(c.author||'Unknown')} <span>${c.createdAt?esc(new Date(c.createdAt).toLocaleDateString()):''}</span></div><div class="card-actions"><button class="download" data-download="${esc(c.name)}">↓ DOWNLOAD</button><button class="details" data-detail="${esc(c.name)}">DETAILS</button><button class="fav" data-fav="${esc(c.name)}">${favorites.has(c.name)?'♥':'♡'}</button>${adminKey?`<button class="delete" data-delete="${esc(c.name)}">×</button>`:''}</div><div class="rate-row"><label>RATE</label>${[2,4,6,8,10].map(n=>`<button data-rate="${esc(c.name)}" data-score="${n}" title="Rate ${n}/10">${n}</button>`).join('')}</div></article>`}
-function render(){let a=filtered();$('count').textContent=`${a.length} MODULE${a.length===1?'':'S'} FOUND`;grid.innerHTML=a.length?a.slice(0,page).map(card).join(''):`<div class="empty">No commands found. Try another search/category.</div>`;$('loadMore').hidden=a.length<=page;updateStats();grid.querySelectorAll('[data-download]').forEach(b=>b.onclick=()=>download(b.dataset.download));grid.querySelectorAll('[data-detail]').forEach(b=>b.onclick=()=>details(b.dataset.detail));grid.querySelectorAll('[data-fav]').forEach(b=>b.onclick=()=>fav(b.dataset.fav));grid.querySelectorAll('[data-rate]').forEach(b=>b.onclick=()=>rate(b.dataset.rate,Number(b.dataset.score)));grid.querySelectorAll('[data-delete]').forEach(b=>b.onclick=()=>del(b.dataset.delete))}
-async function load(){grid.innerHTML='<div class="empty">Connecting to command database…</div>';try{let r=await fetch('/api/commands',{cache:'no-store'});if(!r.ok)throw Error();commands=await r.json();$('apiState').textContent='ONLINE';$('apiState').style.color='#52efb8';render()}catch{$('apiState').textContent='OFFLINE';grid.innerHTML='<div class="empty">Store API unavailable. Refresh shortly.</div>'}}
-async function download(name){try{fetch(`/api/commands/${encodeURIComponent(name)}/download-count`,{method:'POST'}).catch(()=>{});let a=document.createElement('a');a.href=`/api/commands/${encodeURIComponent(name)}/download`;a.download=name+'.js';a.click();let c=commands.find(x=>x.name===name);if(c)c.downloads=Number(c.downloads||0)+1;toast('Download started: '+name);render()}catch{location.href=`/api/commands/${encodeURIComponent(name)}/download`}}
-function fav(n){favorites.has(n)?favorites.delete(n):favorites.add(n);localStorage.setItem('egoFavorites',JSON.stringify([...favorites]));render()}
-function rate(name,score){let old=votes[name];let count=old?.count||0,avg=old?.avg||0;let next=old?.myVote?{count,avg:((avg*count)-old.myVote+score)/count,myVote:score}:{count:count+1,avg:(avg*count+score)/(count+1),myVote:score};votes[name]=next;localStorage.setItem('egoRatings',JSON.stringify(votes));toast(`Your rating: ${score}/10`);render()}
-function details(name){let c=commands.find(x=>x.name===name);if(!c)return;let r=rating(c);$('detailContent').innerHTML=`<small>/ MODULE DETAILS</small><h2>${esc(c.name)}</h2><p>${esc(c.description||'No description')}</p><p class="rating-large">⭐ ${ratingLabel(c)} <small>${r?`${r.count} rating(s) from this browser`:'No ratings yet'}</small></p><p>Category: ${esc(c.category||'Utility')} · Author: ${esc(c.author||'Unknown')} · Downloads: ${fmt(c.downloads)}</p><div class="rate-row">Rate it: ${[2,4,6,8,10].map(n=>`<button data-modal-rate="${n}">${n}/10</button>`).join('')}</div><button class="primary full" id="detailDownload">DOWNLOAD MODULE ↓</button>`;$('detailContent').querySelectorAll('[data-modal-rate]').forEach(b=>b.onclick=()=>rate(name,+b.dataset.modalRate));$('detailDownload').onclick=()=>download(name);$('detailDialog').showModal()}
-async function del(name){if(!confirm(`Delete ${name}?`))return;try{let r=await fetch(`/api/commands/${encodeURIComponent(name)}`,{method:'DELETE',headers:{'x-admin-key':adminKey}}),d=await r.json();if(!r.ok)throw Error(d.error||'Delete failed');toast('Deleted');load()}catch(e){toast(e.message)}}
-$('search').oninput=()=>{page=9;render()};$('sort').onchange=render;$('clearSearch').onclick=()=>{$('search').value='';render()};$('filters').querySelectorAll('[data-cat]').forEach(b=>b.onclick=()=>{cat=b.dataset.cat;$('filters').querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));page=9;render()});$('loadMore').onclick=()=>{page+=9;render()};$('year').textContent=new Date().getFullYear();
-function openUpload(){ $('uploadDialog').showModal() }$('openUpload').onclick=$('promoUpload').onclick=$('navUpload').onclick=e=>{e.preventDefault();openUpload()};$('adminBtn').onclick=()=>{$('adminAccessKey').value=adminKey;$('adminDialog').showModal();$('adminTools').hidden=!adminKey};document.querySelectorAll('[data-close]').forEach(b=>b.onclick=()=>$(b.dataset.close).close());$('adminForm').onsubmit=e=>{e.preventDefault();adminKey=$('adminAccessKey').value;sessionStorage.setItem('egoAdminKey',adminKey);$('adminStatus').textContent='Admin key stored for this session';$('adminTools').hidden=false;render()};$('lockAdmin').onclick=()=>{adminKey='';sessionStorage.removeItem('egoAdminKey');$('adminTools').hidden=true;render();toast('Admin locked')};$('uploadForm').onsubmit=async e=>{e.preventDefault();let fd=new FormData(e.currentTarget),key=$('adminKey').value,btn=$('publishBtn');btn.disabled=true;$('uploadProgress').classList.add('show');try{let r=await fetch('/api/commands',{method:'POST',headers:{'x-admin-key':key},body:fd}),d=await r.json();if(!r.ok)throw Error(d.error||'Upload failed');$('uploadStatus').textContent='✓ Uploaded successfully';adminKey=key;sessionStorage.setItem('egoAdminKey',key);await load();setTimeout(()=>{$('uploadDialog').close();e.currentTarget.reset();$('fileName').textContent='Choose .js file';$('uploadProgress').classList.remove('show');btn.disabled=false},900)}catch(err){$('uploadStatus').textContent='⚠ '+err.message;$('uploadProgress').classList.remove('show');btn.disabled=false}};document.querySelector('[name=file]').onchange=e=>$('fileName').textContent=e.target.files[0]?.name||'Choose .js file';
-load();window.addEventListener('load',()=>setTimeout(()=>$('loader').classList.add('hide'),700));
+
+const express = require("express");
+const multer = require("multer");
+const fs = require("fs");
+const path = require("path");
+const crypto = require("crypto");
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+const ADMIN_KEY = process.env.ADMIN_KEY || "CHANGE_THIS_ADMIN_KEY";
+
+const ROOT = __dirname;
+const DATA = path.join(ROOT, "data");
+const COMMANDS = path.join(ROOT, "commands");
+const DB = path.join(DATA, "commands.json");
+
+for (const dir of [DATA, COMMANDS]) {
+  fs.mkdirSync(dir, { recursive: true });
+}
+
+if (!fs.existsSync(DB)) {
+  fs.writeFileSync(DB, "[]");
+}
+
+app.use(express.json({ limit: "2mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(ROOT));
+
+function readDB() {
+  try {
+    return JSON.parse(fs.readFileSync(DB, "utf8"));
+  } catch {
+    return [];
+  }
+}
+
+function saveDB(data) {
+  fs.writeFileSync(DB, JSON.stringify(data, null, 2));
+}
+
+function admin(req, res, next) {
+  const key = req.headers["x-admin-key"] || req.body.adminKey;
+
+  if (!key || key !== ADMIN_KEY) {
+    return res.status(401).json({
+      success: false,
+      message: "Invalid admin key"
+    });
+  }
+
+  next();
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, COMMANDS),
+
+  filename: (req, file, cb) => {
+    const safeName = path.basename(file.originalname)
+      .replace(/[^a-zA-Z0-9._-]/g, "_");
+
+    cb(null, crypto.randomUUID() + "-" + safeName);
+  }
+});
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    if (!file.originalname.endsWith(".js")) {
+      return cb(new Error("Only .js command files are allowed"));
+    }
+    cb(null, true);
+  }
+});
+
+app.get("/api/status", (req, res) => {
+  res.json({
+    success: true,
+    name: "EGO GOATSTORE",
+    status: "ONLINE",
+    version: "2.0"
+  });
+});
+
+app.get("/api/commands", (req, res) => {
+  const commands = readDB().map(({ file, ...item }) => item);
+
+  res.json({
+    success: true,
+    total: commands.length,
+    commands
+  });
+});
+
+app.get("/api/commands/:id", (req, res) => {
+  const command = readDB().find(x => x.id === req.params.id);
+
+  if (!command) {
+    return res.status(404).json({
+      success: false,
+      message: "Command not found"
+    });
+  }
+
+  const { file, ...safeCommand } = command;
+  res.json({ success: true, command: safeCommand });
+});
+
+app.post("/api/upload", admin, upload.single("file"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({
+      success: false,
+      message: "Select a JS file"
+    });
+  }
+
+  const name = String(req.body.name || path.basename(req.file.originalname, ".js"))
+    .slice(0, 60);
+
+  const command = {
+    id: crypto.randomUUID(),
+    name,
+    description: String(req.body.description || "EGO GOATSTORE command").slice(0, 300),
+    category: String(req.body.category || "utility").slice(0, 40),
+    author: "EGO",
+    file: req.file.filename,
+    downloads: 0,
+    createdAt: new Date().toISOString()
+  };
+
+  const commands = readDB();
+  commands.unshift(command);
+  saveDB(commands);
+
+  const { file, ...safeCommand } = command;
+
+  res.json({
+    success: true,
+    message: "Command uploaded successfully",
+    command: safeCommand
+  });
+});
+
+app.get("/api/install/:id", (req, res) => {
+  const commands = readDB();
+  const index = commands.findIndex(x => x.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      message: "Command not found"
+    });
+  }
+
+  const command = commands[index];
+  const filePath = path.join(COMMANDS, path.basename(command.file));
+
+  if (!fs.existsSync(filePath)) {
+    return res.status(404).json({
+      success: false,
+      message: "Command file missing"
+    });
+  }
+
+  command.downloads = (command.downloads || 0) + 1;
+  saveDB(commands);
+
+  res.download(filePath, path.basename(command.file).replace(/^[^-]+-/, ""));
+});
+
+app.delete("/api/commands/:id", admin, (req, res) => {
+  const commands = readDB();
+  const index = commands.findIndex(x => x.id === req.params.id);
+
+  if (index === -1) {
+    return res.status(404).json({
+      success: false,
+      message: "Command not found"
+    });
+  }
+
+  const command = commands[index];
+  const filePath = path.join(COMMANDS, path.basename(command.file));
+
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
+
+  commands.splice(index, 1);
+  saveDB(commands);
+
+  res.json({
+    success: true,
+    message: "Command deleted"
+  });
+});
+
+app.use((err, req, res, next) => {
+  res.status(400).json({
+    success: false,
+    message: err.message || "Request failed"
+  });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(ROOT, "index.html"));
+});
+
+app.listen(PORT, () => {
+  console.log("================================");
+  console.log(" EGO GOATSTORE ONLINE");
+  console.log(" PORT: " + PORT);
+  console.log("================================");
+});
