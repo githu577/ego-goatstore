@@ -1,605 +1,145 @@
-
-(() => {
-"use strict";
-
-const $ = id => document.getElementById(id);
-const API_DEFAULT = "";
-
-let apiBase = localStorage.getItem("egoApiBase") || API_DEFAULT;
-let items = [];
-let category = "all";
-let pageSize = 9;
-let adminKey = sessionStorage.getItem("egoAdminKey") || "";
-let toastTimer, fileText = "", selectedFileName = "";
-
-const favorites = new Set(
-  JSON.parse(localStorage.getItem("egoFavorites") || "[]")
-);
-
-const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({
-  "&":"&amp;",
-  "<":"&lt;",
-  ">":"&gt;",
-  '"':"&quot;",
-  "'":"&#39;"
-}[c]));
-
-const fmt = n => Number(n || 0).toLocaleString();
-
-const api = path => (apiBase.replace(/\/+$/,"") + path);
-
-function toast(msg) {
-  $("toast").textContent = msg;
-  $("toast").classList.add("show");
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(
-    () => $("toast").classList.remove("show"),
-    2600
-  );
+:root{
+  --abyss:#030712; --deep:#08123a; --flame:#2f7bff; --cyan:#6fe3ff; --ice:#e8f4ff; --violet:#7a5cff;
+  --line:rgba(111,227,255,.2);
 }
-
-function versionCompare(a,b) {
-  return String(a||"0").localeCompare(
-    String(b||"0"),
-    undefined,
-    {numeric:true,sensitivity:"base"}
-  );
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Outfit',system-ui,sans-serif;color:var(--ice);min-height:100vh;overflow-x:hidden;
+  background:radial-gradient(ellipse at 50% 115%,#0d33a0 0%,var(--deep) 38%,var(--abyss) 80%);
 }
+#fire{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
 
-function getCategory(c) {
-  return String(c.category||"Other").trim()||"Other";
+/* batasher dagh */
+.gusts{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden}
+.gusts i{
+  position:absolute;left:-40%;height:2px;width:35%;border-radius:2px;
+  background:linear-gradient(90deg,transparent,rgba(111,227,255,.55),transparent);
+  animation:gust 6s linear infinite;
 }
+.gusts i:nth-child(1){top:14%;animation-duration:5s}
+.gusts i:nth-child(2){top:32%;animation-duration:7s;animation-delay:1.5s;width:50%}
+.gusts i:nth-child(3){top:55%;animation-duration:6s;animation-delay:3s}
+.gusts i:nth-child(4){top:72%;animation-duration:8s;animation-delay:.8s;width:42%}
+.gusts i:nth-child(5){top:88%;animation-duration:5.5s;animation-delay:2.4s}
+@keyframes gust{to{transform:translateX(420%)}}
 
-function setApiStatus(state) {
-  const pill = $("apiStatus").parentElement;
-  $("apiStatus").textContent = state;
-  pill.classList.toggle("online",state==="ONLINE");
-  pill.classList.toggle("offline",state==="OFFLINE");
+.hero,main{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:0 20px}
+.hero{padding-top:44px;padding-bottom:22px;text-align:center}
+
+/* ---- Ego GoatStore bishal nam ---- */
+.logo{
+  font-family:'Rubik Mono One',sans-serif;font-weight:400;line-height:1.1;
+  letter-spacing:-.02em;font-size:clamp(1.5rem,7.4vw,6.2rem);
+  transform:skewX(-8deg);
+  background:linear-gradient(180deg,#fff 0%,var(--cyan) 30%,var(--flame) 68%,var(--violet) 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 0 18px rgba(47,123,255,.75)) drop-shadow(0 0 50px rgba(111,227,255,.4));
+  animation:flicker 3s ease-in-out infinite;
 }
-
-function updateStats() {
-  $("statCommands").textContent = fmt(items.length);
-  $("heroCount").textContent = fmt(items.length);
-
-  $("statDownloads").textContent = fmt(
-    items.reduce(
-      (s,c) => s + Number(c.downloads||c.downloadCount||0),
-      0
-    )
-  );
-
-  $("statAuthors").textContent = fmt(
-    new Set(
-      items.map(c => String(c.author||"unknown").toLowerCase())
-    ).size
-  );
+@keyframes flicker{
+  0%,100%{filter:drop-shadow(0 0 18px rgba(47,123,255,.75)) drop-shadow(0 0 50px rgba(111,227,255,.4))}
+  45%{filter:drop-shadow(0 0 28px rgba(47,123,255,1)) drop-shadow(0 0 80px rgba(111,227,255,.6))}
+  62%{filter:drop-shadow(0 0 14px rgba(47,123,255,.6)) drop-shadow(0 0 38px rgba(111,227,255,.3))}
 }
-
-function categories() {
-  const cats = [
-    ...new Set(items.map(getCategory))
-  ].sort((a,b) => a.localeCompare(b));
-
-  const bar = $("categoryBar");
-
-  bar.innerHTML =
-    '<button class="category '+(category==="all"?"active":"")+'" data-category="all">ALL MODULES</button>' +
-    cats.map(c =>
-      `<button class="category ${category.toLowerCase()===c.toLowerCase()?"active":""}" data-category="${esc(c)}">${esc(c.toUpperCase())}</button>`
-    ).join('');
-
-  bar.querySelectorAll("button").forEach(b => {
-    b.onclick = () => {
-      category = b.dataset.category;
-      pageSize = 9;
-      categories();
-      render();
-    };
-  });
+.flamebar{
+  height:6px;width:min(560px,80%);margin:14px auto 0;border-radius:6px;transform:skewX(-8deg);
+  background:linear-gradient(90deg,var(--violet),var(--flame),var(--cyan),var(--flame),var(--violet));
+  background-size:200% 100%;animation:slide 3s linear infinite;
+  box-shadow:0 0 24px rgba(47,123,255,.9);
 }
+@keyframes slide{to{background-position:200% 0}}
+.tag{max-width:46ch;margin:20px auto 26px;color:#b9d2f5;font-size:1.05rem;line-height:1.5}
 
-function filtered() {
-  const q = $("search").value.trim().toLowerCase();
-
-  let a = items.filter(c =>
-    (category==="all" ||
-      getCategory(c).toLowerCase()===category.toLowerCase()) &&
-    (!q ||
-      [c.name,c.description,c.author,c.category,c.version]
-        .join(" ")
-        .toLowerCase()
-        .includes(q))
-  );
-
-  const sort = $("sort").value;
-
-  if(sort==="az") {
-    a.sort((x,y) => String(x.name).localeCompare(String(y.name)));
-  }
-  else if(sort==="version") {
-    a.sort((x,y) => versionCompare(y.version,x.version));
-  }
-  else {
-    a.sort((x,y) =>
-      String(y.createdAt||"").localeCompare(String(x.createdAt||""))
-    );
-  }
-
-  return a;
+.tools{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+#search{
+  flex:1 1 240px;max-width:380px;padding:13px 18px;border-radius:14px;border:1px solid var(--line);
+  background:rgba(8,18,58,.72);color:var(--ice);font:inherit;backdrop-filter:blur(8px);
 }
-
-function card(c) {
-  const id = String(c.id??c.name);
-
-  return `
-  <article class="command-card">
-    <div class="card-top">
-      <span class="cat-badge">${esc(getCategory(c))}</span>
-      <span class="download-count">↓ ${fmt(c.downloads||c.downloadCount)}</span>
-    </div>
-
-    <h3>${esc(c.name||"Unnamed command")}</h3>
-
-    <p class="description">
-      ${esc(c.description||"Community GoatBot module.")}
-    </p>
-
-    <div class="card-meta">
-      <span class="meta-pill">
-        VERSION <strong>${esc(c.version||"1.0.0")}</strong>
-      </span>
-
-      <span class="meta-pill">
-        BY <strong>${esc(c.author||"Unknown")}</strong>
-      </span>
-    </div>
-
-    <div class="card-buttons">
-      <button class="download" data-download="${esc(id)}">
-        ↓ DOWNLOAD JS
-      </button>
-
-      <button class="copy" data-copy="${esc(id)}">
-        ▣ COPY CODE
-      </button>
-
-      <button class="import" data-import="${esc(id)}">
-        ⇥ IMPORT / COPY
-      </button>
-    </div>
-
-    ${adminKey ? `
-      <div class="admin-actions">
-        <button data-update="${esc(id)}">UPDATE VERSION</button>
-        <button data-delete="${esc(id)}">DELETE</button>
-      </div>
-    ` : ""}
-  </article>`;
+#search:focus,.btn:focus-visible,.chip:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.btn{
+  font:inherit;font-weight:600;cursor:pointer;padding:12px 20px;border-radius:14px;
+  border:1px solid var(--line);background:rgba(8,18,58,.72);color:var(--ice);
+  transition:transform .15s,box-shadow .2s;
 }
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 22px rgba(47,123,255,.6)}
+.btn:active{transform:scale(.97)}
+.btn.solid{background:linear-gradient(135deg,var(--flame),var(--violet));border-color:transparent;color:#fff}
+.btn.danger:hover{box-shadow:0 0 22px rgba(255,90,120,.6)}
 
-function render() {
-  const a = filtered();
-
-  $("resultCount").textContent =
-    `${a.length} MODULE${a.length===1?"":"S"} FOUND`;
-
-  $("commandGrid").innerHTML = a.length
-    ? a.slice(0,pageSize).map(card).join("")
-    : '<div class="empty">No commands found. Try a different category or search.</div>';
-
-  $("loadMore").hidden = a.length<=pageSize;
-
-  updateStats();
-
-  $("commandGrid")
-    .querySelectorAll("[data-download]")
-    .forEach(b => b.onclick = () => download(b.dataset.download));
-
-  $("commandGrid")
-    .querySelectorAll("[data-copy]")
-    .forEach(b => b.onclick = () => copyCode(b.dataset.copy));
-
-  $("commandGrid")
-    .querySelectorAll("[data-import]")
-    .forEach(b => b.onclick = () => importCode(b.dataset.import));
-
-  $("commandGrid")
-    .querySelectorAll("[data-update]")
-    .forEach(b => b.onclick = () => openUpdate(b.dataset.update));
-
-  $("commandGrid")
-    .querySelectorAll("[data-delete]")
-    .forEach(b => b.onclick = () => deleteCommand(b.dataset.delete));
+.chips{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+.chip{
+  font:inherit;cursor:pointer;padding:7px 16px;border-radius:99px;border:1px solid var(--line);
+  background:rgba(8,18,58,.6);color:#b9d2f5;transition:.2s;
 }
+.chip.on{background:var(--flame);color:#fff;border-color:transparent;box-shadow:0 0 18px rgba(47,123,255,.7)}
 
-async function load() {
-  $("commandGrid").innerHTML =
-    '<div class="empty">Connecting to EGO command database…</div>';
-
-  try {
-    const r = await fetch(api("/api/gs/commands"), {
-      cache:"no-store"
-    });
-
-    if(!r.ok) throw new Error("HTTP "+r.status);
-
-    const d = await r.json();
-
-    items = Array.isArray(d)
-      ? d
-      : (d.commands||d.items||[]);
-
-    setApiStatus("ONLINE");
-    categories();
-    render();
-
-  } catch(e) {
-    setApiStatus("OFFLINE");
-
-    $("commandGrid").innerHTML = `
-      <div class="empty">
-        Could not connect to API.<br>
-        <small>${esc(e.message)} · Set API URL in Admin settings.</small>
-      </div>`;
-  }
+.drop{
+  position:relative;margin:8px 0 18px;padding:26px 16px;text-align:center;cursor:pointer;
+  border:2px dashed var(--line);border-radius:20px;color:#8fb0e0;transition:.2s;
+  background:rgba(8,18,58,.45);display:flex;flex-direction:column;gap:6px;
 }
+.drop b{color:var(--ice)}
+.drop.over{border-color:var(--cyan);background:rgba(47,123,255,.16);box-shadow:0 0 40px rgba(47,123,255,.4) inset}
+.bar{height:4px;border-radius:4px;background:rgba(255,255,255,.08);overflow:hidden;opacity:0;transition:opacity .2s}
+.bar.on{opacity:1}
+#bar{height:100%;width:0;background:linear-gradient(90deg,var(--flame),var(--cyan));transition:width .25s}
+.count{color:#8fb0e0;margin-bottom:14px;font-size:.95rem}
 
-function find(id) {
-  return items.find(c => String(c.id??c.name)===String(id))
-    || items.find(c => String(c.name)===String(id));
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding-bottom:90px}
+.card{
+  position:relative;padding:22px;border-radius:22px;border:1px solid var(--line);
+  background:linear-gradient(160deg,rgba(18,40,104,.78),rgba(6,12,32,.88));backdrop-filter:blur(10px);
+  display:flex;flex-direction:column;gap:10px;transition:transform .25s,box-shadow .25s,border-color .25s;
 }
+.card:hover{transform:translateY(-6px);border-color:var(--cyan);box-shadow:0 14px 46px rgba(47,123,255,.45)}
+.card .ico{width:66px;height:66px;filter:drop-shadow(0 0 10px rgba(111,227,255,.75))}
+.card h3{font-family:'Rubik Mono One',sans-serif;font-weight:400;font-size:1.2rem;word-break:break-word}
+.card .cat{font-size:.85rem;color:var(--cyan)}
+.card p{color:#b9d2f5;line-height:1.5;flex:1}
+.mine{position:absolute;top:16px;right:16px;font-size:.75rem;padding:3px 10px;border-radius:99px;background:var(--violet)}
+.row{display:flex;gap:10px}
+.row .btn{flex:1;padding:10px 8px;font-size:.95rem}
 
-async function getCode(c) {
-  const id = encodeURIComponent(c.id??c.name);
-
-  const r = await fetch(
-    api(`/api/gs/commands/${id}/raw`),
-    {cache:"no-store"}
-  );
-
-  if(!r.ok) throw Error("Could not fetch command code");
-
-  return await r.text();
+.modal{position:fixed;inset:0;z-index:10;background:rgba(2,6,20,.8);backdrop-filter:blur(6px);display:grid;place-items:center;padding:16px}
+.modal[hidden]{display:none}
+.sheet{
+  width:min(720px,100%);max-height:88vh;display:flex;flex-direction:column;gap:14px;padding:20px;
+  border-radius:22px;border:1px solid var(--cyan);background:var(--deep);box-shadow:0 0 60px rgba(47,123,255,.5);
+  animation:pop .25s ease-out;
 }
+@keyframes pop{from{transform:scale(.94);opacity:0}}
+.mhead{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.mhead h2{font-family:'Rubik Mono One',sans-serif;font-weight:400;font-size:1.2rem}
+.mhead .btn{padding:8px 14px}
+pre{overflow:auto;padding:14px;border-radius:14px;background:#020617;color:#bfe3ff;font-size:.85rem;line-height:1.5;flex:1}
 
-async function copyCode(id) {
-  const c = find(id);
-  if(!c) return;
-
-  try {
-    const code = await getCode(c);
-    await navigator.clipboard.writeText(code);
-    toast("Copied command code to clipboard ✓");
-  } catch(e) {
-    toast("Copy failed. Try opening Details or Download.");
-  }
+.toast{
+  position:fixed;left:50%;bottom:28px;transform:translate(-50%,140px);z-index:20;
+  padding:12px 22px;border-radius:14px;background:var(--flame);color:#fff;font-weight:600;
+  box-shadow:0 0 30px rgba(47,123,255,.8);transition:transform .3s;max-width:90vw;text-align:center;
 }
+.toast.show{transform:translate(-50%,0)}
+.empty{text-align:center;color:#8fb0e0;padding:40px 0}
 
-async function importCode(id) {
-  const c = find(id);
-  if(!c) return;
+/* ---- live icon animations ---- */
+.ico *{transform-box:fill-box;transform-origin:center}
+.a-flame{animation:sway 1.5s ease-in-out infinite}
+@keyframes sway{0%,100%{transform:scale(1,1) skewX(0)}50%{transform:scale(1.09,.93) skewX(6deg)}}
+.a-bolt{animation:zap 1.8s steps(1) infinite}
+@keyframes zap{0%,100%{opacity:1}8%{opacity:.2}14%{opacity:1}22%{opacity:.4}30%{opacity:1}}
+.a-spin{animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.a-bob{animation:bob 2s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.a-pulse{animation:pulse 1.8s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.14);opacity:.65}}
+.a-wave{animation:wave 2.2s ease-in-out infinite}
+@keyframes wave{0%,100%{transform:translateX(-4px)}50%{transform:translateX(4px)}}
+.a-tilt{animation:tilt 2.4s ease-in-out infinite}
+@keyframes tilt{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+.a-d2{animation-delay:.4s}.a-d3{animation-delay:.8s}
 
-  try {
-    const code = await getCode(c);
-    await navigator.clipboard.writeText(code);
-
-    toast(
-      `Copied ${c.name}. Paste it into your GoatBot commands folder.`
-    );
-  } catch(e) {
-    toast("Import/copy failed. Download the file instead.");
-  }
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
 }
-
-async function download(id) {
-  const c = find(id);
-  if(!c) return;
-
-  try {
-    const code = await getCode(c);
-
-    const blob = new Blob([code], {
-      type:"text/javascript"
-    });
-
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-
-    a.href = url;
-    a.download = (c.name||"command")
-      .replace(/[^a-z0-9_.-]/gi,"_") + ".js";
-
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-
-    URL.revokeObjectURL(url);
-
-    toast("Download started ✓");
-
-  } catch(e) {
-    toast(e.message);
-  }
-}
-
-function openDetails(id) {
-  const c = find(id);
-  if(!c) return;
-
-  getCode(c).then(code => {
-    $("detailBody").innerHTML = `
-      <div class="detail-content">
-        <div class="dialog-kicker">/ MODULE DETAILS</div>
-        <h2>${esc(c.name)}</h2>
-        <p>${esc(c.description||"No description provided.")}</p>
-        <p>
-          Category: <b>${esc(getCategory(c))}</b> ·
-          Version: <b>${esc(c.version||"1.0.0")}</b> ·
-          Author: <b>${esc(c.author||"Unknown")}</b>
-        </p>
-        <pre class="detail-code">${esc(code)}</pre>
-        <div class="detail-buttons">
-          <button class="btn btn-main" id="detailDownload">DOWNLOAD JS</button>
-          <button class="btn btn-ghost" id="detailCopy">COPY CODE</button>
-        </div>
-      </div>`;
-
-    $("detailDialog").showModal();
-
-    $("detailDownload").onclick = () => download(id);
-    $("detailCopy").onclick = () => copyCode(id);
-
-  }).catch(() => toast("Details couldn't load."));
-}
-
-function openUpload() {
-  $("uploadDialog").showModal();
-  $("uploadKey").value = adminKey;
-}
-
-function openUpdate(id) {
-  const c = find(id);
-  if(!c) return;
-
-  toast(
-    "Update endpoint needs backend PUT support. Use upload with the new version for now."
-  );
-
-  openUpload();
-
-  $("uploadForm").elements.name.value = c.name;
-  $("uploadForm").elements.category.value = c.category||"Other";
-  $("uploadForm").elements.version.value = c.version||"1.0.0";
-  $("uploadForm").elements.description.value = c.description||"";
-  $("uploadForm").elements.author.value = c.author||"EGO";
-
-  $("uploadMessage").textContent =
-    "New version draft. Publishing currently adds a new entry; backend update route is not installed yet.";
-}
-
-async function deleteCommand(id) {
-  const c = find(id);
-  if(!c||!adminKey) return;
-
-  if(!confirm(`Delete ${c.name}?`)) return;
-
-  try {
-    const r = await fetch(
-      api(`/api/gs/commands/${encodeURIComponent(c.id)}`),
-      {
-        method:"DELETE",
-        headers:{"x-admin-key":adminKey}
-      }
-    );
-
-    const d = await r.json();
-
-    if(!r.ok) throw Error(d.error||"Delete failed");
-
-    toast("Command deleted");
-    load();
-
-  } catch(e) {
-    toast(e.message);
-  }
-}
-
-$("search").oninput = () => {
-  pageSize = 9;
-  render();
-};
-
-$("sort").onchange = render;
-
-$("clearSearch").onclick = () => {
-  $("search").value="";
-  render();
-};
-
-$("refresh").onclick = load;
-
-$("loadMore").onclick = () => {
-  pageSize += 9;
-  render();
-};
-
-$("year").textContent = new Date().getFullYear();
-
-$("uploadOpen").onclick =
-$("publishOpen").onclick = () => openUpload();
-
-$("adminOpen").onclick = () => {
-  $("adminKey").value = adminKey;
-  $("apiInput").value = apiBase;
-  $("adminUnlocked").hidden = !adminKey;
-  $("adminDialog").showModal();
-};
-
-$("adminForm").onsubmit = e => {
-  e.preventDefault();
-
-  adminKey = $("adminKey").value;
-
-  sessionStorage.setItem("egoAdminKey",adminKey);
-
-  $("adminMessage").textContent =
-    "Admin key saved for this browser session.";
-
-  $("adminUnlocked").hidden = false;
-
-  toast("Admin access unlocked");
-};
-
-$("adminLock").onclick = () => {
-  adminKey = "";
-  sessionStorage.removeItem("egoAdminKey");
-
-  $("adminUnlocked").hidden = true;
-  $("adminMessage").textContent = "Session locked.";
-
-  toast("Admin locked");
-};
-
-$("saveApi").onclick = () => {
-  apiBase = $("apiInput").value.trim().replace(/\/+$/,"");
-
-  localStorage.setItem("egoApiBase",apiBase);
-
-  $("adminDialog").close();
-
-  load();
-
-  toast("API address saved");
-};
-
-document.querySelectorAll("[data-close]").forEach(b => {
-  b.onclick = () => $(b.dataset.close).close();
-});
-
-$("categorySelect").onchange = () => {
-  $("customCategory").hidden =
-    $("categorySelect").value!=="__custom";
-
-  if(!$("customCategory").hidden)
-    $("customCategory").focus();
-};
-
-$("commandFile").onchange = async e => {
-  const f = e.target.files?.[0];
-
-  selectedFileName = f?.name||"";
-
-  $("fileLabel").textContent =
-    selectedFileName||"＋ Choose command file";
-
-  fileText = f ? await f.text() : "";
-};
-
-$("uploadForm").onsubmit = async e => {
-  e.preventDefault();
-
-  const form = e.currentTarget;
-  const btn = $("submitUpload");
-
-  const categoryValue =
-    $("categorySelect").value==="__custom"
-      ? $("customCategory").value.trim()
-      : $("categorySelect").value;
-
-  if(!categoryValue) {
-    toast("Please enter a category.");
-    return;
-  }
-
-  if(!fileText) {
-    toast("Choose a .js file first.");
-    return;
-  }
-
-  const name = form.elements.name.value.trim();
-  const version = form.elements.version.value.trim()||"1.0.0";
-
-  btn.disabled = true;
-
-  $("uploadProgress").classList.add("show");
-  $("uploadMessage").textContent = "Uploading…";
-
-  try {
-    const payload = {
-      name,
-      category:categoryValue,
-      version,
-      description:form.elements.description.value,
-      author:form.elements.author.value||"EGO",
-      code:fileText
-    };
-
-    const r = await fetch(api("/api/gs/commands"), {
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json",
-        "x-admin-key":$("uploadKey").value
-      },
-      body:JSON.stringify(payload)
-    });
-
-    const d = await r.json();
-
-    if(!r.ok) throw Error(d.error||"Upload failed");
-
-    adminKey = $("uploadKey").value;
-
-    sessionStorage.setItem("egoAdminKey",adminKey);
-
-    $("uploadMessage").textContent =
-      "✓ Published successfully!";
-
-    toast("Command published ✓");
-
-    await load();
-
-    setTimeout(() => {
-      $("uploadDialog").close();
-
-      form.reset();
-
-      $("fileLabel").textContent = "＋ Choose command file";
-      fileText = "";
-      selectedFileName = "";
-
-      $("customCategory").hidden = true;
-      $("uploadProgress").classList.remove("show");
-      btn.disabled = false;
-
-    },700);
-
-  } catch(err) {
-    $("uploadMessage").textContent = "⚠ "+err.message;
-    $("uploadProgress").classList.remove("show");
-    btn.disabled = false;
-  }
-};
-
-$("menuBtn").onclick = () => {
-  const nav = $(".nav nav");
-
-  nav.style.display =
-    nav.style.display==="flex" ? "none" : "flex";
-
-  nav.style.position = "absolute";
-  nav.style.top = "66px";
-  nav.style.right = "12px";
-  nav.style.padding = "15px";
-  nav.style.background = "#100d20";
-  nav.style.border = "1px solid #39245b";
-  nav.style.borderRadius = "12px";
-  nav.style.flexDirection = "column";
-};
-
-window.addEventListener("load", () => {
-  setTimeout(() => $("boot").classList.add("hide"),550);
-});
-
-load();
-
-})();
