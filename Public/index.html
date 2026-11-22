@@ -3,29 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>GoatStore – GoatBot Command Store</title>
+<title>Ego GoatStore – GoatBot Command Store</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Rubik+Mono+One&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="Style.css">
 </head>
 <body>
 <canvas id="fire" aria-hidden="true"></canvas>
+<div class="gusts" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
 
 <header class="hero">
-  <h1 class="logo">GoatStore</h1>
+  <h1 class="logo">Ego GoatStore</h1>
+  <div class="flamebar" aria-hidden="true"></div>
   <p class="tag">GoatBot-er command gulo ekhane pao. Copy koro, download koro, ba nijer ta upload koro.</p>
   <div class="tools">
     <input id="search" type="search" placeholder="Command khojo…" aria-label="Command khojo">
-    <button id="uploadBtn" class="btn solid">Command upload</button>
+    <button id="uploadBtn" class="btn solid">+ Command upload</button>
     <input id="fileInput" type="file" accept=".js" multiple hidden>
   </div>
+  <div id="chips" class="chips" role="tablist"></div>
 </header>
 
 <main>
-  <div id="drop" class="drop">Ekhane .js file drag kore chhere dao</div>
+  <div id="drop" class="drop">
+    <b>.js file ekhane drag kore chhere dao</b>
+    <span>ba ekhane tap kore file bachho. Ekshathe onek file dewa jay.</span>
+    <div class="bar"><div id="bar"></div></div>
+  </div>
+  <p id="count" class="count"></p>
   <section id="grid" class="grid" aria-live="polite"></section>
   <p id="empty" class="empty" hidden>Kono command pawa jayni. Onno naam diye khojo ba notun file upload koro.</p>
 </main>
+
+<div id="modal" class="modal" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="mhead">
+      <h2 id="mTitle"></h2>
+      <button class="btn" id="mClose" aria-label="Bondho koro">✕</button>
+    </div>
+    <pre id="mCode"></pre>
+    <div class="row">
+      <button class="btn" id="mCopy">Copy</button>
+      <button class="btn solid" id="mDl">Download</button>
+    </div>
+  </div>
+</div>
 
 <div id="toast" class="toast" role="status"></div>
 <script src="App.js"></script>
