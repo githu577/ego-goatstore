@@ -1,350 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ego Goatstore — Premium GoatBot V2 Vault</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
-</head>
-<body>
-  <!-- Colorful Wind Petals & Cyber Particles Canvas -->
-  <canvas id="windPetalsCanvas"></canvas>
-  <div class="obsidian-vignette"></div>
-
-  <!-- Top Navbar -->
-  <header class="navbar">
-    <div class="brand">
-      <span class="premium-badge pulse-icon">💎 100% FREE VIP</span>
-      <h1 class="animated-logo">EGO <span>GOATSTORE</span></h1>
-    </div>
-    <nav class="nav-actions">
-      <button class="btn btn-blue" onclick="openModal('uploadModal')">
-        <span class="anim-icon float-icon">⬆</span> Upload File
-      </button>
-      <button class="btn btn-outline" onclick="openModal('createModal')">
-        <span class="anim-icon spin-icon">⚡</span> Create Script
-      </button>
-    </nav>
-  </header>
-
-  <!-- Hero Section with Animated Anime Girl -->
-  <section class="hero">
-    <div class="hero-content">
-      <div class="attitude-pill">
-        <span class="anim-icon pulse-icon">👑</span> NO LIMITS • PURE ATTITUDE • GOATBOT V2
-      </div>
-      <h2>DOMINATE THE BOT WORLD WITH <span class="animated-logo-sub">EGO GOATSTORE</span></h2>
-      <p>
-        প্রিমিয়াম সব <strong>Script</strong> ও <strong>System</strong> ফাইল এখন একদম ফ্রি! নিজের কোড আপলোড করো, নতুন কমান্ড বানাও, আর এক ক্লিকে Copy বা Download করে বটে বসাও।
-      </p>
-
-      <div class="hero-stats">
-        <div class="stat-box">
-          <strong id="allCount">0</strong>
-          <span><i class="anim-icon">🌐</i> ALL FILES</span>
-        </div>
-        <div class="stat-box">
-          <strong id="scriptCount">0</strong>
-          <span><i class="anim-icon">📜</i> SCRIPTS</span>
-        </div>
-        <div class="stat-box">
-          <strong id="systemCount">0</strong>
-          <span><i class="anim-icon">⚙️</i> SYSTEMS</span>
-        </div>
-      </div>
-    </div>
-
-    <!-- Full Animated Attitude Anime Girl Mascot -->
+<!-- Attitude Lamborghini Supercar Mascot -->
     <div class="anime-showcase">
       <div class="blue-aura"></div>
-      <div class="anime-girl-wrapper">
-        <svg class="anime-girl-svg" viewBox="0 0 360 390" xmlns="http://www.w3.org/2000/svg">
+      <div class="lambo-wrapper">
+        <svg class="lambo-svg" viewBox="0 0 420 230" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="bgHairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#040814" />
-              <stop offset="50%" stop-color="#0b1d47" />
-              <stop offset="100%" stop-color="#0066ff" />
-            </linearGradient>
-            <linearGradient id="frontHairGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#0a1128" />
-              <stop offset="70%" stop-color="#132a63" />
-              <stop offset="100%" stop-color="#00a8ff" />
-            </linearGradient>
-            <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-              <stop offset="0%" stop-color="#ffe7dc" />
-              <stop offset="100%" stop-color="#f7c8b6" />
-            </linearGradient>
-            <linearGradient id="jacketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0c101d" />
-              <stop offset="55%" stop-color="#070a12" />
+            <linearGradient id="lamboBody" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#11192e" />
+              <stop offset="50%" stop-color="#050811" />
               <stop offset="100%" stop-color="#0038a8" />
             </linearGradient>
-            <radialGradient id="animeEyeBlue" cx="50%" cy="50%" r="50%">
+            <linearGradient id="windshieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.55" />
+              <stop offset="50%" stop-color="#040a1a" stop-opacity="0.9" />
+              <stop offset="100%" stop-color="#0051ff" stop-opacity="0.4" />
+            </linearGradient>
+            <radialGradient id="headlightGlow" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#ffffff" />
-              <stop offset="35%" stop-color="#00e1ff" />
-              <stop offset="80%" stop-color="#0051ff" />
-              <stop offset="100%" stop-color="#02081f" />
+              <stop offset="40%" stop-color="#00e1ff" />
+              <stop offset="100%" stop-color="#0051ff" stop-opacity="0" />
             </radialGradient>
-            <filter id="neonBlueGlow" x="-30%" y="-30%" width="160%" height="160%">
-              <feGaussianBlur stdDeviation="4" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
           </defs>
 
-          <!-- Back Flowing Hair (Animated in Wind) -->
-          <g class="hair-back-sway">
-            <path d="M110,95 C55,135 25,215 15,310 C55,285 80,255 95,215 C85,270 70,325 65,375 C110,335 130,280 140,225 Z" fill="url(#bgHairGrad)" />
-            <path d="M245,95 C305,130 335,205 350,295 C310,275 280,245 262,205 C275,260 292,315 300,365 C255,330 232,275 220,220 Z" fill="url(#bgHairGrad)" />
-            <!-- Extra Wind-Blown Blue Hair Strands -->
-            <path d="M250,115 Q325,135 355,180 Q315,165 255,145 Z" fill="#0088ff" opacity="0.85" />
-            <path d="M255,150 Q330,180 352,235 Q310,210 250,180 Z" fill="#00d4ff" opacity="0.75" />
+          <!-- Ground Neon Underglow -->
+          <ellipse cx="210" cy="186" rx="175" ry="14" fill="#00aaff" opacity="0.35" class="underglow-pulse" />
+
+          <!-- Aggressive Rear Wing / Spoiler -->
+          <polygon points="35,98 85,92 92,106 28,108" fill="#060b19" stroke="#00d4ff" stroke-width="2" />
+          <line x1="65" y1="106" x2="72" y2="122" stroke="#00d4ff" stroke-width="3" />
+
+          <!-- Main Sharp Lamborghini Body -->
+          <path d="M25,152 L42,118 L125,112 L185,76 L275,78 L345,116 L396,134 L402,158 L375,168 L45,168 Z"
+                fill="url(#lamboBody)" stroke="#00b7ff" stroke-width="2.4" stroke-linejoin="round" />
+
+          <!-- Tinted Cabin Windshield & Side Window -->
+          <polygon points="145,112 190,82 268,84 316,114" fill="url(#windshieldGrad)" stroke="#00e1ff" stroke-width="1.6" />
+          <line x1="228" y1="83" x2="222" y2="113" stroke="#040814" stroke-width="4" />
+
+          <!-- Sharp Side Air Intake & Attitude Lines -->
+          <polygon points="135,126 195,122 182,154 126,154" fill="#03060f" stroke="#0066ff" stroke-width="1.8" />
+          <line x1="210" y1="138" x2="325" y2="142" stroke="#00d4ff" stroke-width="1.8" opacity="0.8" />
+
+          <!-- Front Splitter -->
+          <polygon points="340,162 406,156 400,169 335,169" fill="#00d4ff" />
+
+          <!-- Y-Shaped Glowing Lamborghini Headlight ("Chok Jolmol Korbe") -->
+          <g class="lambo-eye-flash">
+            <ellipse cx="362" cy="132" rx="34" ry="18" fill="url(#headlightGlow)" />
+            <polyline points="342,126 364,132 384,124" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" />
+            <line x1="364" y1="132" x2="386" y2="137" stroke="#00e1ff" stroke-width="3" stroke-linecap="round" />
           </g>
 
-          <!-- Body / Attitude Techwear Jacket -->
-          <g class="body-breathe">
-            <!-- Shoulders & Jacket -->
-            <path d="M88,265 C95,232 130,222 180,222 C230,222 265,232 272,265 L288,385 L72,385 Z" fill="url(#jacketGrad)" stroke="#00b7ff" stroke-width="2.2" />
-            <!-- High Attitude Collar -->
-            <polygon points="122,215 148,255 132,275 106,232" fill="#090d1a" stroke="#00d4ff" stroke-width="2" />
-            <polygon points="238,215 212,255 228,275 254,232" fill="#090d1a" stroke="#00d4ff" stroke-width="2" />
-            <!-- Glowing Blue Zip & Choker -->
-            <rect x="160" y="198" width="40" height="12" rx="4" fill="#060913" stroke="#00d4ff" stroke-width="1.8" />
-            <circle cx="180" cy="204" r="4" fill="#00e1ff" filter="url(#neonBlueGlow)" />
-            <line x1="180" y1="245" x2="180" y2="385" stroke="#00d4ff" stroke-width="2.5" stroke-dasharray="6 4" />
-            <!-- Chest Neon Emblem -->
-            <polygon points="215,280 232,292 215,308 198,292" fill="none" stroke="#00e1ff" stroke-width="2" filter="url(#neonBlueGlow)" />
+          <!-- Rear Wheel -->
+          <g>
+            <circle cx="96" cy="162" r="32" fill="#05070d" stroke="#00aaff" stroke-width="2.5" />
+            <circle cx="96" cy="162" r="20" fill="#0a1226" stroke="#00d4ff" stroke-width="1.5" />
+            <circle cx="96" cy="162" r="7" fill="#00e1ff" />
           </g>
 
-          <!-- Neck -->
-          <path d="M163,182 L197,182 L201,226 L159,226 Z" fill="url(#skinGrad)" />
-          <path d="M163,182 Q180,196 197,182 L198,195 Q180,206 162,195 Z" fill="#dfa592" opacity="0.55" />
-
-          <!-- Head & Face -->
-          <g class="head-tilt">
-            <path d="M124,115 C124,72 236,72 236,115 C236,158 214,188 180,194 C146,188 124,158 124,115 Z" fill="url(#skinGrad)" />
-
-            <!-- Soft Blush -->
-            <ellipse cx="145" cy="154" rx="11" ry="5" fill="#ff7b9c" opacity="0.35" />
-            <ellipse cx="215" cy="154" rx="11" ry="5" fill="#ff7b9c" opacity="0.35" />
-
-            <!-- Confident Attitude Smirk -->
-            <path d="M170,171 Q182,176 193,168" fill="none" stroke="#b85d52" stroke-width="2.3" stroke-linecap="round" />
-
-            <!-- Nose -->
-            <path d="M179,150 L177,158 L181,160" fill="none" stroke="#d49380" stroke-width="1.8" stroke-linecap="round" />
-
-            <!-- EYES + ANIMATED BLINKING EYELIDS -->
-            <!-- Left Eye -->
-            <g class="eye-group">
-              <ellipse cx="152" cy="138" rx="15" ry="11" fill="#ffffff" />
-              <circle cx="153" cy="138" r="9.5" fill="url(#animeEyeBlue)" />
-              <circle cx="153" cy="138" r="4.2" fill="#030714" />
-              <circle cx="149" cy="134" r="2.8" fill="#ffffff" />
-              <circle cx="156" cy="142" r="1.4" fill="#a8f5ff" />
-              <!-- Upper Lash -->
-              <path d="M135,134 Q152,123 168,135" fill="none" stroke="#060b19" stroke-width="3.5" stroke-linecap="round" />
-              <!-- Blinking Eyelid -->
-              <rect class="eyelid-blink" x="134" y="124" width="36" height="26" rx="6" fill="url(#skinGrad)" />
-            </g>
-
-            <!-- Right Eye -->
-            <g class="eye-group">
-              <ellipse cx="208" cy="138" rx="15" ry="11" fill="#ffffff" />
-              <circle cx="207" cy="138" r="9.5" fill="url(#animeEyeBlue)" />
-              <circle cx="207" cy="138" r="4.2" fill="#030714" />
-              <circle cx="203" cy="134" r="2.8" fill="#ffffff" />
-              <circle cx="210" cy="142" r="1.4" fill="#a8f5ff" />
-              <!-- Upper Lash -->
-              <path d="M192,135 Q208,123 225,134" fill="none" stroke="#060b19" stroke-width="3.5" stroke-linecap="round" />
-              <!-- Blinking Eyelid -->
-              <rect class="eyelid-blink" x="190" y="124" width="36" height="26" rx="6" fill="url(#skinGrad)" />
-            </g>
-
-            <!-- Sharp Attitude Eyebrows -->
-            <path d="M137,121 Q152,118 166,125" fill="none" stroke="#0a1736" stroke-width="2.6" stroke-linecap="round" />
-            <path d="M223,121 Q208,118 194,125" fill="none" stroke="#0a1736" stroke-width="2.6" stroke-linecap="round" />
-
-            <!-- Front Bangs & Wind-Swept Side Locks -->
-            <g class="hair-front-wind">
-              <path d="M116,122 C115,62 245,62 244,122 C234,96 220,88 212,126 C204,98 192,94 182,132 C174,96 162,96 152,128 C142,96 128,96 116,122 Z" fill="url(#frontHairGrad)" />
-              <!-- Side Locks Flowing Right in the Wind -->
-              <path d="M122,108 C110,145 112,190 128,225 C125,185 128,150 135,122 Z" fill="url(#frontHairGrad)" />
-              <path d="M238,108 C258,142 278,180 302,210 C272,190 250,162 232,125 Z" fill="url(#frontHairGrad)" />
-              <!-- Glowing Cyber Hairpin -->
-              <polygon points="218,96 234,92 230,103 215,105" fill="#00e1ff" filter="url(#neonBlueGlow)" />
-            </g>
+          <!-- Front Wheel -->
+          <g>
+            <circle cx="322" cy="162" r="31" fill="#05070d" stroke="#00aaff" stroke-width="2.5" />
+            <circle cx="322" cy="162" r="19" fill="#0a1226" stroke="#00d4ff" stroke-width="1.5" />
+            <circle cx="322" cy="162" r="7" fill="#00e1ff" />
           </g>
         </svg>
       </div>
       <div class="mascot-badge">
-        <span class="anim-icon pulse-icon">💠</span> EGO QUEEN • LIVE AI GUARDIAN
+        <span class="anim-icon pulse-icon">🏎️</span> EGO AVENTADOR • V12 EDITION
       </div>
     </div>
-  </section>
-
-  <!-- 3-Category Filter & Search Bar (1. Script | 2. System | 3. All) -->
-  <section class="controls">
-    <div class="category-bar">
-      <button class="cat-btn active" onclick="setCategory('all', this)">
-        <span class="anim-icon">🌐</span> 3. ALL <small id="tabAllBadge">0</small>
-      </button>
-      <button class="cat-btn" onclick="setCategory('script', this)">
-        <span class="anim-icon">📜</span> 1. SCRIPT <small id="tabScriptBadge">0</small>
-      </button>
-      <button class="cat-btn" onclick="setCategory('system', this)">
-        <span class="anim-icon">⚙️</span> 2. SYSTEM <small id="tabSystemBadge">0</small>
-      </button>
-    </div>
-
-    <div class="search-wrap">
-      <input type="text" id="searchInput" placeholder="🔍 Search command, system file, author..." oninput="renderStore()" />
-    </div>
-  </section>
-
-  <!-- Organized Vault Container -->
-  <main class="vault-container">
-    <!-- CATEGORY 1: SCRIPT VAULT -->
-    <section id="scriptSection" class="vault-section">
-      <div class="section-header">
-        <h3><span class="anim-icon float-icon">📜</span> 1. SCRIPT VAULT <span>(GoatBot V2 Commands)</span></h3>
-        <span class="sec-pill blue-pill">CMD SCRIPTS</span>
-      </div>
-      <div id="scriptGrid" class="command-grid"></div>
-    </section>
-
-    <!-- CATEGORY 2: SYSTEM VAULT -->
-    <section id="systemSection" class="vault-section">
-      <div class="section-header">
-        <h3><span class="anim-icon spin-icon">⚙️</span> 2. SYSTEM VAULT <span>(Core Events, Handlers & Configs)</span></h3>
-        <span class="sec-pill cyan-pill">CORE SYSTEM</span>
-      </div>
-      <div id="systemGrid" class="command-grid"></div>
-    </section>
-  </main>
-
-  <!-- View Code Modal -->
-  <div id="viewModal" class="modal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3 id="viewTitle">command.js</h3>
-        <button class="close-btn" onclick="closeModal('viewModal')">✕</button>
-      </div>
-      <div class="modal-meta" id="viewMeta"></div>
-      <pre><code id="viewCode"></code></pre>
-      <div class="modal-footer">
-        <button class="btn btn-blue" onclick="copyCurrentCode()">
-          <span class="anim-icon">📋</span> Copy Code
-        </button>
-        <button class="btn btn-outline" onclick="downloadCurrentCode()">
-          <span class="anim-icon">⬇</span> Download .js
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Clean Organized Upload Modal -->
-  <div id="uploadModal" class="modal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3><span class="anim-icon float-icon">⬆</span> UPLOAD TO EGO GOATSTORE</h3>
-        <button class="close-btn" onclick="closeModal('uploadModal')">✕</button>
-      </div>
-      <form id="uploadForm" onsubmit="handleUpload(event)">
-        <div class="upload-dropzone" onclick="document.getElementById('jsFileInput').click()">
-          <span class="anim-icon pulse-icon">📂</span>
-          <p id="fileLabelText">Click here to choose a <strong>.js</strong> file (Auto-fills name & code)</p>
-          <input type="file" id="jsFileInput" accept=".js" hidden onchange="loadJsFile(event)" />
-        </div>
-
-        <div class="form-row">
-          <div>
-            <label>File Name (e.g., spin.js)</label>
-            <input type="text" id="upName" required placeholder="e.g., ego.js" />
-          </div>
-          <div>
-            <label>Select Category</label>
-            <select id="upCategory">
-              <option value="script">📜 1. Script (Command)</option>
-              <option value="system">⚙️ 2. System (Core / Event)</option>
-            </select>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div>
-            <label>Author Name</label>
-            <input type="text" id="upAuthor" required placeholder="e.g., MD Hamim" />
-          </div>
-          <div>
-            <label>Short Description</label>
-            <input type="text" id="upDesc" required placeholder="What does this file do?" />
-          </div>
-        </div>
-
-        <label>Code</label>
-        <textarea id="upCode" rows="7" required placeholder="Paste your JavaScript code here..."></textarea>
-
-        <button type="submit" class="btn btn-blue full-btn">
-          <span class="anim-icon">🚀</span> PUBLISH NOW (FREE)
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Create Command Generator Modal -->
-  <div id="createModal" class="modal">
-    <div class="modal-box">
-      <div class="modal-header">
-        <h3><span class="anim-icon spin-icon">⚡</span> INSTANT SCRIPT BUILDER</h3>
-        <button class="close-btn" onclick="closeModal('createModal')">✕</button>
-      </div>
-      <div class="form-row">
-        <div>
-          <label>Command Name</label>
-          <input type="text" id="genName" value="ego" oninput="updateGeneratedCode()" />
-        </div>
-        <div>
-          <label>Category</label>
-          <select id="genCategory" onchange="updateGeneratedCode()">
-            <option value="script">📜 1. Script</option>
-            <option value="system">⚙️ 2. System</option>
-          </select>
-        </div>
-        <div>
-          <label>Author</label>
-          <input type="text" id="genAuthor" value="Ego Goatstore" oninput="updateGeneratedCode()" />
-        </div>
-        <div>
-          <label>Role (0=All, 1=Admin, 2=BotAdmin)</label>
-          <select id="genRole" onchange="updateGeneratedCode()">
-            <option value="0">0 — Everyone</option>
-            <option value="1">1 — Group Admin</option>
-            <option value="2">2 — Bot Admin Only</option>
-          </select>
-        </div>
-      </div>
-
-      <label>Bot Reply Message</label>
-      <input type="text" id="genReply" value="💎 Ego Goatstore — Built with pure attitude!" oninput="updateGeneratedCode()" />
-
-      <label>Live Preview</label>
-      <pre><code id="generatedPreview"></code></pre>
-
-      <div class="modal-footer">
-        <button class="btn btn-outline" onclick="copyGenerated()">📋 Copy</button>
-        <button class="btn btn-outline" onclick="downloadGenerated()">⬇ .js</button>
-        <button class="btn btn-blue" onclick="publishGenerated()">🚀 Publish</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Toast Notification -->
-  <div id="toast" class="toast">Done!</div>
-
-  <script src="app.js"></script>
-</body>
-</html>
