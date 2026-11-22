@@ -1,309 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>GAOTSSTORE — Blue Fire & RGB Edition</title>
-  <!-- Google Fonts & Remix Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GoatStore – GoatBot Command Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="Style.css">
 </head>
 <body>
+<canvas id="fire" aria-hidden="true"></canvas>
 
-  <!-- Live Blue Fire & Wind Background -->
-  <canvas id="blueFireWindCanvas"></canvas>
-  <div class="bg-vignette"></div>
+<header class="hero">
+  <h1 class="logo">GoatStore</h1>
+  <p class="tag">GoatBot-er command gulo ekhane pao. Copy koro, download koro, ba nijer ta upload koro.</p>
+  <div class="tools">
+    <input id="search" type="search" placeholder="Command khojo…" aria-label="Command khojo">
+    <button id="uploadBtn" class="btn solid">Command upload</button>
+    <input id="fileInput" type="file" accept=".js" multiple hidden>
+  </div>
+</header>
 
-  <!-- Top Mobile & Desktop Glass Header -->
-  <header class="rgb-header">
-    <div class="brand">
-      <div class="goat-emblem rgb-border-box">
-        <i class="ri-fire-fill rgb-icon"></i>
-      </div>
-      <div>
-        <h1 class="brand-title">GAOTS<span>STORE</span></h1>
-        <p class="brand-sub">BLUE INFERNO • RGB EDITION</p>
-      </div>
-    </div>
+<main>
+  <div id="drop" class="drop">Ekhane .js file drag kore chhere dao</div>
+  <section id="grid" class="grid" aria-live="polite"></section>
+  <p id="empty" class="empty" hidden>Kono command pawa jayni. Onno naam diye khojo ba notun file upload koro.</p>
+</main>
 
-    <div class="header-actions">
-      <button class="icon-btn rgb-glow-btn" id="windBoostBtn" title="Wind Boost">
-        <i class="ri-windy-line rgb-icon"></i>
-      </button>
-      <button class="icon-btn rgb-glow-btn" id="rgbPulseBtn" title="RGB Overdrive">
-        <i class="ri-flashlight-fill rgb-icon"></i>
-      </button>
-      <button class="icon-btn rgb-glow-btn badge-wrap" title="Cart">
-        <i class="ri-shopping-bag-3-fill rgb-icon"></i>
-        <span class="rgb-badge">3</span>
-      </button>
-    </div>
-  </header>
-
-  <!-- Main Container -->
-  <main class="app-container">
-
-    <!-- Attitude Hero Banner -->
-    <section class="hero-card rgb-card">
-      <div class="hero-tag">
-        <i class="ri-vip-crown-2-fill rgb-icon"></i>
-        <span>G.O.A.T ATTITUDE PROTOCOL</span>
-      </div>
-      <h2 class="hero-heading">RULE THE <span class="blue-flame-text">BLUE STORM</span></h2>
-      <p class="hero-desc">
-        Unmatched speed, live cyber-wind aura, and full-spectrum RGB power built for legends.
-      </p>
-      <div class="hero-cta-row">
-        <button class="primary-rgb-btn">
-          <i class="ri-rocket-2-fill rgb-icon"></i>
-          <span>EXPLORE DROP</span>
-        </button>
-        <button class="secondary-glass-btn" id="toggleAuraBtn">
-          <i class="ri-contrast-drop-2-fill rgb-icon"></i>
-          <span>TURBO WIND</span>
-        </button>
-      </div>
-    </section>
-
-    <!-- Horizontal Swipeable RGB Category Pills (Mobile Friendly) -->
-    <section class="category-strip">
-      <button class="cat-pill active rgb-glow-btn">
-        <i class="ri-apps-2-fill rgb-icon"></i>
-        <span>All Gear</span>
-      </button>
-      <button class="cat-pill rgb-glow-btn">
-        <i class="ri-gamepad-fill rgb-icon"></i>
-        <span>Pro Kits</span>
-      </button>
-      <button class="cat-pill rgb-glow-btn">
-        <i class="ri-t-shirt-air-fill rgb-icon"></i>
-        <span>Drip Wear</span>
-      </button>
-      <button class="cat-pill rgb-glow-btn">
-        <i class="ri-cpu-fill rgb-icon"></i>
-        <span>Cyber Tech</span>
-      </button>
-      <button class="cat-pill rgb-glow-btn">
-        <i class="ri-vip-diamond-fill rgb-icon"></i>
-        <span>VIP Pass</span>
-      </button>
-    </section>
-
-    <!-- Animated RGB Product / Feature Cards -->
-    <section class="cards-grid">
-
-      <article class="store-card rgb-card">
-        <div class="card-top">
-          <span class="card-chip"><i class="ri-fire-line rgb-icon"></i> HOT DROP</span>
-          <button class="mini-icon-btn rgb-glow-btn"><i class="ri-heart-3-fill rgb-icon"></i></button>
-        </div>
-        <div class="card-visual">
-          <div class="visual-orb">
-            <i class="ri-skull-2-fill rgb-icon"></i>
-          </div>
-        </div>
-        <div class="card-info">
-          <h3>PHANTOM GOAT HOODIE</h3>
-          <p>Blue Flame Reactive Weave • Limited Edition</p>
-          <div class="card-footer">
-            <span class="price">$129.00</span>
-            <button class="buy-btn rgb-glow-btn">
-              <i class="ri-add-circle-fill rgb-icon"></i> ADD
-            </button>
-          </div>
-        </div>
-      </article>
-
-      <article class="store-card rgb-card">
-        <div class="card-top">
-          <span class="card-chip"><i class="ri-flashlight-line rgb-icon"></i> RGB SYNC</span>
-          <button class="mini-icon-btn rgb-glow-btn"><i class="ri-heart-3-fill rgb-icon"></i></button>
-        </div>
-        <div class="card-visual">
-          <div class="visual-orb">
-            <i class="ri-headphone-fill rgb-icon"></i>
-          </div>
-        </div>
-        <div class="card-info">
-          <h3>CYBER STORM HEADSET</h3>
-          <p>360° Spatial Bass • Hyper-RGB Halo</p>
-          <div class="card-footer">
-            <span class="price">$189.00</span>
-            <button class="buy-btn rgb-glow-btn">
-              <i class="ri-add-circle-fill rgb-icon"></i> ADD
-            </button>
-          </div>
-        </div>
-      </article>
-
-      <article class="store-card rgb-card">
-        <div class="card-top">
-          <span class="card-chip"><i class="ri-shield-star-fill rgb-icon"></i> ELITE</span>
-          <button class="mini-icon-btn rgb-glow-btn"><i class="ri-heart-3-fill rgb-icon"></i></button>
-        </div>
-        <div class="card-visual">
-          <div class="visual-orb">
-            <i class="ri-sword-fill rgb-icon"></i>
-          </div>
-        </div>
-        <div class="card-info">
-          <h3>BLUE INFERNO PASS</h3>
-          <p>Instant VIP Access • Zero Wait Queue</p>
-          <div class="card-footer">
-            <span class="price">$49.00</span>
-            <button class="buy-btn rgb-glow-btn">
-              <i class="ri-add-circle-fill rgb-icon"></i> ADD
-            </button>
-          </div>
-        </div>
-      </article>
-
-    </section>
-  </main>
-
-  <!-- Floating Mobile Bottom RGB Dock -->
-  <nav class="mobile-rgb-dock">
-    <button class="dock-item active">
-      <i class="ri-home-5-fill rgb-icon"></i>
-      <span>Home</span>
-    </button>
-    <button class="dock-item">
-      <i class="ri-compass-3-fill rgb-icon"></i>
-      <span>Explore</span>
-    </button>
-    <button class="dock-center-orb rgb-glow-btn">
-      <i class="ri-fire-fill rgb-icon"></i>
-    </button>
-    <button class="dock-item">
-      <i class="ri-sparkling-2-fill rgb-icon"></i>
-      <span>Offers</span>
-    </button>
-    <button class="dock-item">
-      <i class="ri-user-star-fill rgb-icon"></i>
-      <span>Profile</span>
-    </button>
-  </nav>
-
-  <!-- Live Blue Fire & Wind Particle Script -->
-  <script>
-    const canvas = document.getElementById("blueFireWindCanvas");
-    const ctx = canvas.getContext("2d");
-
-    let width, height;
-    let windMultiplier = 1;
-    const particles = [];
-    const windStreaks = [];
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resize);
-    resize();
-
-    // Blue Flame Embers
-    for (let i = 0; i < 65; i++) {
-      particles.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        radius: Math.random() * 3.2 + 1,
-        vx: Math.random() * 2.5 + 1.2,
-        vy: -(Math.random() * 2.2 + 0.8),
-        alpha: Math.random() * 0.8 + 0.2,
-        hue: 195 + Math.random() * 30
-      });
-    }
-
-    // Blue Wind Ribbons
-    for (let i = 0; i < 18; i++) {
-      windStreaks.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        len: Math.random() * 140 + 60,
-        speed: Math.random() * 5 + 3,
-        alpha: Math.random() * 0.35 + 0.1
-      });
-    }
-
-    function animate() {
-      ctx.fillStyle = "rgba(3, 8, 20, 0.28)";
-      ctx.fillRect(0, 0, width, height);
-
-      // Draw Sweeping Blue Wind Streaks
-      windStreaks.forEach((w) => {
-        const grad = ctx.createLinearGradient(w.x, w.y, w.x + w.len, w.y - w.len * 0.25);
-        grad.addColorStop(0, "rgba(0, 180, 255, 0)");
-        grad.addColorStop(0.5, `rgba(0, 225, 255, ${w.alpha})`);
-        grad.addColorStop(1, "rgba(0, 110, 255, 0)");
-
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = 2;
-        ctx.beginPath();
-        ctx.moveTo(w.x, w.y);
-        ctx.lineTo(w.x + w.len, w.y - w.len * 0.25);
-        ctx.stroke();
-
-        w.x += w.speed * windMultiplier;
-        w.y -= w.speed * 0.25 * windMultiplier;
-
-        if (w.x > width + 150 || w.y < -100) {
-          w.x = -150;
-          w.y = Math.random() * height + 100;
-        }
-      });
-
-      // Draw Glowing Blue Fire Embers
-      particles.forEach((p) => {
-        ctx.beginPath();
-        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 4);
-        glow.addColorStop(0, `hsla(${p.hue}, 100%, 70%, ${p.alpha})`);
-        glow.addColorStop(0.5, `hsla(${p.hue}, 100%, 50%, ${p.alpha * 0.5})`);
-        glow.addColorStop(1, "rgba(0, 120, 255, 0)");
-
-        ctx.fillStyle = glow;
-        ctx.arc(p.x, p.y, p.radius * 4, 0, Math.PI * 2);
-        ctx.fill();
-
-        p.x += p.vx * windMultiplier;
-        p.y += p.vy * windMultiplier;
-
-        if (p.y < -20 || p.x > width + 20) {
-          p.x = Math.random() * width * 0.8 - 50;
-          p.y = height + 20;
-        }
-      });
-
-      requestAnimationFrame(animate);
-    }
-    animate();
-
-    // Interactive Controls
-    document.getElementById("windBoostBtn").addEventListener("click", () => {
-      windMultiplier = windMultiplier === 1 ? 2.6 : 1;
-    });
-    document.getElementById("toggleAuraBtn").addEventListener("click", () => {
-      windMultiplier = windMultiplier === 1 ? 2.6 : 1;
-    });
-    document.getElementById("rgbPulseBtn").addEventListener("click", () => {
-      document.body.classList.toggle("rgb-overdrive");
-    });
-
-    // Category Pill Active Switch
-    document.querySelectorAll(".cat-pill").forEach((pill) => {
-      pill.addEventListener("click", () => {
-        document.querySelectorAll(".cat-pill").forEach((p) => p.classList.remove("active"));
-        pill.classList.add("active");
-      });
-    });
-
-    // Dock Active Switch
-    document.querySelectorAll(".dock-item").forEach((item) => {
-      item.addEventListener("click", () => {
-        document.querySelectorAll(".dock-item").forEach((i) => i.classList.remove("active"));
-        item.classList.add("active");
-      });
-    });
-  </script>
+<div id="toast" class="toast" role="status"></div>
+<script src="App.js"></script>
 </body>
 </html>
