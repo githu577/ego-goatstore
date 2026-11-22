@@ -1,35 +1,687 @@
-/* Lamborghini Supercar & Sparkling Headlight Animation */
-.lambo-wrapper {
-  animation: lamboIdle 3.2s ease-in-out infinite;
+:root {
+  --bg-obsidian: #04060d;
+  --panel-bg: rgba(9, 14, 28, 0.78);
+  --cyan-glow: #00f0ff;
+  --blue-glow: #0066ff;
+  --crimson-jp: #ff2a6d;
+  --amber-fire: #ff7700;
+  --text-white: #f4f8ff;
+  --text-dim: #9ab0d4;
+  --line-glow: rgba(0, 240, 255, 0.28);
 }
 
-.lambo-svg {
-  width: 360px;
-  max-width: 100%;
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--bg-obsidian);
+  color: var(--text-white);
+  font-family: 'Rajdhani', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Full-Page Animated Japanese Scenery & Sparks Canvas */
+#jpWorldCanvas {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
+}
+
+.jp-atmosphere {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(circle at 80% 15%, rgba(255, 42, 109, 0.14), transparent 42%),
+    radial-gradient(circle at 20% 70%, rgba(0, 102, 255, 0.16), transparent 50%),
+    linear-gradient(180deg, rgba(4, 6, 13, 0.35) 0%, rgba(4, 6, 13, 0.85) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Animated Icons */
+.anim-icon {
+  display: inline-block;
+  font-style: normal;
+  transition: transform 0.25s ease;
+}
+
+.pulse-icon {
+  animation: pulseAnim 1.8s infinite ease-in-out;
+}
+
+.float-icon {
+  animation: floatAnim 2.2s infinite ease-in-out;
+}
+
+.spin-icon {
+  animation: spinAnim 5.5s linear infinite;
+}
+
+button:hover .anim-icon,
+.vault-card:hover .anim-icon {
+  transform: scale(1.25) rotate(-8deg);
+}
+
+@keyframes pulseAnim {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.22); }
+}
+
+@keyframes floatAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+
+@keyframes spinAnim {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Topbar */
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 5%;
+  background: rgba(5, 8, 18, 0.72);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--line-glow);
+  position: sticky;
+  top: 0;
+  z-index: 60;
+}
+
+.top-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.kanji-tag {
+  background: rgba(255, 42, 109, 0.2);
+  border: 1px solid var(--crimson-jp);
+  color: #ff85ad;
+  padding: 3px 9px;
+  border-radius: 5px;
+  font-weight: 700;
+}
+
+.top-title {
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 1.5px;
+  color: var(--cyan-glow);
+  text-shadow: 0 0 12px rgba(0, 240, 255, 0.45);
+}
+
+.top-controls {
+  display: flex;
+  gap: 10px;
+}
+
+/* Gaming Buttons */
+.g-btn {
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  letter-spacing: 0.7px;
+  padding: 9px 16px;
+  border-radius: 7px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.g-btn-primary {
+  background: linear-gradient(135deg, #0055ff, #00e5ff);
+  color: #030610;
+  border: none;
+  box-shadow: 0 0 18px rgba(0, 229, 255, 0.45);
+}
+
+.g-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 26px rgba(0, 240, 255, 0.85);
+}
+
+.g-btn-ghost {
+  background: rgba(0, 102, 255, 0.12);
+  color: var(--cyan-glow);
+  border: 1px solid rgba(0, 240, 255, 0.45);
+}
+
+.g-btn-ghost:hover {
+  background: rgba(0, 240, 255, 0.22);
+  color: #fff;
+}
+
+.full-w {
+  width: 100%;
+  justify-content: center;
+  margin-top: 14px;
+  padding: 12px;
+}
+
+/* =========================================================
+   UPPER SECTION: JAPANESE SCENE + HIGH-SPEED LAMBORGHINI
+   ========================================================= */
+.speedway-hero {
+  position: relative;
+  height: 310px;
+  overflow: hidden;
+  border-bottom: 1px solid var(--line-glow);
+}
+
+.jp-scene-backdrop {
+  position: absolute;
+  inset: 0;
+  animation: backdropDrift 12s ease-in-out infinite alternate;
+}
+
+.jp-landmark-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@keyframes backdropDrift {
+  0% { transform: scale(1.02) translateX(0px); }
+  100% { transform: scale(1.06) translateX(-18px); }
+}
+
+.lambo-sprint-stage {
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 18px;
+  z-index: 5;
+}
+
+.lambo-sprint-car {
+  animation: highSpeedVibrate 0.14s infinite alternate, sprintSurge 4.5s ease-in-out infinite;
+}
+
+.sprint-lambo-svg {
+  width: 440px;
+  max-width: 92vw;
   height: auto;
-  filter: drop-shadow(0 12px 26px rgba(0, 128, 255, 0.5));
+  filter: drop-shadow(0 10px 24px rgba(0, 180, 255, 0.5));
 }
 
-.lambo-eye-flash {
-  animation: headlightSparkle 1.6s ease-in-out infinite alternate;
+/* Rear Fire Jet & Sparkling Headlights */
+.exhaust-fire {
+  transform-origin: 34px 144px;
+  animation: fireJetPulse 0.12s infinite alternate;
 }
 
-.underglow-pulse {
-  animation: underglowBeat 2s ease-in-out infinite alternate;
+.car-headlight-sparkle {
+  animation: lampFlash 1.2s infinite ease-in-out;
 }
 
-@keyframes lamboIdle {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-6px); }
+.wheel-spin {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: wheelRotate 0.35s linear infinite;
 }
 
-@keyframes headlightSparkle {
-  0% { opacity: 0.65; filter: drop-shadow(0 0 6px #0099ff); }
-  50% { opacity: 1; filter: drop-shadow(0 0 22px #00f0ff) drop-shadow(0 0 35px #ffffff); }
-  100% { opacity: 0.8; filter: drop-shadow(0 0 12px #00d4ff); }
+@keyframes highSpeedVibrate {
+  0% { transform: translateY(0px); }
+  100% { transform: translateY(-2.2px); }
 }
 
-@keyframes underglowBeat {
-  from { opacity: 0.22; transform: scaleX(0.95); }
-  to { opacity: 0.52; transform: scaleX(1.05); }
+@keyframes sprintSurge {
+  0%, 100% { transform: translateX(-18px) translateY(0px); }
+  50% { transform: translateX(24px) translateY(-3px); }
+}
+
+@keyframes fireJetPulse {
+  0% { transform: scaleX(0.82); opacity: 0.78; }
+  100% { transform: scaleX(1.22); opacity: 1; }
+}
+
+@keyframes lampFlash {
+  0%, 100% { opacity: 0.75; filter: drop-shadow(0 0 8px #00d4ff); }
+  50% { opacity: 1; filter: drop-shadow(0 0 24px #ffffff) drop-shadow(0 0 36px #00f0ff); }
+}
+
+@keyframes wheelRotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* =========================================================
+   LOWER SECTION: GAMING LIVE FONT "EGO GOATSTORE" + 2-SIDE BAR
+   ========================================================= */
+.gaming-brand-zone {
+  padding: 28px 5% 12px;
+}
+
+.gaming-nameplate {
+  text-align: center;
+  margin-bottom: 22px;
+}
+
+.gaming-sub-tag {
+  display: inline-block;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 2px;
+  color: #ff7aa2;
+  background: rgba(255, 42, 109, 0.14);
+  border: 1px solid rgba(255, 42, 109, 0.45);
+  padding: 4px 14px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
+
+.gaming-live-title {
+  position: relative;
+  display: inline-block;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, #00f0ff, #0077ff, #ff2a6d, #00f0ff);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: gamingFontWave 3s linear infinite, gamingFloat 2.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 18px rgba(0, 229, 255, 0.45));
+}
+
+@keyframes gamingFontWave {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gamingFloat {
+  0%, 100% { transform: translateY(0px) skewX(-6deg); }
+  50% { transform: translateY(-5px) skewX(-6deg); }
+}
+
+/* Two-Column Split Panel */
+.dual-panel {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  background: var(--panel-bg);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--line-glow);
+  border-radius: 12px;
+  padding: 14px 18px;
+}
+
+.panel-left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.cat-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.cat-pill {
+  background: rgba(12, 20, 40, 0.85);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: var(--text-dim);
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 9px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  transition: all 0.2s ease;
+}
+
+.cat-pill span {
+  background: rgba(0, 240, 255, 0.15);
+  color: var(--cyan-glow);
+  padding: 1px 7px;
+  border-radius: 10px;
+  font-size: 0.75rem;
+}
+
+.cat-pill:hover {
+  transform: translateY(-2px);
+  border-color: var(--cyan-glow);
+  color: #fff;
+}
+
+.cat-pill.active {
+  background: linear-gradient(135deg, #0066ff, #00f0ff);
+  color: #030610;
+  border-color: transparent;
+  box-shadow: 0 0 18px rgba(0, 240, 255, 0.5);
+}
+
+.cat-pill.active span {
+  background: rgba(3, 6, 16, 0.28);
+  color: #030610;
+}
+
+.panel-right {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.panel-right input {
+  flex: 1;
+  min-width: 180px;
+  background: rgba(4, 7, 16, 0.9);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #fff;
+  padding: 9px 14px;
+  border-radius: 7px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  outline: none;
+}
+
+.panel-right input:focus {
+  border-color: var(--cyan-glow);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.3);
+}
+
+/* Vault Blocks & Cards */
+.vault-main {
+  padding: 18px 5% 75px;
+  display: flex;
+  flex-direction: column;
+  gap: 36px;
+}
+
+.block-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--line-glow);
+  padding-bottom: 8px;
+  margin-bottom: 18px;
+}
+
+.block-head h2 {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 1.2rem;
+  letter-spacing: 1px;
+}
+
+.block-tag {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.72rem;
+  color: var(--cyan-glow);
+  background: rgba(0, 240, 255, 0.12);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  padding: 3px 10px;
+  border-radius: 5px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+
+.vault-card {
+  background: var(--panel-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0, 240, 255, 0.25);
+  border-radius: 11px;
+  padding: 17px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.vault-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--cyan-glow);
+  box-shadow: 0 10px 26px rgba(0, 140, 255, 0.28);
+}
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.card-filename {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--cyan-glow);
+}
+
+.card-cat-badge {
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  background: rgba(255, 42, 109, 0.2);
+  border: 1px solid var(--crimson-jp);
+  color: #ff94b6;
+}
+
+.card-summary {
+  color: #d7e6ff;
+  font-size: 0.98rem;
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+
+.card-info-box {
+  font-size: 0.84rem;
+  color: var(--text-dim);
+  background: rgba(3, 6, 15, 0.65);
+  padding: 8px 10px;
+  border-radius: 6px;
+  border-left: 3px solid var(--cyan-glow);
+  margin-bottom: 14px;
+}
+
+.card-btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+}
+
+.mini-btn {
+  background: rgba(0, 102, 255, 0.14);
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #fff;
+  padding: 7px 6px;
+  border-radius: 6px;
+  font-family: 'Chakra Petch', sans-serif;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: 0.18s;
+}
+
+.mini-btn:hover {
+  background: linear-gradient(135deg, #0055ff, #00e5ff);
+  color: #030610;
+  font-weight: 700;
+}
+
+/* Modals */
+.modal-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 4, 10, 0.85);
+  backdrop-filter: blur(7px);
+  z-index: 120;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+
+.modal-backdrop.open {
+  display: flex;
+}
+
+.modal-card {
+  background: #080d1c;
+  border: 1px solid var(--cyan-glow);
+  box-shadow: 0 0 36px rgba(0, 229, 255, 0.35);
+  border-radius: 13px;
+  width: 100%;
+  max-width: 640px;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 22px;
+}
+
+.modal-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.modal-top h3 {
+  font-family: 'Chakra Petch', sans-serif;
+  color: var(--cyan-glow);
+}
+
+.close-x {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.3rem;
+  cursor: pointer;
+}
+
+.modal-meta {
+  font-size: 0.88rem;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+}
+
+.drop-box {
+  border: 2px dashed rgba(0, 240, 255, 0.55);
+  background: rgba(0, 102, 255, 0.08);
+  border-radius: 9px;
+  padding: 16px;
+  text-align: center;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+
+.drop-box span {
+  font-size: 1.7rem;
+  display: block;
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+label {
+  display: block;
+  margin: 8px 0 4px;
+  font-weight: 700;
+  color: #d9e8ff;
+}
+
+input[type="text"],
+select,
+textarea {
+  width: 100%;
+  background: #040711;
+  border: 1px solid rgba(0, 240, 255, 0.35);
+  color: #fff;
+  padding: 9px 11px;
+  border-radius: 6px;
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+}
+
+textarea {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.84rem;
+}
+
+pre {
+  background: #03050c;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  padding: 13px;
+  border-radius: 8px;
+  overflow-x: auto;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.84rem;
+  color: #9bf6ff;
+  max-height: 270px;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 14px;
+}
+
+/* Toast */
+.toast-box {
+  position: fixed;
+  bottom: 22px;
+  right: 22px;
+  background: linear-gradient(135deg, #0055ff, #00f0ff);
+  color: #030610;
+  font-family: 'Chakra Petch', sans-serif;
+  font-weight: 700;
+  font-size: 0.82rem;
+  padding: 11px 18px;
+  border-radius: 7px;
+  box-shadow: 0 0 22px rgba(0, 240, 255, 0.75);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: 0.22s ease;
+  pointer-events: none;
+  z-index: 200;
+}
+
+.toast-box.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 860px) {
+  .dual-panel {
+    grid-template-columns: 1fr;
+  }
+  .panel-left,
+  .panel-right {
+    justify-content: flex-start;
+  }
+  .two-col {
+    grid-template-columns: 1fr;
+  }
 }
