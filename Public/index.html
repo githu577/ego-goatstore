@@ -3,144 +3,226 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ego Goatstore — GoatBot V2 Command Vault</title>
+  <title>Ego Goatstore — Premium GoatBot V2 Vault</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;800;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Fire Wind Background Canvas -->
-  <canvas id="fireWindCanvas"></canvas>
-  <div class="hellfire-vignette"></div>
+  <!-- Colorful Wind Petals & Cyber Particles Canvas -->
+  <canvas id="windPetalsCanvas"></canvas>
+  <div class="obsidian-vignette"></div>
 
   <!-- Top Navbar -->
   <header class="navbar">
     <div class="brand">
-      <span class="fire-badge">🔥 100% FREE</span>
-      <h1>EGO <span>GOATSTORE</span></h1>
+      <span class="premium-badge pulse-icon">💎 100% FREE VIP</span>
+      <h1 class="animated-logo">EGO <span>GOATSTORE</span></h1>
     </div>
     <nav class="nav-actions">
-      <button class="btn btn-fire" onclick="openModal('uploadModal')">⬆ Upload .js</button>
-      <button class="btn btn-outline" onclick="openModal('createModal')">⚡ Create Command</button>
+      <button class="btn btn-blue" onclick="openModal('uploadModal')">
+        <span class="anim-icon float-icon">⬆</span> Upload File
+      </button>
+      <button class="btn btn-outline" onclick="openModal('createModal')">
+        <span class="anim-icon spin-icon">⚡</span> Create Script
+      </button>
     </nav>
   </header>
 
-  <!-- Hero Section with Angry Cyber Robot -->
+  <!-- Hero Section with Animated Anime Girl -->
   <section class="hero">
     <div class="hero-content">
-      <div class="attitude-pill">NO MERCY • NO PAYWALL • PURE GOATBOT V2</div>
-      <h2>RULE THE CHAT WITH <span>EGO GOATSTORE</span></h2>
+      <div class="attitude-pill">
+        <span class="anim-icon pulse-icon">👑</span> NO LIMITS • PURE ATTITUDE • GOATBOT V2
+      </div>
+      <h2>DOMINATE THE BOT WORLD WITH <span class="animated-logo-sub">EGO GOATSTORE</span></h2>
       <p>
-        পুরনো ও নতুন সব GoatBot V2 কমান্ড একদম ফ্রি! নিজের কোড আপলোড করো, কাস্টম কমান্ড বানাও, আর এক ক্লিকে Copy বা Download করে বটে বসাও।
+        প্রিমিয়াম সব <strong>Script</strong> ও <strong>System</strong> ফাইল এখন একদম ফ্রি! নিজের কোড আপলোড করো, নতুন কমান্ড বানাও, আর এক ক্লিকে Copy বা Download করে বটে বসাও।
       </p>
+
       <div class="hero-stats">
         <div class="stat-box">
-          <strong id="totalCount">0</strong>
-          <span>TOTAL SCRIPTS</span>
+          <strong id="allCount">0</strong>
+          <span><i class="anim-icon">🌐</i> ALL FILES</span>
         </div>
         <div class="stat-box">
-          <strong id="newCount">0</strong>
-          <span>NEW UPLOADS</span>
+          <strong id="scriptCount">0</strong>
+          <span><i class="anim-icon">📜</i> SCRIPTS</span>
         </div>
         <div class="stat-box">
-          <strong id="oldCount">0</strong>
-          <span>OLD VAULT</span>
+          <strong id="systemCount">0</strong>
+          <span><i class="anim-icon">⚙️</i> SYSTEMS</span>
         </div>
       </div>
     </div>
 
-    <!-- Angry Cyber-Demon Robot SVG -->
-    <div class="robot-showcase">
-      <div class="aura-ring"></div>
-      <svg class="angry-robot" viewBox="0 0 320 340" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
-            <stop offset="0%" stop-color="#ffffff" />
-            <stop offset="35%" stop-color="#ff2a00" />
-            <stop offset="100%" stop-color="#7a0000" stop-opacity="0" />
-          </radialGradient>
-          <linearGradient id="armorMetal" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stop-color="#2b2b30" />
-            <stop offset="50%" stop-color="#141417" />
-            <stop offset="100%" stop-color="#09090b" />
-          </linearGradient>
-          <linearGradient id="fireTrim" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#ff1e00" />
-            <stop offset="50%" stop-color="#ff7b00" />
-            <stop offset="100%" stop-color="#ff1e00" />
-          </linearGradient>
-        </defs>
+    <!-- Full Animated Attitude Anime Girl Mascot -->
+    <div class="anime-showcase">
+      <div class="blue-aura"></div>
+      <div class="anime-girl-wrapper">
+        <svg class="anime-girl-svg" viewBox="0 0 360 390" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="bgHairGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#040814" />
+              <stop offset="50%" stop-color="#0b1d47" />
+              <stop offset="100%" stop-color="#0066ff" />
+            </linearGradient>
+            <linearGradient id="frontHairGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#0a1128" />
+              <stop offset="70%" stop-color="#132a63" />
+              <stop offset="100%" stop-color="#00a8ff" />
+            </linearGradient>
+            <linearGradient id="skinGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+              <stop offset="0%" stop-color="#ffe7dc" />
+              <stop offset="100%" stop-color="#f7c8b6" />
+            </linearGradient>
+            <linearGradient id="jacketGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#0c101d" />
+              <stop offset="55%" stop-color="#070a12" />
+              <stop offset="100%" stop-color="#0038a8" />
+            </linearGradient>
+            <radialGradient id="animeEyeBlue" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="35%" stop-color="#00e1ff" />
+              <stop offset="80%" stop-color="#0051ff" />
+              <stop offset="100%" stop-color="#02081f" />
+            </radialGradient>
+            <filter id="neonBlueGlow" x="-30%" y="-30%" width="160%" height="160%">
+              <feGaussianBlur stdDeviation="4" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
 
-        <!-- Shoulder Spikes -->
-        <polygon points="35,210 10,145 75,185" fill="url(#armorMetal)" stroke="#ff3b00" stroke-width="2.5"/>
-        <polygon points="285,210 310,145 245,185" fill="url(#armorMetal)" stroke="#ff3b00" stroke-width="2.5"/>
+          <!-- Back Flowing Hair (Animated in Wind) -->
+          <g class="hair-back-sway">
+            <path d="M110,95 C55,135 25,215 15,310 C55,285 80,255 95,215 C85,270 70,325 65,375 C110,335 130,280 140,225 Z" fill="url(#bgHairGrad)" />
+            <path d="M245,95 C305,130 335,205 350,295 C310,275 280,245 262,205 C275,260 292,315 300,365 C255,330 232,275 220,220 Z" fill="url(#bgHairGrad)" />
+            <!-- Extra Wind-Blown Blue Hair Strands -->
+            <path d="M250,115 Q325,135 355,180 Q315,165 255,145 Z" fill="#0088ff" opacity="0.85" />
+            <path d="M255,150 Q330,180 352,235 Q310,210 250,180 Z" fill="#00d4ff" opacity="0.75" />
+          </g>
 
-        <!-- Torso -->
-        <path d="M70,195 L250,195 L230,325 L90,325 Z" fill="url(#armorMetal)" stroke="#ff4500" stroke-width="3"/>
-        <!-- Chest Reactor Core -->
-        <polygon points="160,225 190,255 160,295 130,255" fill="#1a0500" stroke="#ff5500" stroke-width="3"/>
-        <polygon points="160,237 178,255 160,282 142,255" fill="url(#fireTrim)"/>
+          <!-- Body / Attitude Techwear Jacket -->
+          <g class="body-breathe">
+            <!-- Shoulders & Jacket -->
+            <path d="M88,265 C95,232 130,222 180,222 C230,222 265,232 272,265 L288,385 L72,385 Z" fill="url(#jacketGrad)" stroke="#00b7ff" stroke-width="2.2" />
+            <!-- High Attitude Collar -->
+            <polygon points="122,215 148,255 132,275 106,232" fill="#090d1a" stroke="#00d4ff" stroke-width="2" />
+            <polygon points="238,215 212,255 228,275 254,232" fill="#090d1a" stroke="#00d4ff" stroke-width="2" />
+            <!-- Glowing Blue Zip & Choker -->
+            <rect x="160" y="198" width="40" height="12" rx="4" fill="#060913" stroke="#00d4ff" stroke-width="1.8" />
+            <circle cx="180" cy="204" r="4" fill="#00e1ff" filter="url(#neonBlueGlow)" />
+            <line x1="180" y1="245" x2="180" y2="385" stroke="#00d4ff" stroke-width="2.5" stroke-dasharray="6 4" />
+            <!-- Chest Neon Emblem -->
+            <polygon points="215,280 232,292 215,308 198,292" fill="none" stroke="#00e1ff" stroke-width="2" filter="url(#neonBlueGlow)" />
+          </g>
 
-        <!-- Neck -->
-        <rect x="132" y="165" width="56" height="32" fill="#0d0d10" stroke="#ff3300" stroke-width="2"/>
+          <!-- Neck -->
+          <path d="M163,182 L197,182 L201,226 L159,226 Z" fill="url(#skinGrad)" />
+          <path d="M163,182 Q180,196 197,182 L198,195 Q180,206 162,195 Z" fill="#dfa592" opacity="0.55" />
 
-        <!-- Devil Cyber Horns -->
-        <path d="M95,95 C60,65 55,30 75,15 C75,45 92,65 112,78 Z" fill="url(#fireTrim)"/>
-        <path d="M225,95 C260,65 265,30 245,15 C245,45 228,65 208,78 Z" fill="url(#fireTrim)"/>
+          <!-- Head & Face -->
+          <g class="head-tilt">
+            <path d="M124,115 C124,72 236,72 236,115 C236,158 214,188 180,194 C146,188 124,158 124,115 Z" fill="url(#skinGrad)" />
 
-        <!-- Helmet / Head -->
-        <polygon points="95,75 225,75 242,135 205,178 115,178 78,135" fill="url(#armorMetal)" stroke="#ff3b00" stroke-width="3"/>
-        <!-- Forehead Crest -->
-        <polygon points="145,65 175,65 165,105 155,105" fill="url(#fireTrim)"/>
+            <!-- Soft Blush -->
+            <ellipse cx="145" cy="154" rx="11" ry="5" fill="#ff7b9c" opacity="0.35" />
+            <ellipse cx="215" cy="154" rx="11" ry="5" fill="#ff7b9c" opacity="0.35" />
 
-        <!-- Furious Brow Plates -->
-        <polygon points="95,106 150,124 148,132 92,116" fill="#ff2a00"/>
-        <polygon points="225,106 170,124 172,132 228,116" fill="#ff2a00"/>
+            <!-- Confident Attitude Smirk -->
+            <path d="M170,171 Q182,176 193,168" fill="none" stroke="#b85d52" stroke-width="2.3" stroke-linecap="round" />
 
-        <!-- Glowing Angry Eyes -->
-        <ellipse cx="125" cy="126" rx="22" ry="11" fill="url(#eyeGlow)"/>
-        <polygon points="108,120 144,130 112,132" fill="#ffffff"/>
-        <ellipse cx="195" cy="126" rx="22" ry="11" fill="url(#eyeGlow)"/>
-        <polygon points="212,120 176,130 208,132" fill="#ffffff"/>
+            <!-- Nose -->
+            <path d="M179,150 L177,158 L181,160" fill="none" stroke="#d49380" stroke-width="1.8" stroke-linecap="round" />
 
-        <!-- Angry Ventilator Jaw / Teeth -->
-        <polygon points="120,148 200,148 190,170 130,170" fill="#0a0a0c" stroke="#ff3b00" stroke-width="2"/>
-        <line x1="136" y1="148" x2="136" y2="170" stroke="#ff4500" stroke-width="3"/>
-        <line x1="152" y1="148" x2="152" y2="170" stroke="#ff4500" stroke-width="3"/>
-        <line x1="168" y1="148" x2="168" y2="170" stroke="#ff4500" stroke-width="3"/>
-        <line x1="184" y1="148" x2="184" y2="170" stroke="#ff4500" stroke-width="3"/>
-      </svg>
-      <div class="robot-tag">EGO OVERLORD MK-IX • GUARDIAN</div>
+            <!-- EYES + ANIMATED BLINKING EYELIDS -->
+            <!-- Left Eye -->
+            <g class="eye-group">
+              <ellipse cx="152" cy="138" rx="15" ry="11" fill="#ffffff" />
+              <circle cx="153" cy="138" r="9.5" fill="url(#animeEyeBlue)" />
+              <circle cx="153" cy="138" r="4.2" fill="#030714" />
+              <circle cx="149" cy="134" r="2.8" fill="#ffffff" />
+              <circle cx="156" cy="142" r="1.4" fill="#a8f5ff" />
+              <!-- Upper Lash -->
+              <path d="M135,134 Q152,123 168,135" fill="none" stroke="#060b19" stroke-width="3.5" stroke-linecap="round" />
+              <!-- Blinking Eyelid -->
+              <rect class="eyelid-blink" x="134" y="124" width="36" height="26" rx="6" fill="url(#skinGrad)" />
+            </g>
+
+            <!-- Right Eye -->
+            <g class="eye-group">
+              <ellipse cx="208" cy="138" rx="15" ry="11" fill="#ffffff" />
+              <circle cx="207" cy="138" r="9.5" fill="url(#animeEyeBlue)" />
+              <circle cx="207" cy="138" r="4.2" fill="#030714" />
+              <circle cx="203" cy="134" r="2.8" fill="#ffffff" />
+              <circle cx="210" cy="142" r="1.4" fill="#a8f5ff" />
+              <!-- Upper Lash -->
+              <path d="M192,135 Q208,123 225,134" fill="none" stroke="#060b19" stroke-width="3.5" stroke-linecap="round" />
+              <!-- Blinking Eyelid -->
+              <rect class="eyelid-blink" x="190" y="124" width="36" height="26" rx="6" fill="url(#skinGrad)" />
+            </g>
+
+            <!-- Sharp Attitude Eyebrows -->
+            <path d="M137,121 Q152,118 166,125" fill="none" stroke="#0a1736" stroke-width="2.6" stroke-linecap="round" />
+            <path d="M223,121 Q208,118 194,125" fill="none" stroke="#0a1736" stroke-width="2.6" stroke-linecap="round" />
+
+            <!-- Front Bangs & Wind-Swept Side Locks -->
+            <g class="hair-front-wind">
+              <path d="M116,122 C115,62 245,62 244,122 C234,96 220,88 212,126 C204,98 192,94 182,132 C174,96 162,96 152,128 C142,96 128,96 116,122 Z" fill="url(#frontHairGrad)" />
+              <!-- Side Locks Flowing Right in the Wind -->
+              <path d="M122,108 C110,145 112,190 128,225 C125,185 128,150 135,122 Z" fill="url(#frontHairGrad)" />
+              <path d="M238,108 C258,142 278,180 302,210 C272,190 250,162 232,125 Z" fill="url(#frontHairGrad)" />
+              <!-- Glowing Cyber Hairpin -->
+              <polygon points="218,96 234,92 230,103 215,105" fill="#00e1ff" filter="url(#neonBlueGlow)" />
+            </g>
+          </g>
+        </svg>
+      </div>
+      <div class="mascot-badge">
+        <span class="anim-icon pulse-icon">💠</span> EGO QUEEN • LIVE AI GUARDIAN
+      </div>
     </div>
   </section>
 
-  <!-- Search & Filter Bar -->
+  <!-- 3-Category Filter & Search Bar (1. Script | 2. System | 3. All) -->
   <section class="controls">
-    <input type="text" id="searchInput" placeholder="🔍 Search command name, author, or description..." oninput="renderCommands()" />
-    <div class="filter-tabs">
-      <button class="tab active" onclick="setFilter('all', this)">ALL COMMANDS</button>
-      <button class="tab" onclick="setFilter('new', this)">🔥 NEW UPLOADS</button>
-      <button class="tab" onclick="setFilter('old', this)">🏛 OLD VAULT</button>
+    <div class="category-bar">
+      <button class="cat-btn active" onclick="setCategory('all', this)">
+        <span class="anim-icon">🌐</span> 3. ALL <small id="tabAllBadge">0</small>
+      </button>
+      <button class="cat-btn" onclick="setCategory('script', this)">
+        <span class="anim-icon">📜</span> 1. SCRIPT <small id="tabScriptBadge">0</small>
+      </button>
+      <button class="cat-btn" onclick="setCategory('system', this)">
+        <span class="anim-icon">⚙️</span> 2. SYSTEM <small id="tabSystemBadge">0</small>
+      </button>
+    </div>
+
+    <div class="search-wrap">
+      <input type="text" id="searchInput" placeholder="🔍 Search command, system file, author..." oninput="renderStore()" />
     </div>
   </section>
 
-  <!-- Main Vault Sections -->
+  <!-- Organized Vault Container -->
   <main class="vault-container">
-    <!-- NEW UPLOADS SECTION -->
-    <section id="newSection" class="vault-section">
+    <!-- CATEGORY 1: SCRIPT VAULT -->
+    <section id="scriptSection" class="vault-section">
       <div class="section-header">
-        <h3>🔥 NEW UPLOADS <span>(নতুন আপলোড ও তৈরি করা কমান্ড)</span></h3>
-        <span class="section-badge new-badge">LIVE & FRESH</span>
+        <h3><span class="anim-icon float-icon">📜</span> 1. SCRIPT VAULT <span>(GoatBot V2 Commands)</span></h3>
+        <span class="sec-pill blue-pill">CMD SCRIPTS</span>
       </div>
-      <div id="newGrid" class="command-grid"></div>
+      <div id="scriptGrid" class="command-grid"></div>
     </section>
 
-    <!-- EXISTING / OLD VAULT SECTION -->
-    <section id="oldSection" class="vault-section">
+    <!-- CATEGORY 2: SYSTEM VAULT -->
+    <section id="systemSection" class="vault-section">
       <div class="section-header">
-        <h3>🏛 EXISTING COMMAND VAULT <span>(আগের সংরক্ষিত কমান্ডসমূহ)</span></h3>
-        <span class="section-badge old-badge">VERIFIED ARCHIVE</span>
+        <h3><span class="anim-icon spin-icon">⚙️</span> 2. SYSTEM VAULT <span>(Core Events, Handlers & Configs)</span></h3>
+        <span class="sec-pill cyan-pill">CORE SYSTEM</span>
       </div>
-      <div id="oldGrid" class="command-grid"></div>
+      <div id="systemGrid" class="command-grid"></div>
     </section>
   </main>
 
@@ -154,42 +236,61 @@
       <div class="modal-meta" id="viewMeta"></div>
       <pre><code id="viewCode"></code></pre>
       <div class="modal-footer">
-        <button class="btn btn-fire" onclick="copyCurrentCode()">📋 Copy Code</button>
-        <button class="btn btn-outline" onclick="downloadCurrentCode()">⬇ Download .js</button>
+        <button class="btn btn-blue" onclick="copyCurrentCode()">
+          <span class="anim-icon">📋</span> Copy Code
+        </button>
+        <button class="btn btn-outline" onclick="downloadCurrentCode()">
+          <span class="anim-icon">⬇</span> Download .js
+        </button>
       </div>
     </div>
   </div>
 
-  <!-- Upload Command Modal -->
+  <!-- Clean Organized Upload Modal -->
   <div id="uploadModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3>⬆ UPLOAD GOATBOT COMMAND</h3>
+        <h3><span class="anim-icon float-icon">⬆</span> UPLOAD TO EGO GOATSTORE</h3>
         <button class="close-btn" onclick="closeModal('uploadModal')">✕</button>
       </div>
       <form id="uploadForm" onsubmit="handleUpload(event)">
-        <label>Select .js File (Optional — auto-fills code)</label>
-        <input type="file" id="jsFileInput" accept=".js" onchange="loadJsFile(event)" />
+        <div class="upload-dropzone" onclick="document.getElementById('jsFileInput').click()">
+          <span class="anim-icon pulse-icon">📂</span>
+          <p id="fileLabelText">Click here to choose a <strong>.js</strong> file (Auto-fills name & code)</p>
+          <input type="file" id="jsFileInput" accept=".js" hidden onchange="loadJsFile(event)" />
+        </div>
 
-        <label>Command File Name (e.g., spin.js)</label>
-        <input type="text" id="upName" required placeholder="e.g., dp.js" />
+        <div class="form-row">
+          <div>
+            <label>File Name (e.g., spin.js)</label>
+            <input type="text" id="upName" required placeholder="e.g., ego.js" />
+          </div>
+          <div>
+            <label>Select Category</label>
+            <select id="upCategory">
+              <option value="script">📜 1. Script (Command)</option>
+              <option value="system">⚙️ 2. System (Core / Event)</option>
+            </select>
+          </div>
+        </div>
 
-        <label>Author / Creator Name</label>
-        <input type="text" id="upAuthor" required placeholder="e.g., MD Hamim" />
+        <div class="form-row">
+          <div>
+            <label>Author Name</label>
+            <input type="text" id="upAuthor" required placeholder="e.g., MD Hamim" />
+          </div>
+          <div>
+            <label>Short Description</label>
+            <input type="text" id="upDesc" required placeholder="What does this file do?" />
+          </div>
+        </div>
 
-        <label>Category</label>
-        <select id="upCategory">
-          <option value="new">🔥 New Upload (নতুন আপলোড)</option>
-          <option value="old">🏛 Old Vault (আগের কমান্ড)</option>
-        </select>
+        <label>Code</label>
+        <textarea id="upCode" rows="7" required placeholder="Paste your JavaScript code here..."></textarea>
 
-        <label>Short Description</label>
-        <input type="text" id="upDesc" required placeholder="What does this command do?" />
-
-        <label>JavaScript Code</label>
-        <textarea id="upCode" rows="8" required placeholder="Paste your GoatBot V2 module.exports code here..."></textarea>
-
-        <button type="submit" class="btn btn-fire full-btn">🔥 PUBLISH TO EGO GOATSTORE</button>
+        <button type="submit" class="btn btn-blue full-btn">
+          <span class="anim-icon">🚀</span> PUBLISH NOW (FREE)
+        </button>
       </form>
     </div>
   </div>
@@ -198,47 +299,51 @@
   <div id="createModal" class="modal">
     <div class="modal-box">
       <div class="modal-header">
-        <h3>⚡ GOATBOT V2 COMMAND BUILDER</h3>
+        <h3><span class="anim-icon spin-icon">⚡</span> INSTANT SCRIPT BUILDER</h3>
         <button class="close-btn" onclick="closeModal('createModal')">✕</button>
       </div>
-      <div class="builder-grid">
+      <div class="form-row">
         <div>
           <label>Command Name</label>
           <input type="text" id="genName" value="ego" oninput="updateGeneratedCode()" />
         </div>
         <div>
-          <label>Author Name</label>
+          <label>Category</label>
+          <select id="genCategory" onchange="updateGeneratedCode()">
+            <option value="script">📜 1. Script</option>
+            <option value="system">⚙️ 2. System</option>
+          </select>
+        </div>
+        <div>
+          <label>Author</label>
           <input type="text" id="genAuthor" value="Ego Goatstore" oninput="updateGeneratedCode()" />
         </div>
         <div>
-          <label>Role (0 = All, 1 = Admin, 2 = Bot Admin)</label>
+          <label>Role (0=All, 1=Admin, 2=BotAdmin)</label>
           <select id="genRole" onchange="updateGeneratedCode()">
             <option value="0">0 — Everyone</option>
             <option value="1">1 — Group Admin</option>
             <option value="2">2 — Bot Admin Only</option>
           </select>
         </div>
-        <div>
-          <label>Cooldown (Seconds)</label>
-          <input type="number" id="genCooldown" value="5" min="0" oninput="updateGeneratedCode()" />
-        </div>
       </div>
-      <label>Bot Reply Message</label>
-      <input type="text" id="genReply" value="🔥 Ego Goatstore is unstoppable!" oninput="updateGeneratedCode()" />
 
-      <label>Live Generated GoatBot V2 Code</label>
+      <label>Bot Reply Message</label>
+      <input type="text" id="genReply" value="💎 Ego Goatstore — Built with pure attitude!" oninput="updateGeneratedCode()" />
+
+      <label>Live Preview</label>
       <pre><code id="generatedPreview"></code></pre>
 
       <div class="modal-footer">
-        <button class="btn btn-outline" onclick="copyGenerated()">📋 Copy Code</button>
-        <button class="btn btn-outline" onclick="downloadGenerated()">⬇ Download .js</button>
-        <button class="btn btn-fire" onclick="publishGenerated()">🚀 Publish to Store</button>
+        <button class="btn btn-outline" onclick="copyGenerated()">📋 Copy</button>
+        <button class="btn btn-outline" onclick="downloadGenerated()">⬇ .js</button>
+        <button class="btn btn-blue" onclick="publishGenerated()">🚀 Publish</button>
       </div>
     </div>
   </div>
 
   <!-- Toast Notification -->
-  <div id="toast" class="toast">Copied!</div>
+  <div id="toast" class="toast">Done!</div>
 
   <script src="app.js"></script>
 </body>
