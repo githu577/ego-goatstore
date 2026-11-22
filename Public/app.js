@@ -1,285 +1,605 @@
-const express = require("express");
-const multer = require("multer");
-const fs = require("fs");
-const path = require("path");
-const crypto = require("crypto");
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+(() => {
+"use strict";
 
-const ALLOWED_CATEGORIES = new Set([
-  "utility", "fun", "media", "ai", "games", "moderation",
-  "economy", "leveling", "anime", "music", "downloader", "image-gen",
-  "image-edit", "canvas", "social", "group", "anti-spam", "nsfw-safe",
-  "search", "weather", "crypto", "education", "translate", "quotes",
-  "romantic", "stickers", "voice", "system", "owner", "vip",
-  "tools", "misc"
-]);
+const $ = id => document.getElementById(id);
+const API_DEFAULT = "";
 
-const ROOT = __dirname;
-const DATA = path.join(ROOT, "data");
-const COMMANDS = path.join(ROOT, "commands");
-const DB = path.join(DATA, "commands.json");
+let apiBase = localStorage.getItem("egoApiBase") || API_DEFAULT;
+let items = [];
+let category = "all";
+let pageSize = 9;
+let adminKey = sessionStorage.getItem("egoAdminKey") || "";
+let toastTimer, fileText = "", selectedFileName = "";
 
-for (const dir of [DATA, COMMANDS]) {
-  fs.mkdirSync(dir, { recursive: true });
+const favorites = new Set(
+  JSON.parse(localStorage.getItem("egoFavorites") || "[]")
+);
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({
+  "&":"&amp;",
+  "<":"&lt;",
+  ">":"&gt;",
+  '"':"&quot;",
+  "'":"&#39;"
+}[c]));
+
+const fmt = n => Number(n || 0).toLocaleString();
+
+const api = path => (apiBase.replace(/\/+$/,"") + path);
+
+function toast(msg) {
+  $("toast").textContent = msg;
+  $("toast").classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(
+    () => $("toast").classList.remove("show"),
+    2600
+  );
 }
 
-if (!fs.existsSync(DB)) {
-  fs.writeFileSync(DB, "[]");
+function versionCompare(a,b) {
+  return String(a||"0").localeCompare(
+    String(b||"0"),
+    undefined,
+    {numeric:true,sensitivity:"base"}
+  );
 }
 
-app.use(express.json({ limit: "2mb" }));
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static(ROOT));
+function getCategory(c) {
+  return String(c.category||"Other").trim()||"Other";
+}
 
-function readDB() {
+function setApiStatus(state) {
+  const pill = $("apiStatus").parentElement;
+  $("apiStatus").textContent = state;
+  pill.classList.toggle("online",state==="ONLINE");
+  pill.classList.toggle("offline",state==="OFFLINE");
+}
+
+function updateStats() {
+  $("statCommands").textContent = fmt(items.length);
+  $("heroCount").textContent = fmt(items.length);
+
+  $("statDownloads").textContent = fmt(
+    items.reduce(
+      (s,c) => s + Number(c.downloads||c.downloadCount||0),
+      0
+    )
+  );
+
+  $("statAuthors").textContent = fmt(
+    new Set(
+      items.map(c => String(c.author||"unknown").toLowerCase())
+    ).size
+  );
+}
+
+function categories() {
+  const cats = [
+    ...new Set(items.map(getCategory))
+  ].sort((a,b) => a.localeCompare(b));
+
+  const bar = $("categoryBar");
+
+  bar.innerHTML =
+    '<button class="category '+(category==="all"?"active":"")+'" data-category="all">ALL MODULES</button>' +
+    cats.map(c =>
+      `<button class="category ${category.toLowerCase()===c.toLowerCase()?"active":""}" data-category="${esc(c)}">${esc(c.toUpperCase())}</button>`
+    ).join('');
+
+  bar.querySelectorAll("button").forEach(b => {
+    b.onclick = () => {
+      category = b.dataset.category;
+      pageSize = 9;
+      categories();
+      render();
+    };
+  });
+}
+
+function filtered() {
+  const q = $("search").value.trim().toLowerCase();
+
+  let a = items.filter(c =>
+    (category==="all" ||
+      getCategory(c).toLowerCase()===category.toLowerCase()) &&
+    (!q ||
+      [c.name,c.description,c.author,c.category,c.version]
+        .join(" ")
+        .toLowerCase()
+        .includes(q))
+  );
+
+  const sort = $("sort").value;
+
+  if(sort==="az") {
+    a.sort((x,y) => String(x.name).localeCompare(String(y.name)));
+  }
+  else if(sort==="version") {
+    a.sort((x,y) => versionCompare(y.version,x.version));
+  }
+  else {
+    a.sort((x,y) =>
+      String(y.createdAt||"").localeCompare(String(x.createdAt||""))
+    );
+  }
+
+  return a;
+}
+
+function card(c) {
+  const id = String(c.id??c.name);
+
+  return `
+  <article class="command-card">
+    <div class="card-top">
+      <span class="cat-badge">${esc(getCategory(c))}</span>
+      <span class="download-count">↓ ${fmt(c.downloads||c.downloadCount)}</span>
+    </div>
+
+    <h3>${esc(c.name||"Unnamed command")}</h3>
+
+    <p class="description">
+      ${esc(c.description||"Community GoatBot module.")}
+    </p>
+
+    <div class="card-meta">
+      <span class="meta-pill">
+        VERSION <strong>${esc(c.version||"1.0.0")}</strong>
+      </span>
+
+      <span class="meta-pill">
+        BY <strong>${esc(c.author||"Unknown")}</strong>
+      </span>
+    </div>
+
+    <div class="card-buttons">
+      <button class="download" data-download="${esc(id)}">
+        ↓ DOWNLOAD JS
+      </button>
+
+      <button class="copy" data-copy="${esc(id)}">
+        ▣ COPY CODE
+      </button>
+
+      <button class="import" data-import="${esc(id)}">
+        ⇥ IMPORT / COPY
+      </button>
+    </div>
+
+    ${adminKey ? `
+      <div class="admin-actions">
+        <button data-update="${esc(id)}">UPDATE VERSION</button>
+        <button data-delete="${esc(id)}">DELETE</button>
+      </div>
+    ` : ""}
+  </article>`;
+}
+
+function render() {
+  const a = filtered();
+
+  $("resultCount").textContent =
+    `${a.length} MODULE${a.length===1?"":"S"} FOUND`;
+
+  $("commandGrid").innerHTML = a.length
+    ? a.slice(0,pageSize).map(card).join("")
+    : '<div class="empty">No commands found. Try a different category or search.</div>';
+
+  $("loadMore").hidden = a.length<=pageSize;
+
+  updateStats();
+
+  $("commandGrid")
+    .querySelectorAll("[data-download]")
+    .forEach(b => b.onclick = () => download(b.dataset.download));
+
+  $("commandGrid")
+    .querySelectorAll("[data-copy]")
+    .forEach(b => b.onclick = () => copyCode(b.dataset.copy));
+
+  $("commandGrid")
+    .querySelectorAll("[data-import]")
+    .forEach(b => b.onclick = () => importCode(b.dataset.import));
+
+  $("commandGrid")
+    .querySelectorAll("[data-update]")
+    .forEach(b => b.onclick = () => openUpdate(b.dataset.update));
+
+  $("commandGrid")
+    .querySelectorAll("[data-delete]")
+    .forEach(b => b.onclick = () => deleteCommand(b.dataset.delete));
+}
+
+async function load() {
+  $("commandGrid").innerHTML =
+    '<div class="empty">Connecting to EGO command database…</div>';
+
   try {
-    return JSON.parse(fs.readFileSync(DB, "utf8"));
-  } catch {
-    return [];
+    const r = await fetch(api("/api/gs/commands"), {
+      cache:"no-store"
+    });
+
+    if(!r.ok) throw new Error("HTTP "+r.status);
+
+    const d = await r.json();
+
+    items = Array.isArray(d)
+      ? d
+      : (d.commands||d.items||[]);
+
+    setApiStatus("ONLINE");
+    categories();
+    render();
+
+  } catch(e) {
+    setApiStatus("OFFLINE");
+
+    $("commandGrid").innerHTML = `
+      <div class="empty">
+        Could not connect to API.<br>
+        <small>${esc(e.message)} · Set API URL in Admin settings.</small>
+      </div>`;
   }
 }
 
-function saveDB(data) {
-  fs.writeFileSync(DB, JSON.stringify(data, null, 2));
+function find(id) {
+  return items.find(c => String(c.id??c.name)===String(id))
+    || items.find(c => String(c.name)===String(id));
 }
 
-function normalizeCategory(rawCat) {
-  const cleaned = String(rawCat || "utility")
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9-]/g, "-");
-  return ALLOWED_CATEGORIES.has(cleaned) ? cleaned : "misc";
+async function getCode(c) {
+  const id = encodeURIComponent(c.id??c.name);
+
+  const r = await fetch(
+    api(`/api/gs/commands/${id}/raw`),
+    {cache:"no-store"}
+  );
+
+  if(!r.ok) throw Error("Could not fetch command code");
+
+  return await r.text();
 }
 
-function generateUnique4DigitUid(existingCommands, requestedUid) {
-  const usedUids = new Set(existingCommands.map(item => String(item.uid || "")));
+async function copyCode(id) {
+  const c = find(id);
+  if(!c) return;
 
-  if (requestedUid && /^\d{4}$/.test(requestedUid)) {
-    if (!usedUids.has(requestedUid)) {
-      return requestedUid;
-    }
+  try {
+    const code = await getCode(c);
+    await navigator.clipboard.writeText(code);
+    toast("Copied command code to clipboard ✓");
+  } catch(e) {
+    toast("Copy failed. Try opening Details or Download.");
   }
-
-  let uid = "";
-  let guard = 0;
-  do {
-    uid = String(Math.floor(1000 + Math.random() * 9000));
-    guard += 1;
-  } while (usedUids.has(uid) && guard < 9000);
-
-  return uid;
 }
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, COMMANDS),
+async function importCode(id) {
+  const c = find(id);
+  if(!c) return;
 
-  filename: (req, file, cb) => {
-    const safeName = path.basename(file.originalname)
-      .replace(/[^a-zA-Z0-9._-]/g, "_");
+  try {
+    const code = await getCode(c);
+    await navigator.clipboard.writeText(code);
 
-    cb(null, crypto.randomUUID() + "-" + safeName);
+    toast(
+      `Copied ${c.name}. Paste it into your GoatBot commands folder.`
+    );
+  } catch(e) {
+    toast("Import/copy failed. Download the file instead.");
   }
-});
-
-const upload = multer({
-  storage,
-  limits: { fileSize: 5 * 1024 * 1024 },
-  fileFilter: (req, file, cb) => {
-    if (!file.originalname.toLowerCase().endsWith(".js")) {
-      return cb(new Error("Only .js command files are allowed"));
-    }
-    cb(null, true);
-  }
-});
-
-app.get("/api/status", (req, res) => {
-  res.json({
-    success: true,
-    name: "EGO GOATSTORE",
-    status: "ONLINE",
-    mode: "FREE_OPEN_HUB",
-    version: "4.0",
-    categoriesCount: ALLOWED_CATEGORIES.size,
-    categories: Array.from(ALLOWED_CATEGORIES)
-  });
-});
-
-app.get("/api/commands", (req, res) => {
-  const rawCommands = readDB();
-  const q = String(req.query.q || "").toLowerCase().trim();
-  const cat = String(req.query.category || "all").toLowerCase().trim();
-
-  const commands = rawCommands
-    .map(({ file, ...item }) => ({
-      ...item,
-      uid: String(item.uid || "").padStart(4, "0").slice(0, 4),
-      category: normalizeCategory(item.category)
-    }))
-    .filter(item => {
-      const catMatch = cat === "all" || item.category === cat;
-      if (!catMatch) return false;
-      if (!q) return true;
-      return (
-        String(item.uid || "").toLowerCase().includes(q) ||
-        String(item.name || "").toLowerCase().includes(q) ||
-        String(item.description || "").toLowerCase().includes(q) ||
-        String(item.category || "").toLowerCase().includes(q) ||
-        String(item.author || "").toLowerCase().includes(q)
-      );
-    });
-
-  res.json({
-    success: true,
-    total: commands.length,
-    categoriesCount: ALLOWED_CATEGORIES.size,
-    commands
-  });
-});
-
-// Direct GoatBot JSON endpoint (returns code + metadata by UID or ID)
-app.get("/api/bot/commands/:uidOrId", (req, res) => {
-  const key = String(req.params.uidOrId || "").trim();
-  const all = readDB();
-  const command = all.find(x => String(x.uid) === key || x.id === key);
-
-  if (!command) {
-    return res.status(404).json({
-      success: false,
-      message: "Command not found for GoatBot"
-    });
-  }
-
-  const filePath = path.join(COMMANDS, path.basename(command.file));
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({
-      success: false,
-      message: "Command script file missing"
-    });
-  }
-
-  const code = fs.readFileSync(filePath, "utf8");
-  const { file, ...safeCommand } = command;
-
-  res.json({
-    success: true,
-    command: safeCommand,
-    fileName: path.basename(command.file).replace(/^[^-]+-/, ""),
-    code
-  });
-});
-
-app.get("/api/commands/:id", (req, res) => {
-  const command = readDB().find(x => x.id === req.params.id || String(x.uid) === req.params.id);
-
-  if (!command) {
-    return res.status(404).json({
-      success: false,
-      message: "Command not found"
-    });
-  }
-
-  const { file, ...safeCommand } = command;
-  res.json({ success: true, command: safeCommand });
-});
-
-// Free Open Command Upload with 4-digit UID
-app.post("/api/upload", upload.single("file"), (req, res) => {
-  if (!req.file) {
-    return res.status(400).json({
-      success: false,
-      message: "Select a .js file"
-    });
-  }
-
-  const commands = readDB();
-  const requestedUid = String(req.body.uid || "").trim();
-  const uid = generateUnique4DigitUid(commands, requestedUid);
-
-  const name = String(req.body.name || path.basename(req.file.originalname, ".js"))
-    .trim()
-    .slice(0, 60) || "command";
-
-  const author = String(req.body.author || "EGO")
-    .trim()
-    .slice(0, 40) || "EGO";
-
-  const command = {
-    id: crypto.randomUUID(),
-    uid,
-    name,
-    description: String(req.body.description || "EGO GOATSTORE GoatBot command").slice(0, 300),
-    category: normalizeCategory(req.body.category),
-    author,
-    file: req.file.filename,
-    downloads: 0,
-    createdAt: new Date().toISOString()
-  };
-
-  commands.unshift(command);
-  saveDB(commands);
-
-  const { file, ...safeCommand } = command;
-
-  res.json({
-    success: true,
-    message: `Uploaded to [${command.category.toUpperCase()}] successfully`,
-    command: safeCommand
-  });
-});
-
-function serveCommandDownload(req, res, matcherFn) {
-  const commands = readDB();
-  const index = commands.findIndex(matcherFn);
-
-  if (index === -1) {
-    return res.status(404).json({
-      success: false,
-      message: "Command not found"
-    });
-  }
-
-  const command = commands[index];
-  const filePath = path.join(COMMANDS, path.basename(command.file));
-
-  if (!fs.existsSync(filePath)) {
-    return res.status(404).json({
-      success: false,
-      message: "Command file missing"
-    });
-  }
-
-  command.downloads = (Number(command.downloads) || 0) + 1;
-  saveDB(commands);
-
-  res.download(filePath, path.basename(command.file).replace(/^[^-]+-/, ""));
 }
 
-app.get("/api/install/uid/:uid", (req, res) => {
-  const targetUid = String(req.params.uid || "").trim();
-  serveCommandDownload(req, res, x => String(x.uid) === targetUid);
+async function download(id) {
+  const c = find(id);
+  if(!c) return;
+
+  try {
+    const code = await getCode(c);
+
+    const blob = new Blob([code], {
+      type:"text/javascript"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = (c.name||"command")
+      .replace(/[^a-z0-9_.-]/gi,"_") + ".js";
+
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+
+    URL.revokeObjectURL(url);
+
+    toast("Download started ✓");
+
+  } catch(e) {
+    toast(e.message);
+  }
+}
+
+function openDetails(id) {
+  const c = find(id);
+  if(!c) return;
+
+  getCode(c).then(code => {
+    $("detailBody").innerHTML = `
+      <div class="detail-content">
+        <div class="dialog-kicker">/ MODULE DETAILS</div>
+        <h2>${esc(c.name)}</h2>
+        <p>${esc(c.description||"No description provided.")}</p>
+        <p>
+          Category: <b>${esc(getCategory(c))}</b> ·
+          Version: <b>${esc(c.version||"1.0.0")}</b> ·
+          Author: <b>${esc(c.author||"Unknown")}</b>
+        </p>
+        <pre class="detail-code">${esc(code)}</pre>
+        <div class="detail-buttons">
+          <button class="btn btn-main" id="detailDownload">DOWNLOAD JS</button>
+          <button class="btn btn-ghost" id="detailCopy">COPY CODE</button>
+        </div>
+      </div>`;
+
+    $("detailDialog").showModal();
+
+    $("detailDownload").onclick = () => download(id);
+    $("detailCopy").onclick = () => copyCode(id);
+
+  }).catch(() => toast("Details couldn't load."));
+}
+
+function openUpload() {
+  $("uploadDialog").showModal();
+  $("uploadKey").value = adminKey;
+}
+
+function openUpdate(id) {
+  const c = find(id);
+  if(!c) return;
+
+  toast(
+    "Update endpoint needs backend PUT support. Use upload with the new version for now."
+  );
+
+  openUpload();
+
+  $("uploadForm").elements.name.value = c.name;
+  $("uploadForm").elements.category.value = c.category||"Other";
+  $("uploadForm").elements.version.value = c.version||"1.0.0";
+  $("uploadForm").elements.description.value = c.description||"";
+  $("uploadForm").elements.author.value = c.author||"EGO";
+
+  $("uploadMessage").textContent =
+    "New version draft. Publishing currently adds a new entry; backend update route is not installed yet.";
+}
+
+async function deleteCommand(id) {
+  const c = find(id);
+  if(!c||!adminKey) return;
+
+  if(!confirm(`Delete ${c.name}?`)) return;
+
+  try {
+    const r = await fetch(
+      api(`/api/gs/commands/${encodeURIComponent(c.id)}`),
+      {
+        method:"DELETE",
+        headers:{"x-admin-key":adminKey}
+      }
+    );
+
+    const d = await r.json();
+
+    if(!r.ok) throw Error(d.error||"Delete failed");
+
+    toast("Command deleted");
+    load();
+
+  } catch(e) {
+    toast(e.message);
+  }
+}
+
+$("search").oninput = () => {
+  pageSize = 9;
+  render();
+};
+
+$("sort").onchange = render;
+
+$("clearSearch").onclick = () => {
+  $("search").value="";
+  render();
+};
+
+$("refresh").onclick = load;
+
+$("loadMore").onclick = () => {
+  pageSize += 9;
+  render();
+};
+
+$("year").textContent = new Date().getFullYear();
+
+$("uploadOpen").onclick =
+$("publishOpen").onclick = () => openUpload();
+
+$("adminOpen").onclick = () => {
+  $("adminKey").value = adminKey;
+  $("apiInput").value = apiBase;
+  $("adminUnlocked").hidden = !adminKey;
+  $("adminDialog").showModal();
+};
+
+$("adminForm").onsubmit = e => {
+  e.preventDefault();
+
+  adminKey = $("adminKey").value;
+
+  sessionStorage.setItem("egoAdminKey",adminKey);
+
+  $("adminMessage").textContent =
+    "Admin key saved for this browser session.";
+
+  $("adminUnlocked").hidden = false;
+
+  toast("Admin access unlocked");
+};
+
+$("adminLock").onclick = () => {
+  adminKey = "";
+  sessionStorage.removeItem("egoAdminKey");
+
+  $("adminUnlocked").hidden = true;
+  $("adminMessage").textContent = "Session locked.";
+
+  toast("Admin locked");
+};
+
+$("saveApi").onclick = () => {
+  apiBase = $("apiInput").value.trim().replace(/\/+$/,"");
+
+  localStorage.setItem("egoApiBase",apiBase);
+
+  $("adminDialog").close();
+
+  load();
+
+  toast("API address saved");
+};
+
+document.querySelectorAll("[data-close]").forEach(b => {
+  b.onclick = () => $(b.dataset.close).close();
 });
 
-app.get("/api/install/:id", (req, res) => {
-  const targetId = String(req.params.id || "").trim();
-  serveCommandDownload(req, res, x => x.id === targetId || String(x.uid) === targetId);
+$("categorySelect").onchange = () => {
+  $("customCategory").hidden =
+    $("categorySelect").value!=="__custom";
+
+  if(!$("customCategory").hidden)
+    $("customCategory").focus();
+};
+
+$("commandFile").onchange = async e => {
+  const f = e.target.files?.[0];
+
+  selectedFileName = f?.name||"";
+
+  $("fileLabel").textContent =
+    selectedFileName||"＋ Choose command file";
+
+  fileText = f ? await f.text() : "";
+};
+
+$("uploadForm").onsubmit = async e => {
+  e.preventDefault();
+
+  const form = e.currentTarget;
+  const btn = $("submitUpload");
+
+  const categoryValue =
+    $("categorySelect").value==="__custom"
+      ? $("customCategory").value.trim()
+      : $("categorySelect").value;
+
+  if(!categoryValue) {
+    toast("Please enter a category.");
+    return;
+  }
+
+  if(!fileText) {
+    toast("Choose a .js file first.");
+    return;
+  }
+
+  const name = form.elements.name.value.trim();
+  const version = form.elements.version.value.trim()||"1.0.0";
+
+  btn.disabled = true;
+
+  $("uploadProgress").classList.add("show");
+  $("uploadMessage").textContent = "Uploading…";
+
+  try {
+    const payload = {
+      name,
+      category:categoryValue,
+      version,
+      description:form.elements.description.value,
+      author:form.elements.author.value||"EGO",
+      code:fileText
+    };
+
+    const r = await fetch(api("/api/gs/commands"), {
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json",
+        "x-admin-key":$("uploadKey").value
+      },
+      body:JSON.stringify(payload)
+    });
+
+    const d = await r.json();
+
+    if(!r.ok) throw Error(d.error||"Upload failed");
+
+    adminKey = $("uploadKey").value;
+
+    sessionStorage.setItem("egoAdminKey",adminKey);
+
+    $("uploadMessage").textContent =
+      "✓ Published successfully!";
+
+    toast("Command published ✓");
+
+    await load();
+
+    setTimeout(() => {
+      $("uploadDialog").close();
+
+      form.reset();
+
+      $("fileLabel").textContent = "＋ Choose command file";
+      fileText = "";
+      selectedFileName = "";
+
+      $("customCategory").hidden = true;
+      $("uploadProgress").classList.remove("show");
+      btn.disabled = false;
+
+    },700);
+
+  } catch(err) {
+    $("uploadMessage").textContent = "⚠ "+err.message;
+    $("uploadProgress").classList.remove("show");
+    btn.disabled = false;
+  }
+};
+
+$("menuBtn").onclick = () => {
+  const nav = $(".nav nav");
+
+  nav.style.display =
+    nav.style.display==="flex" ? "none" : "flex";
+
+  nav.style.position = "absolute";
+  nav.style.top = "66px";
+  nav.style.right = "12px";
+  nav.style.padding = "15px";
+  nav.style.background = "#100d20";
+  nav.style.border = "1px solid #39245b";
+  nav.style.borderRadius = "12px";
+  nav.style.flexDirection = "column";
+};
+
+window.addEventListener("load", () => {
+  setTimeout(() => $("boot").classList.add("hide"),550);
 });
 
-app.use((err, req, res, next) => {
-  res.status(400).json({
-    success: false,
-    message: err.message || "Request failed"
-  });
-});
+load();
 
-app.get("*", (req, res) => {
-  res.sendFile(path.join(ROOT, "index.html"));
-});
-
-app.listen(PORT, () => {
-  console.log("=============================================");
-  console.log(" EGO GOATSTORE ONLINE (FREE + 4-DIGIT UID)");
-  console.log(" PORT: " + PORT);
-  console.log("=============================================");
-});
+})();
