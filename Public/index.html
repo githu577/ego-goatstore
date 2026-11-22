@@ -1,228 +1,309 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#090713">
-  <title>EGO GOATSTORE — Command Intelligence</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Orbitron:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>GAOTSSTORE — Blue Fire & RGB Edition</title>
+  <!-- Google Fonts & Remix Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.2.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="boot" class="boot">
-    <div class="boot-mark">E</div>
-    <div class="boot-title">EGO GOATSTORE</div>
-    <div class="boot-sub">COMMAND INTELLIGENCE / INITIALIZING</div>
-    <div class="boot-track"><i></i></div>
-  </div>
 
-  <div class="ambient" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+  <!-- Live Blue Fire & Wind Background -->
+  <canvas id="blueFireWindCanvas"></canvas>
+  <div class="bg-vignette"></div>
 
-  <header class="nav">
-    <a class="brand" href="#home">
-      <span class="brand-symbol">♛</span>
-      <span><strong>EGO <em>GOATSTORE</em></strong><small>COMMAND INTELLIGENCE</small></span>
-    </a>
-    <nav>
-      <a href="#home" class="active">HOME</a>
-      <a href="#library">COMMANDS</a>
-      <a href="#publish">UPLOAD</a>
-    </nav>
-    <div class="nav-right">
-      <span class="api-pill"><i id="apiDot"></i><span id="apiStatus">CONNECTING</span></span>
-      <button class="admin-btn" id="adminOpen">⌘ ADMIN</button>
-      <button class="menu-btn" id="menuBtn" aria-label="Menu">☰</button>
+  <!-- Top Mobile & Desktop Glass Header -->
+  <header class="rgb-header">
+    <div class="brand">
+      <div class="goat-emblem rgb-border-box">
+        <i class="ri-fire-fill rgb-icon"></i>
+      </div>
+      <div>
+        <h1 class="brand-title">GAOTS<span>STORE</span></h1>
+        <p class="brand-sub">BLUE INFERNO • RGB EDITION</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <button class="icon-btn rgb-glow-btn" id="windBoostBtn" title="Wind Boost">
+        <i class="ri-windy-line rgb-icon"></i>
+      </button>
+      <button class="icon-btn rgb-glow-btn" id="rgbPulseBtn" title="RGB Overdrive">
+        <i class="ri-flashlight-fill rgb-icon"></i>
+      </button>
+      <button class="icon-btn rgb-glow-btn badge-wrap" title="Cart">
+        <i class="ri-shopping-bag-3-fill rgb-icon"></i>
+        <span class="rgb-badge">3</span>
+      </button>
     </div>
   </header>
 
-  <main id="home">
-    <section class="hero">
-      <div class="hero-backdrop"></div>
-      <div class="hero-copy">
-        <div class="kicker"><span class="spark">✦</span> NEXT-GENERATION COMMAND HUB <b>v3.0</b></div>
-        <h1>UPGRADE<br><span>YOUR GOATBOT.</span></h1>
-        <p>Discover powerful modules. Import, copy or download commands.<br>Build your bot with the EGO command network.</p>
-        <div class="hero-cta">
-          <a href="#library" class="btn btn-main">EXPLORE STORE <span>↘</span></a>
-          <button class="btn btn-ghost" id="uploadOpen">＋ UPLOAD COMMAND</button>
-        </div>
-        <div class="hero-trust">
-          <span>● API CONNECTED</span><b>•</b>
-          <span>COMMUNITY MODULES</span><b>•</b>
-          <span>VERSION TRACKING</span>
-        </div>
-      </div>
+  <!-- Main Container -->
+  <main class="app-container">
 
-      <div class="hero-art">
-        <div class="orb"></div>
-        <div class="hero-art-card">
-          <div class="art-corner">EGO / AI CORE</div>
-          <img class="hero-anime" src="anime-live.gif" alt="Animated EGO anime mascot">
-          <div class="robot-fallback">◈</div>
-          <div class="art-caption">SYSTEM<br><b>ONLINE</b></div>
-        </div>
-        <div class="floating-tag tag-one">MODULES <b id="heroCount">—</b></div>
-        <div class="floating-tag tag-two">GOATBOT / READY</div>
+    <!-- Attitude Hero Banner -->
+    <section class="hero-card rgb-card">
+      <div class="hero-tag">
+        <i class="ri-vip-crown-2-fill rgb-icon"></i>
+        <span>G.O.A.T ATTITUDE PROTOCOL</span>
+      </div>
+      <h2 class="hero-heading">RULE THE <span class="blue-flame-text">BLUE STORM</span></h2>
+      <p class="hero-desc">
+        Unmatched speed, live cyber-wind aura, and full-spectrum RGB power built for legends.
+      </p>
+      <div class="hero-cta-row">
+        <button class="primary-rgb-btn">
+          <i class="ri-rocket-2-fill rgb-icon"></i>
+          <span>EXPLORE DROP</span>
+        </button>
+        <button class="secondary-glass-btn" id="toggleAuraBtn">
+          <i class="ri-contrast-drop-2-fill rgb-icon"></i>
+          <span>TURBO WIND</span>
+        </button>
       </div>
     </section>
 
-    <section class="stats">
-      <div class="stat"><span class="stat-icon">⌘</span><div><small>COMMAND MODULES</small><b id="statCommands">—</b></div></div>
-      <div class="stat"><span class="stat-icon">↓</span><div><small>DOWNLOADS</small><b id="statDownloads">—</b></div></div>
-      <div class="stat"><span class="stat-icon">◎</span><div><small>AUTHORS</small><b id="statAuthors">—</b></div></div>
-      <div class="stat"><span class="stat-icon online-icon">●</span><div><small>NETWORK STATUS</small><b class="online-text">ONLINE</b></div></div>
+    <!-- Horizontal Swipeable RGB Category Pills (Mobile Friendly) -->
+    <section class="category-strip">
+      <button class="cat-pill active rgb-glow-btn">
+        <i class="ri-apps-2-fill rgb-icon"></i>
+        <span>All Gear</span>
+      </button>
+      <button class="cat-pill rgb-glow-btn">
+        <i class="ri-gamepad-fill rgb-icon"></i>
+        <span>Pro Kits</span>
+      </button>
+      <button class="cat-pill rgb-glow-btn">
+        <i class="ri-t-shirt-air-fill rgb-icon"></i>
+        <span>Drip Wear</span>
+      </button>
+      <button class="cat-pill rgb-glow-btn">
+        <i class="ri-cpu-fill rgb-icon"></i>
+        <span>Cyber Tech</span>
+      </button>
+      <button class="cat-pill rgb-glow-btn">
+        <i class="ri-vip-diamond-fill rgb-icon"></i>
+        <span>VIP Pass</span>
+      </button>
     </section>
 
-    <section class="library" id="library">
-      <div class="section-heading">
-        <div>
-          <small class="section-kicker">/ MODULE DATABASE</small>
-          <h2>COMMAND <em>LIBRARY</em></h2>
-          <p>Find the command you need. Copy, import or download it.</p>
+    <!-- Animated RGB Product / Feature Cards -->
+    <section class="cards-grid">
+
+      <article class="store-card rgb-card">
+        <div class="card-top">
+          <span class="card-chip"><i class="ri-fire-line rgb-icon"></i> HOT DROP</span>
+          <button class="mini-icon-btn rgb-glow-btn"><i class="ri-heart-3-fill rgb-icon"></i></button>
         </div>
-        <label class="sort-wrap">SORT BY
-          <select id="sort">
-            <option value="new">Latest</option>
-            <option value="az">A–Z</option>
-            <option value="version">Version</option>
-          </select>
-        </label>
-      </div>
-
-      <div class="search-row">
-        <div class="searchbox">
-          <span>⌕</span>
-          <input id="search" type="search" placeholder="Search command, author, category…">
-          <button id="clearSearch" aria-label="Clear search">×</button>
+        <div class="card-visual">
+          <div class="visual-orb">
+            <i class="ri-skull-2-fill rgb-icon"></i>
+          </div>
         </div>
-        <button class="refresh-btn" id="refresh">↻</button>
-      </div>
+        <div class="card-info">
+          <h3>PHANTOM GOAT HOODIE</h3>
+          <p>Blue Flame Reactive Weave • Limited Edition</p>
+          <div class="card-footer">
+            <span class="price">$129.00</span>
+            <button class="buy-btn rgb-glow-btn">
+              <i class="ri-add-circle-fill rgb-icon"></i> ADD
+            </button>
+          </div>
+        </div>
+      </article>
 
-      <div id="categoryBar" class="category-bar">
-        <button class="category active" data-category="all">ALL MODULES</button>
-      </div>
+      <article class="store-card rgb-card">
+        <div class="card-top">
+          <span class="card-chip"><i class="ri-flashlight-line rgb-icon"></i> RGB SYNC</span>
+          <button class="mini-icon-btn rgb-glow-btn"><i class="ri-heart-3-fill rgb-icon"></i></button>
+        </div>
+        <div class="card-visual">
+          <div class="visual-orb">
+            <i class="ri-headphone-fill rgb-icon"></i>
+          </div>
+        </div>
+        <div class="card-info">
+          <h3>CYBER STORM HEADSET</h3>
+          <p>360° Spatial Bass • Hyper-RGB Halo</p>
+          <div class="card-footer">
+            <span class="price">$189.00</span>
+            <button class="buy-btn rgb-glow-btn">
+              <i class="ri-add-circle-fill rgb-icon"></i> ADD
+            </button>
+          </div>
+        </div>
+      </article>
 
-      <div class="result-strip">
-        <span id="resultCount">LOADING COMMANDS…</span>
-        <span>LIVE STORE <i>●</i></span>
-      </div>
+      <article class="store-card rgb-card">
+        <div class="card-top">
+          <span class="card-chip"><i class="ri-shield-star-fill rgb-icon"></i> ELITE</span>
+          <button class="mini-icon-btn rgb-glow-btn"><i class="ri-heart-3-fill rgb-icon"></i></button>
+        </div>
+        <div class="card-visual">
+          <div class="visual-orb">
+            <i class="ri-sword-fill rgb-icon"></i>
+          </div>
+        </div>
+        <div class="card-info">
+          <h3>BLUE INFERNO PASS</h3>
+          <p>Instant VIP Access • Zero Wait Queue</p>
+          <div class="card-footer">
+            <span class="price">$49.00</span>
+            <button class="buy-btn rgb-glow-btn">
+              <i class="ri-add-circle-fill rgb-icon"></i> ADD
+            </button>
+          </div>
+        </div>
+      </article>
 
-      <div id="commandGrid" class="command-grid">
-        <div class="empty">Connecting to EGO command database…</div>
-      </div>
-
-      <button id="loadMore" class="load-more" hidden>LOAD MORE MODULES ↓</button>
-    </section>
-
-    <section class="publish" id="publish">
-      <div class="publish-icon">⇧</div>
-      <div class="publish-copy">
-        <small>/ COMMUNITY CONTRIBUTION</small>
-        <h2>CREATE OR <em>UPLOAD</em></h2>
-        <p>Share a JavaScript GoatBot command with its category and version.</p>
-      </div>
-      <button class="btn btn-main" id="publishOpen">UPLOAD MODULE ＋</button>
     </section>
   </main>
 
-  <footer>
-    <div class="footer-brand">♛ EGO <em>GOATSTORE</em></div>
-    <span>© <span id="year"></span> EGO NETWORK · BUILT FOR GOATBOT</span>
-    <span class="footer-status">● ALL SYSTEMS NOMINAL</span>
-  </footer>
+  <!-- Floating Mobile Bottom RGB Dock -->
+  <nav class="mobile-rgb-dock">
+    <button class="dock-item active">
+      <i class="ri-home-5-fill rgb-icon"></i>
+      <span>Home</span>
+    </button>
+    <button class="dock-item">
+      <i class="ri-compass-3-fill rgb-icon"></i>
+      <span>Explore</span>
+    </button>
+    <button class="dock-center-orb rgb-glow-btn">
+      <i class="ri-fire-fill rgb-icon"></i>
+    </button>
+    <button class="dock-item">
+      <i class="ri-sparkling-2-fill rgb-icon"></i>
+      <span>Offers</span>
+    </button>
+    <button class="dock-item">
+      <i class="ri-user-star-fill rgb-icon"></i>
+      <span>Profile</span>
+    </button>
+  </nav>
 
-  <dialog id="uploadDialog" class="dialog">
-    <form id="uploadForm" class="dialog-form">
-      <button class="dialog-close" type="button" data-close="uploadDialog">×</button>
-      <div class="dialog-kicker">/ PUBLISH TO NETWORK</div>
-      <h2>UPLOAD <em>COMMAND</em></h2>
+  <!-- Live Blue Fire & Wind Particle Script -->
+  <script>
+    const canvas = document.getElementById("blueFireWindCanvas");
+    const ctx = canvas.getContext("2d");
 
-      <label>ADMIN ACCESS KEY
-        <input id="uploadKey" type="password" autocomplete="off" required placeholder="Enter admin key">
-      </label>
+    let width, height;
+    let windMultiplier = 1;
+    const particles = [];
+    const windStreaks = [];
 
-      <label>COMMAND NAME
-        <input name="name" maxlength="60" required placeholder="e.g. tiktok">
-      </label>
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+    window.addEventListener("resize", resize);
+    resize();
 
-      <label>CATEGORY <span class="label-hint">Select or create your own</span>
-        <select id="categorySelect" name="category">
-          <option>Utility</option>
-          <option>AI</option>
-          <option>Games</option>
-          <option>Fun</option>
-          <option>Media</option>
-          <option>Moderation</option>
-          <option>Economy</option>
-          <option>Editing</option>
-          <option>Anime</option>
-          <option>Other</option>
-          <option value="__custom">＋ Custom category…</option>
-        </select>
-        <input id="customCategory" class="custom-category" placeholder="Type a custom category" hidden>
-      </label>
+    // Blue Flame Embers
+    for (let i = 0; i < 65; i++) {
+      particles.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        radius: Math.random() * 3.2 + 1,
+        vx: Math.random() * 2.5 + 1.2,
+        vy: -(Math.random() * 2.2 + 0.8),
+        alpha: Math.random() * 0.8 + 0.2,
+        hue: 195 + Math.random() * 30
+      });
+    }
 
-      <label>VERSION
-        <input name="version" maxlength="30" value="1.0.0" placeholder="1.0.0">
-      </label>
+    // Blue Wind Ribbons
+    for (let i = 0; i < 18; i++) {
+      windStreaks.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        len: Math.random() * 140 + 60,
+        speed: Math.random() * 5 + 3,
+        alpha: Math.random() * 0.35 + 0.1
+      });
+    }
 
-      <label>DESCRIPTION
-        <input name="description" maxlength="500" placeholder="Short description of the command">
-      </label>
+    function animate() {
+      ctx.fillStyle = "rgba(3, 8, 20, 0.28)";
+      ctx.fillRect(0, 0, width, height);
 
-      <label>AUTHOR
-        <input name="author" maxlength="100" value="EGO">
-      </label>
+      // Draw Sweeping Blue Wind Streaks
+      windStreaks.forEach((w) => {
+        const grad = ctx.createLinearGradient(w.x, w.y, w.x + w.len, w.y - w.len * 0.25);
+        grad.addColorStop(0, "rgba(0, 180, 255, 0)");
+        grad.addColorStop(0.5, `rgba(0, 225, 255, ${w.alpha})`);
+        grad.addColorStop(1, "rgba(0, 110, 255, 0)");
 
-      <label class="file-picker">JAVASCRIPT FILE (.JS)
-        <input id="commandFile" type="file" accept=".js,text/javascript" required>
-        <span id="fileLabel">＋ Choose command file</span>
-      </label>
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(w.x, w.y);
+        ctx.lineTo(w.x + w.len, w.y - w.len * 0.25);
+        ctx.stroke();
 
-      <div class="upload-note">Only upload command files you own or have permission to share.</div>
-      <button class="btn btn-main full" id="submitUpload" type="submit">PUBLISH COMMAND ↗</button>
-      <div class="progress" id="uploadProgress"><i></i></div>
-      <p id="uploadMessage" class="form-message"></p>
-    </form>
-  </dialog>
+        w.x += w.speed * windMultiplier;
+        w.y -= w.speed * 0.25 * windMultiplier;
 
-  <dialog id="adminDialog" class="dialog">
-    <form id="adminForm" class="dialog-form">
-      <button class="dialog-close" type="button" data-close="adminDialog">×</button>
-      <div class="dialog-kicker">/ CONTROL CENTER</div>
-      <h2>ADMIN <em>ACCESS</em></h2>
+        if (w.x > width + 150 || w.y < -100) {
+          w.x = -150;
+          w.y = Math.random() * height + 100;
+        }
+      });
 
-      <label>ADMIN KEY
-        <input id="adminKey" type="password" required placeholder="Enter admin key">
-      </label>
+      // Draw Glowing Blue Fire Embers
+      particles.forEach((p) => {
+        ctx.beginPath();
+        const glow = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.radius * 4);
+        glow.addColorStop(0, `hsla(${p.hue}, 100%, 70%, ${p.alpha})`);
+        glow.addColorStop(0.5, `hsla(${p.hue}, 100%, 50%, ${p.alpha * 0.5})`);
+        glow.addColorStop(1, "rgba(0, 120, 255, 0)");
 
-      <button class="btn btn-main full" type="submit">UNLOCK ADMIN</button>
-      <p id="adminMessage" class="form-message"></p>
+        ctx.fillStyle = glow;
+        ctx.arc(p.x, p.y, p.radius * 4, 0, Math.PI * 2);
+        ctx.fill();
 
-      <div id="adminUnlocked" hidden>
-        <div class="admin-success">✓ ADMIN SESSION ACTIVE</div>
-        <button class="btn btn-ghost full" id="adminLock" type="button">LOCK SESSION</button>
-      </div>
+        p.x += p.vx * windMultiplier;
+        p.y += p.vy * windMultiplier;
 
-      <hr>
+        if (p.y < -20 || p.x > width + 20) {
+          p.x = Math.random() * width * 0.8 - 50;
+          p.y = height + 20;
+        }
+      });
 
-      <label>API BASE URL <span class="label-hint">Leave blank to use this website's domain</span>
-        <input id="apiInput" placeholder="https://your-api.example.com">
-      </label>
+      requestAnimationFrame(animate);
+    }
+    animate();
 
-      <button class="btn btn-ghost full" id="saveApi" type="button">SAVE API ADDRESS</button>
-    </form>
-  </dialog>
+    // Interactive Controls
+    document.getElementById("windBoostBtn").addEventListener("click", () => {
+      windMultiplier = windMultiplier === 1 ? 2.6 : 1;
+    });
+    document.getElementById("toggleAuraBtn").addEventListener("click", () => {
+      windMultiplier = windMultiplier === 1 ? 2.6 : 1;
+    });
+    document.getElementById("rgbPulseBtn").addEventListener("click", () => {
+      document.body.classList.toggle("rgb-overdrive");
+    });
 
-  <dialog id="detailDialog" class="dialog detail-dialog">
-    <div id="detailBody"></div>
-    <button class="dialog-close" type="button" data-close="detailDialog">×</button>
-  </dialog>
+    // Category Pill Active Switch
+    document.querySelectorAll(".cat-pill").forEach((pill) => {
+      pill.addEventListener("click", () => {
+        document.querySelectorAll(".cat-pill").forEach((p) => p.classList.remove("active"));
+        pill.classList.add("active");
+      });
+    });
 
-  <div id="toast" class="toast" role="status"></div>
-  <script src="app.js"></script>
+    // Dock Active Switch
+    document.querySelectorAll(".dock-item").forEach((item) => {
+      item.addEventListener("click", () => {
+        document.querySelectorAll(".dock-item").forEach((i) => i.classList.remove("active"));
+        item.classList.add("active");
+      });
+    });
+  </script>
 </body>
 </html>
