@@ -1,109 +1,423 @@
-(function(){
-  var P=[
-    {a:'#ff2d2d',f:[[255,235,130],[255,80,20],[110,8,8]]},
-    {a:'#ff8a1f',f:[[255,245,170],[255,140,30],[120,40,8]]},
-    {a:'#7dff3a',f:[[225,255,150],[70,220,40],[10,70,20]]},
-    {a:'#3aa8ff',f:[[210,240,255],[50,130,255],[10,30,110]]},
-    {a:'#b04dff',f:[[240,210,255],[150,60,255],[50,10,100]]}
-  ];
-  var say={idle:'Idle: breathing heavy, watching you',hunt:'Hunt: red eyes sweeping for a target',rage:'Rage: fists up, shaking with anger',rampage:'Rampage: stomping and shaking the ground',roar:'Roar: jaw wide open, flames answering'};
-  var D={mode:'idle',pal:0,speed:1,glow:14,tilt:0,fire:7,wind:4,play:true,blink:true,ring:true,emb:true};
-  var s=Object.assign({},D);
-  var root=document.documentElement,stage=document.getElementById('stage');
-  var $=function(id){return document.getElementById(id)};
+/* =========================================================
+   1. HELLFIRE & AGUN ER BATASH (FIRE WIND) PARTICLE ENGINE
+   ========================================================= */
+const canvas = document.getElementById("fireWindCanvas");
+const ctx = canvas.getContext("2d");
 
-  function render(){
-    root.style.setProperty('--a',P[s.pal].a);
-    root.style.setProperty('--speed',s.speed);
-    root.style.setProperty('--glow',s.glow);
-    $('headTilt').setAttribute('transform','rotate('+s.tilt+' 150 170)');
-    stage.dataset.mode=s.mode;
-    stage.classList.toggle('blink',s.blink);
-    stage.classList.toggle('noring',!s.ring);
-    stage.classList.toggle('paused',!s.play);
-    $('status').textContent=say[s.mode];
-    $('speedO').textContent=Number(s.speed).toFixed(1)+'x';
-    $('glowO').textContent=s.glow;$('tiltO').textContent=s.tilt+'°';
-    $('fireO').textContent=s.fire;$('windO').textContent=s.wind;
-    document.querySelectorAll('#modes button').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.mode===s.mode)});
-    document.querySelectorAll('#swatches button').forEach(function(b){b.setAttribute('aria-pressed',+b.dataset.i===s.pal)});
-    ['speed','glow','tilt','fire','wind'].forEach(function(k){$(k).value=s[k]});
-    $('play').checked=s.play;$('blink').checked=s.blink;$('tgRing').checked=s.ring;$('tgEmb').checked=s.emb;
-  }
-  document.querySelectorAll('#modes button').forEach(function(b){b.onclick=function(){s.mode=b.dataset.mode;render()}});
-  document.querySelectorAll('#swatches button').forEach(function(b){b.onclick=function(){s.pal=+b.dataset.i;render()}});
-  [['speed',parseFloat],['glow',parseInt],['tilt',parseInt],['fire',parseInt],['wind',parseInt]].forEach(function(a){
-    $(a[0]).oninput=function(e){s[a[0]]=a[1](e.target.value);render()}});
-  [['play','play'],['blink','blink'],['tgRing','ring'],['tgEmb','emb']].forEach(function(a){
-    $(a[0]).onchange=function(e){s[a[1]]=e.target.checked;render()}});
-  $('reset').onclick=function(){s=Object.assign({},D);render()};
+let width, height;
+function resizeCanvas() {
+  width = canvas.width = window.innerWidth;
+  height = canvas.height = window.innerHeight;
+}
+window.addEventListener("resize", resizeCanvas);
+resizeCanvas();
 
-  /* ---------- fire, embers and wind on canvas ---------- */
-  var cv=$('fx'),ctx=cv.getContext('2d'),W=300,H=300,flames=[],embers=[],streaks=[],t=0,accF=0,accE=0,accS=0,stepAcc=0;
-  function size(){var dpr=Math.min(window.devicePixelRatio||1,2),r=stage.getBoundingClientRect();
-    W=r.width;H=r.height;cv.width=W*dpr;cv.height=H*dpr;ctx.setTransform(dpr,0,0,dpr,0,0)}
-  if(window.ResizeObserver){new ResizeObserver(size).observe(stage)}else{window.addEventListener('resize',size)}
-  size();
+const embers = [];
+const windStreaks = [];
 
-  function mix(a,b,k){return [a[0]+(b[0]-a[0])*k,a[1]+(b[1]-a[1])*k,a[2]+(b[2]-a[2])*k]}
-  function rgb(c,al){return 'rgba('+(c[0]|0)+','+(c[1]|0)+','+(c[2]|0)+','+al+')'}
+for (let i = 0; i < 110; i++) {
+  embers.push({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    size: Math.random() * 3.5 + 1,
+    speedX: Math.random() * 3.5 + 1.8, // Strong wind blowing right
+    speedY: -(Math.random() * 2.2 + 0.6), // Rising fire
+    alpha: Math.random() * 0.8 + 0.2,
+    color: Math.random() > 0.4 ? "#ff4500" : "#ffae00"
+  });
+}
 
-  function update(){
-    t+=0.016;
-    var w=s.wind*0.12+Math.sin(t*0.9)*s.wind*0.06;
-    accF+=s.fire*0.4;
-    while(accF>=1&&flames.length<260){accF--;
-      flames.push({x:Math.random()*W,y:H+8,vx:(Math.random()-.5)*.6,vy:-(1.2+Math.random()*2)*(0.7+s.fire*0.07),r:22+Math.random()*38,l:0,m:70+Math.random()*60});}
-    accF=Math.min(accF,2);
-    if(s.emb){
-      accE+=s.fire*0.18;
-      while(accE>=1&&embers.length<130){accE--;embers.push({x:Math.random()*W,y:H,vx:Math.random()-.3,vy:-(1+Math.random()*2.4),r:1+Math.random()*2,l:0,m:120+Math.random()*120});}
-      accE=Math.min(accE,2);
-      accS+=s.wind*0.05;
-      while(accS>=1&&streaks.length<40){accS--;streaks.push({x:-120,y:Math.random()*H*.9,len:40+Math.random()*100,v:6+s.wind*1.2+Math.random()*4});}
-      accS=Math.min(accS,2);
+for (let i = 0; i < 28; i++) {
+  windStreaks.push({
+    x: Math.random() * width,
+    y: Math.random() * height,
+    length: Math.random() * 140 + 60,
+    speed: Math.random() * 10 + 7,
+    alpha: Math.random() * 0.18 + 0.04
+  });
+}
+
+function animateFireWind() {
+  ctx.clearRect(0, 0, width, height);
+
+  // Draw glowing fire wind streaks
+  windStreaks.forEach((w) => {
+    const grad = ctx.createLinearGradient(w.x, w.y, w.x + w.length, w.y - 18);
+    grad.addColorStop(0, "rgba(255, 40, 0, 0)");
+    grad.addColorStop(0.5, `rgba(255, 85, 0, ${w.alpha})`);
+    grad.addColorStop(1, "rgba(255, 190, 0, 0)");
+
+    ctx.strokeStyle = grad;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(w.x, w.y);
+    ctx.lineTo(w.x + w.length, w.y - 18);
+    ctx.stroke();
+
+    w.x += w.speed;
+    w.y -= w.speed * 0.14;
+
+    if (w.x > width + 150) {
+      w.x = -150;
+      w.y = Math.random() * height;
     }
-    flames.forEach(function(p){p.l++;var k=p.l/p.m;p.x+=p.vx+w*(0.4+k)*1.5;p.y+=p.vy;p.r*=.992});
-    flames=flames.filter(function(p){return p.l<p.m});
-    embers.forEach(function(p){p.l++;p.x+=p.vx+w*2.4+Math.sin(p.l*.1)*.4;p.y+=p.vy});
-    embers=embers.filter(function(p){return p.l<p.m&&p.y>-10});
-    streaks.forEach(function(p){p.x+=p.v});
-    streaks=streaks.filter(function(p){return p.x-p.len<W+20});
-    if(!s.emb){embers.length=0;streaks.length=0}
-  }
+  });
 
-  function draw(){
-    var f=P[s.pal].f;
-    ctx.globalCompositeOperation='source-over';
-    ctx.clearRect(0,0,W,H);
-    var g=ctx.createLinearGradient(0,H,0,H*.62);
-    g.addColorStop(0,rgb(f[1],.35*(s.fire/10+.2)));g.addColorStop(1,rgb(f[2],0));
-    ctx.fillStyle=g;ctx.fillRect(0,H*.6,W,H*.4);
-    ctx.globalCompositeOperation='lighter';
-    flames.forEach(function(p){
-      var k=p.l/p.m,c=k<.35?mix(f[0],f[1],k/.35):mix(f[1],f[2],(k-.35)/.65),al=(1-k)*.5;
-      var gr=ctx.createRadialGradient(p.x,p.y,0,p.x,p.y,p.r);
-      gr.addColorStop(0,rgb(c,al));gr.addColorStop(1,rgb(c,0));
-      ctx.fillStyle=gr;ctx.fillRect(p.x-p.r,p.y-p.r,p.r*2,p.r*2);
-    });
-    embers.forEach(function(p){
-      var k=p.l/p.m;ctx.fillStyle=rgb(f[0],1-k);ctx.fillRect(p.x,p.y,p.r,p.r);
-    });
-    ctx.lineWidth=1;
-    streaks.forEach(function(p){
-      ctx.strokeStyle=rgb(f[0],.16);ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p.x-p.len,p.y+p.len*.04);ctx.stroke();
-    });
-  }
+  // Draw blazing embers carried by wind
+  embers.forEach((p) => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+    ctx.fillStyle = p.color;
+    ctx.globalAlpha = p.alpha;
+    ctx.shadowBlur = 12;
+    ctx.shadowColor = "#ff3300";
+    ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
 
-  function frame(){
-    if(s.play){stepAcc+=s.speed;while(stepAcc>=1){update();stepAcc--}draw()}
-    requestAnimationFrame(frame);
+    p.x += p.speedX + Math.sin(p.y * 0.02) * 1.2;
+    p.y += p.speedY;
+
+    if (p.x > width + 10) p.x = -10;
+    if (p.y < -10) {
+      p.y = height + 10;
+      p.x = Math.random() * width;
+    }
+  });
+
+  requestAnimationFrame(animateFireWind);
+}
+animateFireWind();
+
+/* =========================================================
+   2. COMMAND DATABASE (OLD VAULT + NEW UPLOADS)
+   ========================================================= */
+const defaultCommands = [
+  {
+    id: "cmd-new-1",
+    name: "ego.js",
+    author: "Ego Overlord",
+    category: "new",
+    uploadDate: "22 Nov 2026 • 12:30 PM",
+    desc: "Signature attitude welcome & flex command with custom user mention.",
+    code: `module.exports = {
+  config: {
+    name: "ego",
+    version: "1.0",
+    author: "Ego Goatstore",
+    countDown: 5,
+    role: 0,
+    shortDescription: "Show pure Ego Goatstore attitude",
+    category: "fun",
+    guide: "{pn}"
+  },
+  onStart: async function ({ message, event }) {
+    return message.reply("🔥 EGO GOATSTORE: Bow down or step aside! Free scripts for legends only.");
   }
-  render();
-  if(window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches){
-    for(var i=0;i<140;i++)update();draw();
-  }else{
-    for(var j=0;j<60;j++)update();
-    requestAnimationFrame(frame);
+};`
+  },
+  {
+    id: "cmd-old-1",
+    name: "adminonly.js",
+    author: "MD Hamim",
+    category: "old",
+    uploadDate: "15 Oct 2025 • 09:15 PM",
+    desc: "Restricts bot command execution strictly to bot administrators.",
+    code: `module.exports = {
+  config: {
+    name: "adminonly",
+    version: "1.2",
+    author: "MD Hamim",
+    countDown: 3,
+    role: 2,
+    shortDescription: "Toggle admin-only mode",
+    category: "admin",
+    guide: "{pn} [on/off]"
+  },
+  onStart: async function ({ args, message }) {
+    const mode = args[0]?.toLowerCase();
+    if (mode === "on") return message.reply("🔒 Admin-Only Mode ENABLED.");
+    if (mode === "off") return message.reply("🔓 Admin-Only Mode DISABLED.");
+    return message.reply("Usage: adminonly [on/off]");
   }
-})();
+};`
+  },
+  {
+    id: "cmd-old-2",
+    name: "kick.js",
+    author: "GoatBot Core",
+    category: "old",
+    uploadDate: "02 Sep 2025 • 04:40 PM",
+    desc: "Removes mentioned or replied troublemakers from the group chat.",
+    code: `module.exports = {
+  config: {
+    name: "kick",
+    version: "1.0",
+    author: "GoatBot Core",
+    countDown: 5,
+    role: 1,
+    shortDescription: "Kick user from group",
+    category: "box chat",
+    guide: "{pn} @mention"
+  },
+  onStart: async function ({ api, event, message }) {
+    const targetID = Object.keys(event.mentions)[0] || event.messageReply?.senderID;
+    if (!targetID) return message.reply("⚠️ Mention or reply to someone to kick.");
+    await api.removeUserFromGroup(targetID, event.threadID);
+  }
+};`
+  }
+];
+
+let commands = JSON.parse(localStorage.getItem("ego_goatstore_cmds")) || defaultCommands;
+let activeFilter = "all";
+let currentViewedCmd = null;
+
+function saveCommands() {
+  localStorage.setItem("ego_goatstore_cmds", JSON.stringify(commands));
+}
+
+function getFormattedDateTime() {
+  const now = new Date();
+  const datePart = now.toLocaleDateString("en-GB", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric"
+  });
+  const timePart = now.toLocaleTimeString("en-US", {
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: true
+  });
+  return `${datePart} • ${timePart}`;
+}
+
+/* =========================================================
+   3. RENDER VAULT CARDS & STATS
+   ========================================================= */
+function renderCommands() {
+  const query = document.getElementById("searchInput").value.toLowerCase();
+  const newGrid = document.getElementById("newGrid");
+  const oldGrid = document.getElementById("oldGrid");
+
+  newGrid.innerHTML = "";
+  oldGrid.innerHTML = "";
+
+  const newItems = commands.filter((c) => c.category === "new");
+  const oldItems = commands.filter((c) => c.category === "old");
+
+  document.getElementById("totalCount").textContent = commands.length;
+  document.getElementById("newCount").textContent = newItems.length;
+  document.getElementById("oldCount").textContent = oldItems.length;
+
+  document.getElementById("newSection").style.display =
+    activeFilter === "old" ? "none" : "block";
+  document.getElementById("oldSection").style.display =
+    activeFilter === "new" ? "none" : "block";
+
+  commands.forEach((cmd) => {
+    const matches =
+      cmd.name.toLowerCase().includes(query) ||
+      cmd.author.toLowerCase().includes(query) ||
+      cmd.desc.toLowerCase().includes(query);
+
+    if (!matches) return;
+
+    const card = document.createElement("div");
+    card.className = "cmd-card";
+    card.innerHTML = `
+      <div>
+        <div class="card-top">
+          <span class="cmd-title">${cmd.name}</span>
+          <span class="${cmd.category === "new" ? "tag-new" : "tag-old"}">
+            ${cmd.category === "new" ? "🔥 NEW" : "🏛 OLD"}
+          </span>
+        </div>
+        <p class="cmd-desc">${cmd.desc}</p>
+        <div class="cmd-dates">
+          <div>👤 Author: <strong>${cmd.author}</strong></div>
+          <div>📅 Date: <strong>${cmd.uploadDate}</strong></div>
+        </div>
+      </div>
+      <div class="card-actions">
+        <button class="card-btn" onclick="viewCommand('${cmd.id}')">👁 View</button>
+        <button class="card-btn" onclick="copyById('${cmd.id}')">📋 Copy</button>
+        <button class="card-btn" onclick="downloadById('${cmd.id}')">⬇ .js</button>
+      </div>
+    `;
+
+    if (cmd.category === "new") {
+      newGrid.appendChild(card);
+    } else {
+      oldGrid.appendChild(card);
+    }
+  });
+}
+
+function setFilter(filter, btn) {
+  activeFilter = filter;
+  document.querySelectorAll(".tab").forEach((t) => t.classList.remove("active"));
+  btn.classList.add("active");
+  renderCommands();
+}
+
+/* =========================================================
+   4. VIEW, COPY, DOWNLOAD & UPLOAD HANDLERS
+   ========================================================= */
+function viewCommand(id) {
+  const cmd = commands.find((c) => c.id === id);
+  if (!cmd) return;
+  currentViewedCmd = cmd;
+  document.getElementById("viewTitle").textContent = cmd.name;
+  document.getElementById("viewMeta").textContent = `Author: ${cmd.author} | Uploaded: ${cmd.uploadDate}`;
+  document.getElementById("viewCode").textContent = cmd.code;
+  openModal("viewModal");
+}
+
+function copyCurrentCode() {
+  if (!currentViewedCmd) return;
+  copyText(currentViewedCmd.code, `${currentViewedCmd.name} copied to clipboard!`);
+}
+
+function downloadCurrentCode() {
+  if (!currentViewedCmd) return;
+  triggerDownload(currentViewedCmd.name, currentViewedCmd.code);
+}
+
+function copyById(id) {
+  const cmd = commands.find((c) => c.id === id);
+  if (cmd) copyText(cmd.code, `📋 Copied ${cmd.name}!`);
+}
+
+function downloadById(id) {
+  const cmd = commands.find((c) => c.id === id);
+  if (cmd) triggerDownload(cmd.name, cmd.code);
+}
+
+function loadJsFile(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  document.getElementById("upName").value = file.name;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    document.getElementById("upCode").value = e.target.result;
+  };
+  reader.readAsText(file);
+}
+
+function handleUpload(event) {
+  event.preventDefault();
+  let fileName = document.getElementById("upName").value.trim();
+  if (!fileName.endsWith(".js")) fileName += ".js";
+
+  const newCmd = {
+    id: "cmd-" + Date.now(),
+    name: fileName,
+    author: document.getElementById("upAuthor").value.trim(),
+    category: document.getElementById("upCategory").value,
+    uploadDate: getFormattedDateTime(),
+    desc: document.getElementById("upDesc").value.trim(),
+    code: document.getElementById("upCode").value
+  };
+
+  commands.unshift(newCmd);
+  saveCommands();
+  renderCommands();
+  closeModal("uploadModal");
+  document.getElementById("uploadForm").reset();
+  showToast(`🔥 ${fileName} published to Ego Goatstore!`);
+}
+
+/* =========================================================
+   5. LIVE COMMAND GENERATOR
+   ========================================================= */
+function updateGeneratedCode() {
+  const name = document.getElementById("genName").value.trim() || "custom";
+  const author = document.getElementById("genAuthor").value.trim() || "Ego Goatstore";
+  const role = document.getElementById("genRole").value;
+  const cooldown = document.getElementById("genCooldown").value || 5;
+  const reply = document.getElementById("genReply").value.replace(/"/g, '\\"');
+
+  const generated = `module.exports = {
+  config: {
+    name: "${name}",
+    version: "1.0",
+    author: "${author}",
+    countDown: ${cooldown},
+    role: ${role},
+    shortDescription: "${name} command from Ego Goatstore",
+    category: "custom",
+    guide: "{pn}"
+  },
+  onStart: async function ({ message }) {
+    return message.reply("${reply}");
+  }
+};`;
+
+  document.getElementById("generatedPreview").textContent = generated;
+  return { name: `${name}.js`, author, code: generated };
+}
+
+function copyGenerated() {
+  const { name, code } = updateGeneratedCode();
+  copyText(code, `📋 Copied generated ${name}!`);
+}
+
+function downloadGenerated() {
+  const { name, code } = updateGeneratedCode();
+  triggerDownload(name, code);
+}
+
+function publishGenerated() {
+  const { name, author, code } = updateGeneratedCode();
+  commands.unshift({
+    id: "cmd-" + Date.now(),
+    name,
+    author,
+    category: "new",
+    uploadDate: getFormattedDateTime(),
+    desc: `Custom generated GoatBot V2 command (${name}).`,
+    code
+  });
+  saveCommands();
+  renderCommands();
+  closeModal("createModal");
+  showToast(`🚀 ${name} created & added to New Uploads!`);
+}
+
+/* =========================================================
+   6. UTILITIES (MODAL, CLIPBOARD, FILE DOWNLOAD, TOAST)
+   ========================================================= */
+function openModal(id) {
+  if (id === "createModal") updateGeneratedCode();
+  document.getElementById(id).classList.add("open");
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove("open");
+}
+
+function copyText(text, msg) {
+  navigator.clipboard.writeText(text).then(() => showToast(msg));
+}
+
+function triggerDownload(filename, content) {
+  const blob = new Blob([content], { type: "application/javascript" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast(`⬇ Downloading ${filename}...`);
+}
+
+function showToast(msg) {
+  const toast = document.getElementById("toast");
+  toast.textContent = msg;
+  toast.classList.add("show");
+  setTimeout(() => toast.classList.remove("show"), 2600);
+}
+
+// Initial render
+renderCommands();
