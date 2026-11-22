@@ -1,71 +1,350 @@
-<!-- Attitude Lamborghini Supercar Mascot -->
-    <div class="anime-showcase">
-      <div class="blue-aura"></div>
-      <div class="lambo-wrapper">
-        <svg class="lambo-svg" viewBox="0 0 420 230" xmlns="http://www.w3.org/2000/svg">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ego Goatstore — GoatBot V2 Vault</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,600;0,700;1,700&family=Orbitron:wght@700;800;900&family=Rajdhani:wght@500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Animated Japanese Premium Scenery + Fire Wind Canvas -->
+  <canvas id="jpWorldCanvas"></canvas>
+  <div class="jp-atmosphere"></div>
+
+  <!-- Top Action Bar -->
+  <header class="topbar">
+    <div class="top-brand">
+      <span class="kanji-tag anim-icon">刃</span>
+      <span class="top-title">EGO GOATSTORE</span>
+    </div>
+    <div class="top-controls">
+      <button class="g-btn g-btn-primary" onclick="openModal('uploadModal')">
+        <i class="anim-icon float-icon">⬆</i> Upload Command
+      </button>
+      <button class="g-btn g-btn-ghost" onclick="openModal('createModal')">
+        <i class="anim-icon spin-icon">⚡</i> Create & Copy
+      </button>
+    </div>
+  </header>
+
+  <!-- UPPER SECTION: HIGH-SPEED LAMBORGHINI ON JAPANESE STREET -->
+  <section class="speedway-hero">
+    <div class="jp-scene-backdrop">
+      <!-- Animated Japanese Pagoda & Torii Silhouettes -->
+      <svg class="jp-landmark-svg" viewBox="0 0 1200 320" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="skyNeon" x1="0%" y1="0%" x2="0%" y2="100%">
+            <stop offset="0%" stop-color="#050711" />
+            <stop offset="60%" stop-color="#110b24" />
+            <stop offset="100%" stop-color="#220918" />
+          </linearGradient>
+          <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ff3b6b" stop-opacity="0.7" />
+            <stop offset="55%" stop-color="#ff5500" stop-opacity="0.18" />
+            <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+          </radialGradient>
+        </defs>
+
+        <rect width="1200" height="320" fill="url(#skyNeon)" />
+        <circle cx="880" cy="85" r="95" fill="url(#moonGlow)" />
+        <circle cx="880" cy="85" r="34" fill="#ff4d6d" opacity="0.82" />
+
+        <!-- Distant Japanese Pagoda -->
+        <g fill="#090c18" stroke="#ff2a6d" stroke-width="1" opacity="0.85">
+          <rect x="215" y="120" width="50" height="115" />
+          <polygon points="195,122 240,104 285,122" fill="#0d1224" />
+          <polygon points="185,152 240,132 295,152" fill="#0d1224" />
+          <polygon points="175,184 240,162 305,184" fill="#0d1224" />
+          <line x1="240" y1="74" x2="240" y2="105" stroke="#00e5ff" stroke-width="2" />
+        </g>
+
+        <!-- Japanese Torii Gate Silhouette -->
+        <g fill="#090b16" stroke="#ff3355" stroke-width="1.5">
+          <rect x="655" y="110" width="14" height="125" />
+          <rect x="751" y="110" width="14" height="125" />
+          <path d="M630,96 Q710,112 790,96 L784,110 Q710,122 636,110 Z" fill="#160918" />
+          <rect x="642" y="126" width="136" height="10" fill="#160918" />
+        </g>
+
+        <!-- Asphalt Highway -->
+        <rect x="0" y="232" width="1200" height="88" fill="#06080f" />
+        <line x1="0" y1="232" x2="1200" y2="232" stroke="#00e5ff" stroke-width="2" opacity="0.7" />
+      </svg>
+    </div>
+
+    <!-- High-Speed Lamborghini + Rear Fire Trail -->
+    <div class="lambo-sprint-stage">
+      <div class="rear-fire-blast"></div>
+      <div class="lambo-sprint-car">
+        <svg class="sprint-lambo-svg" viewBox="0 0 500 220" xmlns="http://www.w3.org/2000/svg">
           <defs>
-            <linearGradient id="lamboBody" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#11192e" />
-              <stop offset="50%" stop-color="#050811" />
-              <stop offset="100%" stop-color="#0038a8" />
+            <linearGradient id="sprintBody" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#090d1a" />
+              <stop offset="55%" stop-color="#111a33" />
+              <stop offset="100%" stop-color="#0055ff" />
             </linearGradient>
-            <linearGradient id="windshieldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#00d4ff" stop-opacity="0.55" />
-              <stop offset="50%" stop-color="#040a1a" stop-opacity="0.9" />
-              <stop offset="100%" stop-color="#0051ff" stop-opacity="0.4" />
+            <linearGradient id="sprintGlass" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#00f0ff" stop-opacity="0.65" />
+              <stop offset="100%" stop-color="#050b1c" stop-opacity="0.95" />
             </linearGradient>
-            <radialGradient id="headlightGlow" cx="50%" cy="50%" r="50%">
+            <radialGradient id="lampSparkle" cx="50%" cy="50%" r="50%">
               <stop offset="0%" stop-color="#ffffff" />
-              <stop offset="40%" stop-color="#00e1ff" />
-              <stop offset="100%" stop-color="#0051ff" stop-opacity="0" />
+              <stop offset="35%" stop-color="#00f0ff" />
+              <stop offset="100%" stop-color="#0055ff" stop-opacity="0" />
             </radialGradient>
+            <linearGradient id="exhaustFlame" x1="100%" y1="50%" x2="0%" y2="50%">
+              <stop offset="0%" stop-color="#ffffff" />
+              <stop offset="25%" stop-color="#ffea00" />
+              <stop offset="65%" stop-color="#ff3b00" />
+              <stop offset="100%" stop-color="#ff004c" stop-opacity="0" />
+            </linearGradient>
           </defs>
 
-          <!-- Ground Neon Underglow -->
-          <ellipse cx="210" cy="186" rx="175" ry="14" fill="#00aaff" opacity="0.35" class="underglow-pulse" />
+          <!-- Rear Exhaust Fire Jet Going Backward -->
+          <g class="exhaust-fire">
+            <polygon points="34,142 -75,126 -135,144 -70,160" fill="url(#exhaustFlame)" />
+            <polygon points="34,145 -45,137 -80,145 -42,153" fill="#fff7b2" />
+          </g>
 
-          <!-- Aggressive Rear Wing / Spoiler -->
-          <polygon points="35,98 85,92 92,106 28,108" fill="#060b19" stroke="#00d4ff" stroke-width="2" />
-          <line x1="65" y1="106" x2="72" y2="122" stroke="#00d4ff" stroke-width="3" />
+          <!-- Ground Speed Streak Shadow -->
+          <ellipse cx="255" cy="178" rx="205" ry="12" fill="#00d4ff" opacity="0.32" />
 
-          <!-- Main Sharp Lamborghini Body -->
-          <path d="M25,152 L42,118 L125,112 L185,76 L275,78 L345,116 L396,134 L402,158 L375,168 L45,168 Z"
-                fill="url(#lamboBody)" stroke="#00b7ff" stroke-width="2.4" stroke-linejoin="round" />
+          <!-- Carbon Rear Wing -->
+          <polygon points="42,92 104,86 112,102 35,104" fill="#070b14" stroke="#00e5ff" stroke-width="2" />
+          <line x1="76" y1="102" x2="84" y2="120" stroke="#00e5ff" stroke-width="3.5" />
 
-          <!-- Tinted Cabin Windshield & Side Window -->
-          <polygon points="145,112 190,82 268,84 316,114" fill="url(#windshieldGrad)" stroke="#00e1ff" stroke-width="1.6" />
-          <line x1="228" y1="83" x2="222" y2="113" stroke="#040814" stroke-width="4" />
+          <!-- Sleek Lamborghini Chassis -->
+          <path d="M32,148 L52,114 L148,108 L218,70 L322,72 L404,112 L468,132 L476,156 L442,166 L54,166 Z"
+                fill="url(#sprintBody)" stroke="#00e5ff" stroke-width="2.5" stroke-linejoin="round" />
 
-          <!-- Sharp Side Air Intake & Attitude Lines -->
-          <polygon points="135,126 195,122 182,154 126,154" fill="#03060f" stroke="#0066ff" stroke-width="1.8" />
-          <line x1="210" y1="138" x2="325" y2="142" stroke="#00d4ff" stroke-width="1.8" opacity="0.8" />
+          <!-- Cockpit Canopy -->
+          <polygon points="170,108 222,76 312,78 368,110" fill="url(#sprintGlass)" stroke="#7cf4ff" stroke-width="1.8" />
+          <line x1="264" y1="77" x2="258" y2="109" stroke="#050814" stroke-width="4.5" />
+
+          <!-- Side Air Scoop & Sharp Aero Crease -->
+          <polygon points="156,124 228,118 214,152 144,152" fill="#040711" stroke="#0088ff" stroke-width="2" />
+          <line x1="242" y1="134" x2="388" y2="138" stroke="#00f0ff" stroke-width="2" />
 
           <!-- Front Splitter -->
-          <polygon points="340,162 406,156 400,169 335,169" fill="#00d4ff" />
+          <polygon points="402,160 480,154 472,168 396,168" fill="#00e5ff" />
 
-          <!-- Y-Shaped Glowing Lamborghini Headlight ("Chok Jolmol Korbe") -->
-          <g class="lambo-eye-flash">
-            <ellipse cx="362" cy="132" rx="34" ry="18" fill="url(#headlightGlow)" />
-            <polyline points="342,126 364,132 384,124" fill="none" stroke="#ffffff" stroke-width="3.2" stroke-linecap="round" />
-            <line x1="364" y1="132" x2="386" y2="137" stroke="#00e1ff" stroke-width="3" stroke-linecap="round" />
+          <!-- Sparkling Glowing Headlight -->
+          <g class="car-headlight-sparkle">
+            <ellipse cx="428" cy="130" rx="42" ry="20" fill="url(#lampSparkle)" />
+            <polyline points="404,122 430,130 454,121" fill="none" stroke="#ffffff" stroke-width="3.6" stroke-linecap="round" />
+            <line x1="430" y1="130" x2="456" y2="136" stroke="#00f0ff" stroke-width="3.2" stroke-linecap="round" />
           </g>
 
-          <!-- Rear Wheel -->
-          <g>
-            <circle cx="96" cy="162" r="32" fill="#05070d" stroke="#00aaff" stroke-width="2.5" />
-            <circle cx="96" cy="162" r="20" fill="#0a1226" stroke="#00d4ff" stroke-width="1.5" />
-            <circle cx="96" cy="162" r="7" fill="#00e1ff" />
+          <!-- Spinning Rear Wheel -->
+          <g class="wheel-spin">
+            <circle cx="116" cy="158" r="34" fill="#05070e" stroke="#00d4ff" stroke-width="2.8" />
+            <line x1="116" y1="128" x2="116" y2="188" stroke="#00e5ff" stroke-width="2" />
+            <line x1="86" y1="158" x2="146" y2="158" stroke="#00e5ff" stroke-width="2" />
+            <line x1="95" y1="137" x2="137" y2="179" stroke="#0088ff" stroke-width="2" />
+            <line x1="137" y1="137" x2="95" y2="179" stroke="#0088ff" stroke-width="2" />
+            <circle cx="116" cy="158" r="8" fill="#00f0ff" />
           </g>
 
-          <!-- Front Wheel -->
-          <g>
-            <circle cx="322" cy="162" r="31" fill="#05070d" stroke="#00aaff" stroke-width="2.5" />
-            <circle cx="322" cy="162" r="19" fill="#0a1226" stroke="#00d4ff" stroke-width="1.5" />
-            <circle cx="322" cy="162" r="7" fill="#00e1ff" />
+          <!-- Spinning Front Wheel -->
+          <g class="wheel-spin">
+            <circle cx="384" cy="158" r="33" fill="#05070e" stroke="#00d4ff" stroke-width="2.8" />
+            <line x1="384" y1="129" x2="384" y2="187" stroke="#00e5ff" stroke-width="2" />
+            <line x1="355" y1="158" x2="413" y2="158" stroke="#00e5ff" stroke-width="2" />
+            <line x1="363" y1="137" x2="405" y2="179" stroke="#0088ff" stroke-width="2" />
+            <line x1="405" y1="137" x2="363" y2="179" stroke="#0088ff" stroke-width="2" />
+            <circle cx="384" cy="158" r="8" fill="#00f0ff" />
           </g>
         </svg>
       </div>
-      <div class="mascot-badge">
-        <span class="anim-icon pulse-icon">🏎️</span> EGO AVENTADOR • V12 EDITION
+    </div>
+  </section>
+
+  <!-- LOWER SECTION: GAMING LIVE FONT "EGO GOATSTORE" + 2-SIDE LAYOUT -->
+  <section class="gaming-brand-zone">
+    <div class="gaming-nameplate">
+      <div class="gaming-sub-tag">
+        <span class="anim-icon pulse-icon">🎮</span> LIVE VAULT • GOATBOT V2
+      </div>
+      <h1 class="gaming-live-title" data-text="EGO GOATSTORE">EGO GOATSTORE</h1>
+    </div>
+
+    <!-- Two-Column Split Bar: Left 3 Categories | Right Search & Quick Actions -->
+    <div class="dual-panel">
+      <div class="panel-left">
+        <div class="cat-pills">
+          <button class="cat-pill active" onclick="selectCategory('script', this)">
+            <i class="anim-icon float-icon">📜</i> 1. Script <span id="countScript">0</span>
+          </button>
+          <button class="cat-pill" onclick="selectCategory('system', this)">
+            <i class="anim-icon spin-icon">⚙️</i> 2. System <span id="countSystem">0</span>
+          </button>
+          <button class="cat-pill" onclick="selectCategory('all', this)">
+            <i class="anim-icon pulse-icon">🌐</i> 3. All <span id="countAll">0</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="panel-right">
+        <input type="text" id="searchBox" placeholder="🔍 Search command, system, author..." oninput="renderVault()" />
+        <button class="g-btn g-btn-primary" onclick="openModal('uploadModal')">
+          <i class="anim-icon">⬆</i> Upload
+        </button>
+        <button class="g-btn g-btn-ghost" onclick="openModal('createModal')">
+          <i class="anim-icon">📋</i> Create
+        </button>
       </div>
     </div>
+  </section>
+
+  <!-- Vault Cards Area -->
+  <main class="vault-main">
+    <section id="scriptBlock" class="vault-block">
+      <div class="block-head">
+        <h2><i class="anim-icon float-icon">📜</i> 1. SCRIPT</h2>
+        <span class="block-tag">COMMANDS</span>
+      </div>
+      <div id="scriptGrid" class="cards-grid"></div>
+    </section>
+
+    <section id="systemBlock" class="vault-block">
+      <div class="block-head">
+        <h2><i class="anim-icon spin-icon">⚙️</i> 2. SYSTEM</h2>
+        <span class="block-tag">CORE & EVENTS</span>
+      </div>
+      <div id="systemGrid" class="cards-grid"></div>
+    </section>
+  </main>
+
+  <!-- View Code Modal -->
+  <div id="viewModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-top">
+        <h3 id="modalFileTitle">file.js</h3>
+        <button class="close-x" onclick="closeModal('viewModal')">✕</button>
+      </div>
+      <p id="modalFileMeta" class="modal-meta"></p>
+      <pre><code id="modalFileCode"></code></pre>
+      <div class="modal-actions">
+        <button class="g-btn g-btn-primary" onclick="copyViewed()">
+          <i class="anim-icon">📋</i> Copy Code
+        </button>
+        <button class="g-btn g-btn-ghost" onclick="downloadViewed()">
+          <i class="anim-icon">⬇</i> Download .js
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Upload Modal -->
+  <div id="uploadModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-top">
+        <h3><i class="anim-icon float-icon">⬆</i> UPLOAD COMMAND / SYSTEM</h3>
+        <button class="close-x" onclick="closeModal('uploadModal')">✕</button>
+      </div>
+      <form id="uploadForm" onsubmit="submitUpload(event)">
+        <div class="drop-box" onclick="document.getElementById('filePicker').click()">
+          <span class="anim-icon pulse-icon">📂</span>
+          <p id="pickedFileLabel">Choose a <strong>.js</strong> file or paste code below</p>
+          <input type="file" id="filePicker" accept=".js" hidden onchange="readUploadedFile(event)" />
+        </div>
+
+        <div class="two-col">
+          <div>
+            <label>File Name</label>
+            <input type="text" id="uName" required placeholder="e.g., ego.js" />
+          </div>
+          <div>
+            <label>Category</label>
+            <select id="uCategory">
+              <option value="script">1. Script</option>
+              <option value="system">2. System</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div>
+            <label>Author</label>
+            <input type="text" id="uAuthor" required placeholder="Your name" />
+          </div>
+          <div>
+            <label>Short Note</label>
+            <input type="text" id="uDesc" required placeholder="What it does..." />
+          </div>
+        </div>
+
+        <label>JavaScript Code</label>
+        <textarea id="uCode" rows="7" required placeholder="Paste module.exports code here..."></textarea>
+
+        <button type="submit" class="g-btn g-btn-primary full-w">
+          <i class="anim-icon">🚀</i> Add to Ego Goatstore
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Create & Copy-Paste Command Modal -->
+  <div id="createModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-top">
+        <h3><i class="anim-icon spin-icon">⚡</i> CREATE & COPY COMMAND</h3>
+        <button class="close-x" onclick="closeModal('createModal')">✕</button>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <label>Command Name</label>
+          <input type="text" id="cName" value="turbo" oninput="buildLiveCode()" />
+        </div>
+        <div>
+          <label>Category</label>
+          <select id="cCategory" onchange="buildLiveCode()">
+            <option value="script">1. Script</option>
+            <option value="system">2. System</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <label>Author</label>
+          <input type="text" id="cAuthor" value="Ego Goatstore" oninput="buildLiveCode()" />
+        </div>
+        <div>
+          <label>Permission Role</label>
+          <select id="cRole" onchange="buildLiveCode()">
+            <option value="0">0 — Everyone</option>
+            <option value="1">1 — Group Admin</option>
+            <option value="2">2 — Bot Admin</option>
+          </select>
+        </div>
+      </div>
+
+      <label>Reply Text</label>
+      <input type="text" id="cReply" value="⚡ Full throttle from Ego Goatstore!" oninput="buildLiveCode()" />
+
+      <label>Live Code (Ready to Copy & Paste)</label>
+      <pre><code id="liveBuiltCode"></code></pre>
+
+      <div class="modal-actions">
+        <button class="g-btn g-btn-ghost" onclick="copyBuilt()">
+          <i class="anim-icon">📋</i> Copy
+        </button>
+        <button class="g-btn g-btn-ghost" onclick="downloadBuilt()">
+          <i class="anim-icon">⬇</i> .js
+        </button>
+        <button class="g-btn g-btn-primary" onclick="saveBuiltToVault()">
+          <i class="anim-icon">🚀</i> Save to Store
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toastBox" class="toast-box">Copied!</div>
+
+  <script src="app.js"></script>
+</body>
+</html>
